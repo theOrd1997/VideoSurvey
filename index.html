@@ -91,6 +91,10 @@ input[type="radio"],input[type="checkbox"]{transform:scale(1.12);accent-color:va
 /* Warn highlight */
 tr.warn td { background:#fff5f5; }
 fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius:10px; }
+#svcBlock.warn { border:2px solid #ef4444 !important; padding:12px; border-radius:10px; }
+/* inputs warn */
+.input.warn { border:2px solid #ef4444 !important; }
+.light-group.warn { border:2px solid #ef4444 !important; }
 
 /* Submit status */
 #submitStatus{margin-top:10px;font-size:.95rem}
@@ -167,7 +171,6 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
   <section id="sec2" class="card" hidden>
     <h2 class="h2">광고 영상 시청</h2>
 
-    <!-- 브랜드 안내 -->
     <div class="info" style="margin-bottom:14px">
       <div style="font-weight:800;margin-bottom:6px">브랜드 안내</div>
       <div style="line-height:1.75">
@@ -218,7 +221,6 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
                    aria-label="전문가 개입 정도 0에서 10까지">
           </div>
 
-          <!-- 앵커 버튼 -->
           <div class="anchorbar" role="group" aria-label="빠른 선택">
             <button type="button" class="anchor" data-anchor="0">0</button>
             <button type="button" class="anchor" data-anchor="5">5</button>
@@ -318,7 +320,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 
 <script>
 /* ===== CONFIG (백엔드 URL만 교체하세요) ===== */
-const BACKEND_URL = "https://script.google.com/macros/s/xxxxxxxxxxxxxxxx/exec"; // ← GAS 등 배포 URL
+const BACKEND_URL = "https://script.google.com/macros/s/xxxxxxxxxxxxxxxx/exec"; // ← 배포 URL로 교체
 
 /* ===== helpers ===== */
 const $=(s,sc=document)=>sc.querySelector(s), $$=(s,sc=document)=>[...sc.querySelectorAll(s)];
@@ -340,6 +342,9 @@ const valChecks = n => $$(`input[name='${n}']:checked`).map(x=>x.value);
 function clearWarns(scope=document){
   $$("tr.warn", scope).forEach(tr=>tr.classList.remove("warn"));
   $$("fieldset.warn", scope).forEach(fs=>fs.classList.remove("warn"));
+  $("#svcBlock")?.classList.remove("warn");
+  $$(".input.warn", scope).forEach(inp=>inp.classList.remove("warn"));
+  $(".light-group")?.classList.remove("warn");
 }
 
 /* ===== dynamic tables ===== */
@@ -370,7 +375,7 @@ const counters = { AUTH:0, ORIG:0, ATT:0, PI:0 };
 $("#likertBody").innerHTML = likertItems.map((t,i)=>{
   const g = groups[i];
   counters[g] += 1;
-  const name = g + counters[g]; // AUTH1..5, ORIG1..6, ATT1..3, PI1..3
+  const name = g + counters[g];
   return `<tr data-name="${name}">
             <td>${t}</td>
             ${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}
@@ -403,7 +408,6 @@ document.addEventListener("click",e=>{
 
   const target=+b.dataset.next;
 
-  // 섹션별 부분 유효성
   if(target===1 && !validateS1()) return;         // 섹션1 -> 섹션2
   if(target===3 && !validateSec3()) return;       // 섹션3 -> 섹션4
   if(b.id==="next2" && b.disabled) return;        // 영상 미시청
@@ -412,11 +416,39 @@ document.addEventListener("click",e=>{
 });
 
 function validateS1(){
-  const idOk=/^\d{8}$/.test($("#sid").value.trim());
-  const genderOk=!!$("input[name='gender']:checked");
-  if(!idOk){ $("#sid").setCustomValidity("학번은 숫자 8자로 정확히 입력해 주세요."); $("#sid").reportValidity(); return false; }
-  $("#sid").setCustomValidity("");
-  if(!genderOk){ alert("성별을 선택해 주세요."); return false; }
+  clearWarns($("#sec1"));
+  const sidEl = $("#sid");
+  const ageEl = $("#age");
+
+  const sidOk = /^\d{8}$/.test(sidEl.value.trim());
+  if(!sidOk){
+    sidEl.classList.add("warn");
+    sidEl.setCustomValidity("학번은 숫자 8자로 정확히 입력해 주세요.");
+    sidEl.reportValidity();
+    return false;
+  }
+  sidEl.classList.remove("warn");
+  sidEl.setCustomValidity("");
+
+  const genderOk = !!$("input[name='gender']:checked");
+  if(!genderOk){
+    $(".light-group")?.classList.add("warn");
+    alert("성별을 선택해 주세요.");
+    return false;
+  }
+  $(".light-group")?.classList.remove("warn");
+
+  const ageVal = ageEl.value.trim();
+  const ageOk = ageVal !== "" && +ageVal >= 14 && +ageVal <= 99;
+  if(!ageOk){
+    ageEl.classList.add("warn");
+    ageEl.setCustomValidity("나이는 14~99 사이의 숫자로 입력해 주세요.");
+    ageEl.reportValidity();
+    return false;
+  }
+  ageEl.classList.remove("warn");
+  ageEl.setCustomValidity("");
+
   return true;
 }
 
@@ -424,14 +456,12 @@ function validateSec3(){
   clearWarns(document);
   let ok=true;
 
-  // 1) 조작점검(manip1)
   if(!valRadio("manip1")){
     const fs1 = $$("fieldset").find(fs => fs.querySelector("input[name='manip1']"));
     fs1 && fs1.classList.add("warn");
     ok=false;
   }
 
-  // 2) 리커트 전 항목
   requiredLikertNames().forEach(n=>{
     if(!valRadio(n)){
       const tr = $(`tr[data-name='${n}']`);
@@ -496,12 +526,16 @@ function toggleSvc(){
   const v=$("input[name='AIUSE']:checked");
   const use1 = !!(v && v.value==="1");
   $("#svcBlock").hidden = !v || use1 ? true : false;
-  if(use1){ $$("input[name='AIsvc']:checked").forEach(c=>c.checked=false); }
+
+  if(use1){
+    $$("input[name='AIsvc']:checked").forEach(c=>c.checked=false);
+    $("#svcBlock").classList.remove("warn");
+  }
 }
 $$("input[name='AIUSE']").forEach(r=>r.addEventListener("change",toggleSvc));
 
 /* ===== Submit to Backend ===== */
-function uuid(){ // RFC4122-ish simple
+function uuid(){
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
     const r=crypto.getRandomValues(new Uint8Array(1))[0]&15;
     const v=c==='x'?r:(r&0x3|0x8);
@@ -533,7 +567,7 @@ function getPayload(){
     },
     section3:{
       manipulation_seen: valRadio("manip1"),
-      involvement_0to10: +range.value, // 슬라이더 값
+      involvement_0to10: +range.value,
       AUTH, ORIG, ATT, PI
     },
     section4:{
@@ -543,7 +577,7 @@ function getPayload(){
         AILIT3: valRadio("AILIT3"),
       },
       AIUSE: valRadio("AIUSE"),
-      AIsvc: valChecks("AIsvc") // AIUSE=1이면 빈 배열 가능
+      AIsvc: valChecks("AIsvc")
     }
   };
 }
@@ -553,22 +587,55 @@ function showSubmitStatus(msg, ok=false){
   s.textContent=msg;
   s.className = ok ? "ok" : "err";
 }
-
-function disableSubmit(disabled){
-  $("#submitBtn").disabled = disabled;
-}
+function disableSubmit(disabled){ $("#submitBtn").disabled = disabled; }
 
 /* ===== final validation ===== */
 function validateAllRequired(){
   clearWarns(document);
   const missing = [];
 
+  // --- 섹션1: 학번/성별/나이 ---
+  const sidEl = $("#sid");
+  const ageEl = $("#age");
+
+  const sidOk = /^\d{8}$/.test(sidEl.value.trim());
+  if(!sidOk){
+    sidEl.classList.add("warn");
+    sidEl.setCustomValidity("학번은 숫자 8자로 정확히 입력해 주세요.");
+    sidEl.reportValidity();
+    missing.push({el:sidEl});
+  } else {
+    sidEl.classList.remove("warn");
+    sidEl.setCustomValidity("");
+  }
+
+  const genderOk = !!$("input[name='gender']:checked");
+  if(!genderOk){
+    const gw = $(".light-group");
+    gw?.classList.add("warn");
+    missing.push({el:gw || $("#sec1")});
+  } else {
+    $(".light-group")?.classList.remove("warn");
+  }
+
+  const ageVal = ageEl.value.trim();
+  const ageOk = ageVal !== "" && +ageVal >= 14 && +ageVal <= 99;
+  if(!ageOk){
+    ageEl.classList.add("warn");
+    ageEl.setCustomValidity("나이는 14~99 사이의 숫자로 입력해 주세요.");
+    ageEl.reportValidity();
+    missing.push({el:ageEl});
+  } else {
+    ageEl.classList.remove("warn");
+    ageEl.setCustomValidity("");
+  }
+
+  // --- 섹션3: manip1 + 리커트 전 항목 ---
   if(!valRadio("manip1")){
     const fs1 = $$("fieldset").find(fs => fs.querySelector("input[name='manip1']"));
     fs1 && fs1.classList.add("warn");
     missing.push({el:fs1});
   }
-
   requiredLikertNames().forEach(n=>{
     if(!valRadio(n)){
       const tr = $(`tr[data-name='${n}']`);
@@ -577,6 +644,7 @@ function validateAllRequired(){
     }
   });
 
+  // --- 섹션4: AILIT 전 항목 ---
   ["AILIT1","AILIT2","AILIT3"].forEach((n,i)=>{
     if(!valRadio(n)){
       const tr = $(`#aiLitBody tr:nth-child(${i+1})`);
@@ -585,10 +653,25 @@ function validateAllRequired(){
     }
   });
 
+  // --- 섹션4: AIUSE 필수 + AIsvc(경험 있을 때 최소 1개) ---
   if(!valRadio("AIUSE")){
     const fs2 = $$("fieldset").find(fs => fs.querySelector("input[name='AIUSE']"));
     fs2 && fs2.classList.add("warn");
     missing.push({el:fs2});
+  } else {
+    const aiuse = valRadio("AIUSE");
+    if (aiuse !== "1") {
+      const svcChosen = valChecks("AIsvc");
+      if (svcChosen.length === 0) {
+        const svc = $("#svcBlock");
+        if (svc && !svc.hidden) svc.classList.add("warn");
+        missing.push({el:svc || $("#sec4")});
+      } else {
+        $("#svcBlock")?.classList.remove("warn");
+      }
+    } else {
+      $("#svcBlock")?.classList.remove("warn");
+    }
   }
 
   if(missing.length){
@@ -618,13 +701,12 @@ async function postJSON(url, data, {timeoutMs=10000, retries=2}={}){
       });
       clearTimeout(t);
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      // 응답이 JSON이라고 가정
       const json = await res.json().catch(()=>({ok:true}));
       return { ok:true, json };
     }catch(err){
       clearTimeout(t);
       if(attempt===retries) return { ok:false, error:String(err) };
-      await new Promise(r=>setTimeout(r, 400*(attempt+1))); // 지수 백오프
+      await new Promise(r=>setTimeout(r, 400*(attempt+1)));
     }
   }
 }
@@ -633,7 +715,7 @@ async function postJSON(url, data, {timeoutMs=10000, retries=2}={}){
 let submitted = false;
 $("#submitBtn")?.addEventListener("click",async e=>{
   e.preventDefault();
-  if(submitted){ return; } // 중복 제출 방지
+  if(submitted){ return; }
   if(!validateAllRequired()) return;
 
   submitted = true;
@@ -656,7 +738,7 @@ $("#submitBtn")?.addEventListener("click",async e=>{
     showSubmitStatus("서버 전송에 실패했습니다. 네트워크를 확인 후 다시 시도해 주세요.", false);
     alert("전송 실패: " + (result.error||"알 수 없는 오류"));
     disableSubmit(false);
-    submitted = false; // 실패 시 다시 제출 가능
+    submitted = false;
   }
 });
 

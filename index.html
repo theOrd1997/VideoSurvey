@@ -6,8 +6,8 @@
 <title>광고 영상 시청 시 소비자 경험 설문(점검용)</title>
 <style>
   :root { --gap: 16px; --fg:#222; --muted:#666; --line:#e5e7eb; --brand:#f59e0b; }
-  html,body{margin:0;padding:0;background:#fff;color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
-  .wrap{max-width:920px;margin:24px auto;padding:0 16px}
+  body{margin:0;padding:0;background:#fff;color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+  .wrap{max-width:960px;margin:24px auto;padding:0 16px}
   h1{font-size:1.4rem;margin:0 0 6px}
   .card{border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.04);margin-top:var(--gap)}
   .muted{color:var(--muted);font-size:.95rem}
@@ -23,43 +23,25 @@
   table{border-collapse:collapse;width:100%;min-width:680px}
   th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}
   th{background:#fafafa;font-weight:600}
-  .notice{padding:10px 12px;border:1px solid #fde68a;background:#fef3c7;color:#92400e;border-radius:10px}
-  .brand{padding:10px 12px;border:1px dashed var(--line);border-radius:10px;background:#fcfcfc}
-  .small{font-size:.9rem}
-  .pill{display:inline-block;background:#f3f4f6;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.85rem}
-  .video-wrap{display:grid;gap:10px}
-  .hr{height:1px;background:var(--line);margin:12px 0}
 
-  /* 슬라이더 개선 */
-  .major-ticks {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
-    margin: 6px 0 6px; font-weight: 600; text-align: center;
-  }
-  .range-wrap { position: relative; width: 100%; padding-top: 28px; }
-  .range-wrap input[type="range"]{ width:100%; appearance:none; background:transparent; }
-  .range-wrap input[type="range"]::-webkit-slider-runnable-track{
-    height:10px; background:#e5e7eb; border-radius:999px; box-shadow: inset 0 0 0 1px #ddd;
-    background-image: repeating-linear-gradient(to right, transparent, transparent calc(10% - 1px), #cfd3d9 0, #cfd3d9 calc(10%));
-  }
-  .range-wrap input[type="range"]::-moz-range-track{
-    height:10px; background:#e5e7eb; border-radius:999px;
-  }
-  .range-wrap input[type="range"]::-webkit-slider-thumb{
-    appearance:none; width:22px; height:22px; border-radius:50%;
-    background:#111; border:2px solid #fff; box-shadow:0 0 0 2px #111; margin-top:-6px; cursor:pointer;
-  }
-  .range-wrap input[type="range"]::-moz-range-thumb{
-    width:22px; height:22px; border-radius:50%; background:#111; border:none; cursor:pointer;
-  }
-  .range-wrap output{
-    position:absolute; top:0; translate:-50% 0;
-    background:#111; color:#fff; font-weight:700; font-size:.9rem;
-    padding:4px 8px; border-radius:8px; pointer-events:none;
-  }
-  .range-wrap output::after{
-    content:""; position:absolute; left:50%; translate:-50% 0;
-    bottom:-6px; border:6px solid transparent; border-top-color:#111;
-  }
+  /* 안내 박스 */
+  .section-note{display:flex;gap:12px;align-items:flex-start;background:#f8fafc;border:2px solid #111;border-left-width:8px;border-radius:12px;padding:12px 14px;margin:12px 0}
+  .section-note .note-title{font-weight:800;letter-spacing:.02em;margin-top:2px}
+  .section-note .note-text{line-height:1.55}
+
+  /* 굵은 구분선 */
+  .thick-sep{height:4px;background:#111;border-radius:2px;margin:12px 0}
+  table.compact th, table.compact td{padding:7px 9px}
+
+  /* 타원 마커 슬라이더 */
+  .major-ticks {display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 10px;font-weight:600;text-align:center;}
+  .scale-wrap { position:relative;width:100%; }
+  .scale-track {position:relative;height:20px;border-radius:999px;background:#d1e3ff;box-shadow: inset 0 0 0 2px #6b8bd9;}
+  .scale-fill {position:absolute;left:0;top:0;height:100%;width:50%;background:#3b82f6;border-radius:999px;}
+  .scale-marks {position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:-12px;}
+  .mark {appearance:none;border:none;background:#fff;color:#111;width:42px;height:28px;border-radius:999px;box-shadow:0 0 0 2px #6b8bd9,0 1px 2px rgba(0,0,0,.08);display:grid;place-items:center;font-weight:700;cursor:pointer}
+  .mark.active {box-shadow:0 0 0 2px #1d4ed8,0 0 0 6px rgba(29,78,216,.15)}
+  .sr-only-range{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -74,21 +56,8 @@
 
   <!-- 섹션1 -->
   <section id="sec1" class="card">
-    <h2 style="margin-top:0">설문조사 안내문 (섹션 1)</h2>
+    <h2>설문조사 안내문 (섹션 1)</h2>
     <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다...</p>
-    <div class="brand small">
-      <strong>대구대학교 일반대학원 심리학과</strong><br/>
-      조사자 — 지도교수 박은아 (eunap@daegu.ac.kr), 석사과정 수료 최주형 (thridworldjoy@naver.com)
-    </div>
-    <div class="hr"></div>
-    <div class="row">
-      <label>1. 학번<br/><input id="sid" type="text" placeholder="예: 12345678"/></label>
-      <div>2. 성별<br/>
-        <label><input type="radio" name="gender" value="남"> 남</label>
-        <label><input type="radio" name="gender" value="여"> 여</label>
-      </div>
-      <label>3. 나이<br/><input id="age" type="number" min="14" max="99" placeholder="예: 23"/></label>
-    </div>
     <div class="btnbar"><button class="btn primary" data-next>다음</button></div>
   </section>
 
@@ -110,26 +79,22 @@
   <section id="sec3" class="card" style="display:none">
     <h2>영상 시청 후 경험 평가 (섹션 3)</h2>
 
-    <!-- 1 -->
-    <div><strong>1.</strong> 이 광고 시작부 안내 문구는 무엇이었나요?</div>
-    <label><input type="radio" name="manip1" value="전문가만"> 전문가만 제작</label>
-    <label><input type="radio" name="manip1" value="전문가+AI"> 전문가+AI 협업</label>
-    <label><input type="radio" name="manip1" value="100%AI"> 100% AI</label>
-    <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
+    <!-- 안내문 박스 -->
+    <div class="section-note" role="note">
+      <div class="note-title">안내</div>
+      <div class="note-text">아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 평소에 느끼신 대로 응답해 주시면 됩니다.</div>
+    </div>
 
-    <!-- 2 개선 슬라이더 -->
-    <div style="margin-top:16px"><strong>2.</strong> 광고 전문가의 개입 정도</div>
-    <div class="ticks major-ticks">
+    <!-- 슬라이더 -->
+    <div class="major-ticks">
       <span>0 전혀없음<br><span class="small muted">(AI)</span></span>
       <span>5 비슷하게 참여</span>
       <span>10 매우 큼<br><span class="small muted">(사람)</span></span>
     </div>
-    <div class="range-wrap">
-      <input id="involve" type="range" min="0" max="10" step="1" value="5" list="minorTicks"/>
-      <output id="bubble" for="involve">5</output>
-      <datalist id="minorTicks">
-        <option value="0"></option><option value="1"></option>...<option value="10"></option>
-      </datalist>
+    <div class="scale-wrap">
+      <div class="scale-track"><div id="scaleFill" class="scale-fill"></div></div>
+      <div id="scaleMarks" class="scale-marks"></div>
+      <input id="involve" class="sr-only-range" type="range" min="0" max="10" step="1" value="5"/>
     </div>
     <div class="btnbar">
       <button class="btn" data-set="0">0로</button>
@@ -138,19 +103,48 @@
       <span class="muted">현재값: <span id="involveVal">5</span></span>
     </div>
 
-    <!-- 나머지(진정성, 독창성, 광고태도, 구매의도 Likert 표) -->
-    ... (앞서 드린 Likert 표 그대로)
+    <!-- Likert 예시 -->
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
+        <tr><th>문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+        <tr><td>이 광고는 제품의 특성을 왜곡하지 않고 보여준다.</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      </table>
+    </div>
+
+    <div class="thick-sep"></div>
+
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
+        <tr><td>이 광고는 기존의 광고들과는 다른 독특한 접근을 보여준다.</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      </table>
+    </div>
+
+    <div class="thick-sep"></div>
+
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
+        <tr><td>이 광고는 마음에 든다.</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      </table>
+    </div>
+
+    <div class="thick-sep"></div>
+
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
+        <tr><td>이 광고에서 나온 제품을 구매할 가능성이 있다.</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td></tr>
+      </table>
+    </div>
+
     <div class="btnbar"><button class="btn" data-prev>이전</button><button class="btn primary" data-next>다음</button></div>
   </section>
 
   <!-- 섹션4 -->
   <section id="sec4" class="card" style="display:none">
     <h2>생성형 AI 관련 인식 및 경험 (섹션 4)</h2>
-    ... (Likert 문항 + 사용경험 선택)
+    <p>...</p>
     <div class="btnbar"><button class="btn" data-prev>이전</button><button class="btn primary" id="submitBtn">제출</button></div>
   </section>
 
-  <!-- 완료 -->
   <section id="done" class="card" style="display:none">
     <h2>제출 완료</h2>
     <pre id="dump"></pre>
@@ -165,33 +159,24 @@
   document.querySelectorAll("[data-next]").forEach(b=>b.onclick=()=>showStep(cur+1));
   document.querySelectorAll("[data-prev]").forEach(b=>b.onclick=()=>showStep(cur-1));
 
-  // 자극 랜덤
-  const stimuli=[{file:"A_H.mp4",code:"A_H",label:"⚠️ 100% AI"},...];
-  const chosen=stimuli[Math.floor(Math.random()*stimuli.length)];
-  document.getElementById("adSrc").src=chosen.file;
-  document.getElementById("aiNotice").textContent=chosen.label;
-  document.getElementById("chosenInfo").textContent=`선정된 자극: ${chosen.code}`;
-
-  // 개선 슬라이더
-  const involve=document.getElementById("involve");
-  const bubble=document.getElementById("bubble");
-  const involveVal=document.getElementById("involveVal");
-  function setBubble(range,bubble){
-    const v=+range.value, min=+range.min,max=+range.max,pct=(v-min)*100/(max-min);
-    bubble.textContent=v; involveVal.textContent=v;
-    bubble.style.left=`calc(${pct}% + (${8 - pct*0.15}px))`;
+  // 슬라이더 마커 0~10 생성
+  const marksC = document.getElementById("scaleMarks");
+  for(let i=0;i<=10;i++){
+    const btn=document.createElement("button");
+    btn.type="button";btn.className="mark";btn.dataset.val=i;btn.textContent=i;
+    btn.onclick=()=>setInvolve(i);
+    marksC.appendChild(btn);
   }
-  involve.oninput=()=>setBubble(involve,bubble);
-  setBubble(involve,bubble);
-  document.querySelectorAll("[data-set]").forEach(b=>b.onclick=()=>{involve.value=b.dataset.set;involve.dispatchEvent(new Event("input"));});
+  const involve=document.getElementById("involve");
+  const involveVal=document.getElementById("involveVal");
+  const scaleFill=document.getElementById("scaleFill");
+
+  function setInvolve(val){val=Math.max(0,Math.min(10,Number(val)));involve.value=val;involveVal.textContent=val;scaleFill.style.width=(val/10*100)+"%";document.querySelectorAll(".mark").forEach(m=>m.classList.toggle("active",Number(m.dataset.val)===val));}
+  document.querySelectorAll("[data-set]").forEach(b=>b.onclick=()=>setInvolve(b.dataset.set));
+  setInvolve(5);
 
   // 제출 dump
-  document.getElementById("submitBtn").onclick=()=>{
-    const payload={meta:{stimulus:chosen.code}, section1:{id:document.getElementById("sid").value}};
-    steps.forEach(id=>document.getElementById(id).style.display="none");
-    document.getElementById("done").style.display="";
-    document.getElementById("dump").textContent=JSON.stringify(payload,null,2);
-  };
+  document.getElementById("submitBtn").onclick=()=>{steps.forEach(id=>document.getElementById(id).style.display="none");document.getElementById("done").style.display="";document.getElementById("dump").textContent=JSON.stringify({done:true,involve:involve.value},null,2);};
 </script>
 </body>
 </html>

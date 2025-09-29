@@ -3,501 +3,667 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>광고 영상 시청 시 소비자 경험 설문(점검용·실험 전체)</title>
+<title>광고 영상 시청 시 소비자 경험 설문(최적화 풀버전)</title>
 <style>
+/* ===== Design Tokens ===== */
 :root{
-  --gap:20px; --fg:#222; --muted:#667085; --line:#e5e7eb; --bg:#f7f8fb;
-  --brand:#3b82f6; --brand-900:#1d4ed8; --brand-50:#eff6ff; --radius:12px;
+  --fg:#0f172a; --muted:#64748b; --line:#e5e7eb; --bg:#f8fafc; --card:#fff;
+  --brand:#2563eb; --brand-900:#1e40af; --brand-50:#eef2ff;
+  --radius:12px; --gap:20px; --shadow:0 2px 10px rgba(2,6,23,.04);
+  --h1:1.7rem; --h2:1.28rem; --small:.9rem;
 }
-html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
-.wrap{max-width:920px;margin:40px auto;padding:0 20px}
-
-/* hidden 보강: 환경 충돌 방지 */
+@media (max-width:480px){ :root{ --h1:1.58rem; --h2:1.2rem } }
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:960px;margin:40px auto;padding:0 20px}
 [hidden]{display:none!important}
 
-/* 공통 UI */
-.h1{font-size:1.6rem;margin:0 0 6px;font-weight:700}
-.h2{font-size:1.25rem;margin:0 0 8px;font-weight:700}
-.card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.05);margin-top:var(--gap)}
-.muted{color:var(--muted)}
-.small{font-size:.9rem}
-.hr{height:1px;background:var(--line);margin:18px 0}
-.pill{display:inline-block;background:var(--brand-50);border:1px solid var(--brand);color:var(--brand-900);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:700}
-
-.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
-.progress>div{height:100%;background:var(--brand);width:0%;transition:width .3s ease}
-
-.btn{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:600;transition:transform .06s ease,box-shadow .2s,border-color .2s;text-decoration:none}
-.btn:hover{box-shadow:0 1px 4px rgba(0,0,0,.08);border-color:#d0d5dd}
-.btn:active{transform:translateY(1px)}
-.btn[disabled]{opacity:.5;cursor:not-allowed}
-.btnbar{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+/* ===== Primitives ===== */
+.h1{font-size:var(--h1);font-weight:800;margin:0 0 8px}
+.h2{font-size:var(--h2);font-weight:800;margin:0 0 12px}
+.small{font-size:var(--small)} .muted{color:var(--muted)}
+.desc{font-size:1rem;color:#000}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;margin-top:var(--gap)}
+.btnbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;transition:transform .06s,box-shadow .2s,border-color .2s}
+.btn:hover{box-shadow:0 1px 5px rgba(2,6,23,.08);border-color:#d0d5dd}
+.btn:active{transform:translateY(1px)} .btn[disabled]{opacity:.55;cursor:not-allowed}
 .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn.primary:hover{background:var(--brand-900);border-color:var(--brand-900)}
-.notice{padding:12px;border:1px solid #fde68a;background:#fffbe0;color:#92400e;border-radius:10px;font-size:.95rem}
-.brand{padding:12px;border:1px dashed var(--brand);border-radius:10px;background:var(--brand-50)}
+:where(a,button,input,textarea,.btn):focus-visible{outline:2px solid transparent;box-shadow:0 0 0 3px var(--brand-50),0 0 0 5px rgba(37,99,235,.35)}
+.pill{display:inline-block;background:var(--brand-50);border:1px solid var(--brand);color:var(--brand-900);border-radius:999px;padding:2px 10px;font-size:.82rem;font-weight:700}
+.notice{padding:12px;border:1px solid #fde68a;background:#fffbea;color:#92400e;border-radius:10px}
+.info{padding:14px;border:1px solid var(--line);background:#fcfcff;border-radius:12px}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:var(--brand);width:0;transition:width .3s}
 
-.section-note{display:flex;gap:12px;align-items:flex-start;background:var(--brand-50);border:1px solid var(--brand);border-left:8px solid var(--brand);border-radius:var(--radius);padding:14px;margin:var(--gap) 0}
-.section-note .title{font-weight:800;letter-spacing:.01em}
+/* ===== Text blocks ===== */
+.instructions p{margin:0 0 12px}
+.instructions strong{color:var(--brand-900);font-weight:800}
+.divider{height:2px;background:#111827;border-radius:2px;margin:12px 0 16px}
 
-/* 테이블 */
+/* ===== Table ===== */
 .grid{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:580px}
-th,td{border:1px solid var(--line);padding:10px 12px;text-align:center}
-th{background:#f9fafb;font-weight:700;border-top:2px solid var(--line)}
-.wide-likert tbody tr:nth-child(even){background:#fcfcfc}
-.wide-likert tbody tr:nth-child(odd){background:#fff}
-.wide-likert th:first-child,.wide-likert td:first-child{text-align:left;width:60%;padding-left:18px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:12px;text-align:center;vertical-align:middle}
+th{background:#f9fafb;font-weight:800;border-top:2px solid var(--line)}
 
-/* 폼 */
-input[type="text"],input[type="number"]{padding:10px;border:1px solid var(--line);border-radius:8px;transition:border-color .2s,box-shadow .2s}
-input[type="text"]:focus,input[type="number"]:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px var(--brand-50)}
-input[type="radio"],input[type="checkbox"]{transform:scale(1.12);margin-right:6px;vertical-align:middle}
+/* Likert */
+.wide-likert{table-layout:fixed;width:100%}
+.wide-likert th:first-child, .wide-likert td:first-child{width:35%;text-align:left;padding-left:16px}
+.wide-likert th:not(:first-child), .wide-likert td:not(:first-child){width:13%}
+.wide-likert thead th:not(:first-child){font-size:1rem;line-height:1.2;}
+.wide-likert thead th:not(:first-child) .small{font-size:.86rem;color:var(--muted)}
 
-/* 슬라이더 & 버블 & 줄눈 */
-.scale{position:relative;display:block; padding-top:44px;}
-.range{
-  appearance:none;width:100%;height:12px;
-  background:
-    linear-gradient(#fff,#fff) padding-box,
-    linear-gradient(90deg,var(--brand) 0,var(--brand) var(--pct,50%),#e5e7eb var(--pct,50%),#e5e7eb 100%) border-box;
-  border:1px solid var(--line);border-radius:999px;margin:0
-}
-.range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--brand);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--brand-900)}
-.range::-moz-range-thumb{width:20px;height:20px;background:var(--brand);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--brand-900)}
-.value-bubble{position:absolute;top:6px;left:0;transform:translateX(-50%);background:var(--brand-900);color:#fff;padding:3px 8px;border-radius:6px;font-size:.85rem;font-weight:800;white-space:nowrap}
-.value-bubble:after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:var(--brand-900)}
-/* 보조 줄눈(10% 간격) */
-.tickline{position:absolute;left:0;right:0;top:32px;height:10px;
-  background:
-    repeating-linear-gradient(to right,
-      transparent 0, transparent calc(10% - 1px),
-      #d1d5db calc(10% - 1px), #d1d5db 10%
-    );
-  pointer-events:none; opacity:.8; border-radius:999px
-}
-.quick{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
-.quick button{border:none;background:var(--brand-50);color:var(--brand-900);padding:6px 12px;border-radius:8px;font-weight:800;cursor:pointer}
-.quick button:hover{background:var(--brand);color:#fff}
-.ticks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;text-align:center;font-weight:700;font-size:.95rem}
+/* Inputs */
+label{font-weight:700}
+.pretitle{font-size:1.45rem;font-weight:900;color:#1f2937;margin:4px 0 12px}
+.prereq{display:grid;grid-template-columns:1fr 1fr 1fr;gap:34px 36px}
+@media (max-width:900px){.prereq{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.prereq{grid-template-columns:1fr}}
+.field{display:grid;gap:10px;align-content:start}
+.input{width:100%;max-width:420px;min-height:48px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px;font-size:1rem}
+.input::placeholder{color:#9aa3af;font-size:.98rem}
+.light-group{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:48px;display:flex;align-items:center;max-width:420px}
+.radio-col{display:flex;gap:18px;flex-wrap:wrap}
+.radio-col label{display:flex;align-items:center;gap:6px;font-size:1rem}
+input[type="radio"],input[type="checkbox"]{transform:scale(1.12);accent-color:var(--brand)}
+.input.short{max-width:160px;min-height:48px;padding:12px 14px;font-size:1rem}
 
-/* 레이아웃 */
+/* Slider */
+.slider-wrap{max-width:100%;margin:0 auto;text-align:center}
+.slider-stack{position:relative;padding-top:36px}
+.range{appearance:none;width:100%;height:10px;border-radius:999px;outline:none;margin:12px 0;
+  background:linear-gradient(90deg,var(--brand) var(--pct,50%),#e5e7eb var(--pct,50%));transition:background .25s ease;}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--brand);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.range::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--brand);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.value-bubble{position:absolute;top:0;transform:translateX(-50%);background:var(--brand-900);color:#fff;padding:4px 8px;border-radius:6px;font-size:.9rem;font-weight:700}
+.value-bubble:after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:var(--brand-900)}
+.slider-labels{display:flex;justify-content:space-between;font-size:.92rem;color:var(--muted);margin-top:6px}
+.anchorbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.anchor{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer}
+.anchor:hover{border-color:#cdd3de}
+
+/* Layout bits */
 .row{display:grid;gap:14px}
 .row2{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
 .video-wrap{display:grid;gap:12px}
 
-/* 테스트바 */
-.topbar{
-  position: sticky; top: 0; z-index: 999;
-  display:flex; gap:8px; align-items:center;
-  padding:8px 12px; border-bottom:1px solid var(--line);
-  background:#fffbe0;
-}
-.btn.sm{ padding:6px 10px; font-size:.85rem; border-radius:8px }
+/* Warn highlight */
+tr.warn td { background:#fff5f5; }
+fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius:10px; }
+
+/* Submit status */
+#submitStatus{margin-top:10px;font-size:.95rem}
+#submitStatus.ok{color:#166534}
+#submitStatus.err{color:#991b1b}
 </style>
 </head>
 <body>
-<!-- 테스트 도구 -->
-<div class="topbar small" role="note" aria-live="polite">
-  <span class="muted">테스트 도구:</span>
-  <button type="button" class="btn sm" id="bypassToggle" aria-pressed="false" title="검증(학번/성별/영상95%/필수문항) 건너뛰기 토글">검증 건너뛰기 OFF</button>
-  <button type="button" class="btn sm" id="forceNext" title="현재 단계 검증 없이 다음으로 이동">강제 다음 →</button>
-  <span class="muted" id="bypassStatus" style="margin-left:8px">일반 모드</span>
-</div>
-
 <div class="wrap">
-  <div class="row2" aria-live="polite">
+  <div class="row2">
     <h1 class="h1">광고 영상 시청 시 소비자 경험 설문 <span class="pill">점검용</span></h1>
-    <div style="min-width:180px">
-      <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+    <div style="min-width:200px">
+      <div class="progress"><div id="bar"></div></div>
       <div class="muted small" id="stepLabel" style="text-align:right;margin-top:6px">1 / 4</div>
     </div>
   </div>
 
   <!-- ==================== 섹션 1 ==================== -->
-  <section id="sec1" class="card" role="region" aria-labelledby="s1h">
-    <h2 id="s1h" class="h2">설문조사 안내문 (섹션 1)</h2>
+  <section id="sec1">
+    <div class="card"><h2 class="h2">설문조사 안내문</h2></div>
 
-    <!-- 요청하신 줄넘김/띄움 구조 반영 -->
-    <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다. 저는 대구대학교 심리학과 최주형입니다.</p>
-    <p>본 설문지는 영상 시청 과정에서 나타나는 광고와 관련된 전반적인 경험을 알아보기 위한 것입니다.</p>
-    <p>제시되는 문항에는 정답이나 오답이 없으니, 평소에 느끼고 생각하시는 대로 응답해 주시면 됩니다.</p>
-    <p>자신에게 꼭 맞는 응답이 없더라도 가장 가깝다고 생각되는 항목을 선택해 주시기 바랍니다.</p>
-    <p>응답하신 내용은 익명으로 처리되며 연구 목적 외에는 사용되지 않습니다.</p>
-    <p>또한 한 문항에는 반드시 하나의 응답만 선택해 주시고, 빠짐없이 작성해 주셔야 설문이 유효하게 처리됩니다.</p>
-    <p>본 설문지는 총 11문항과 약 20초 정도의 광고 영상으로 구성되어 있으며, 약 5분 정도 소요됩니다.</p>
-    <p>귀하의 소중한 응답은 연구에 큰 도움이 됩니다. 참여해 주셔서 다시 한 번 감사드립니다.</p>
-
-    <div class="brand small" role="note">
-      <strong>대구대학교 일반대학원 심리학과</strong><br>
-      조사자:<br>
-      &nbsp;&nbsp;지도교수 박은아 (<a href="mailto:eunap@daegu.ac.kr">eunap@daegu.ac.kr</a>)<br>
-      &nbsp;&nbsp;석사과정 수료 최주형 (<a href="mailto:thridworldjoy@naver.com">thridworldjoy@naver.com</a>)
+    <div class="card">
+      <div class="instructions">
+        <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다.<br>저는 대구대학교 심리학과 최주형입니다.</p>
+        <p>본 설문지는 영상 시청 과정에서 나타나는 광고와 관련된 전반적인 경험을 알아보기 위한 것입니다.</p>
+        <p>제시되는 문항에는 정답이나 오답이 없으니, 평소에 느끼고 생각하시는 대로 응답해 주시면 됩니다.</p>
+        <p>자신에게 꼭 맞는 응답이 없더라도 <strong>가장 가깝다고 생각되는 항목</strong>을 선택해 주시기 바랍니다.</p>
+        <p>응답하신 내용은 익명으로 처리되며 연구 목적 외에는 사용되지 않습니다.</p>
+        <p>또한 한 문항에는 <strong>반드시 하나의 응답만 선택</strong>해 주시고, <strong>빠짐없이 작성</strong>해 주셔야 설문이 유효하게 처리됩니다.</p>
+        <p>본 설문지는 총 11문항과 약 20초 정도의 광고 영상으로 구성되어 있으며, 약 5분 정도 소요됩니다.</p>
+        <p>귀하의 소중한 응답은 연구에 큰 도움이 됩니다. 참여해 주셔서 다시 한 번 감사드립니다.</p>
+      </div>
+      <hr class="divider">
+      <div role="note" aria-label="조사자 정보">
+        <div style="font-weight:800;margin-bottom:6px">대구대학교 일반대학원 심리학과</div>
+        <ul style="margin:0;padding-left:18px">
+          <li>지도교수 박은아 (<a href="mailto:eunap@daegu.ac.kr">eunap@daegu.ac.kr</a>)</li>
+          <li>석사과정 수료 최주형 (<a href="mailto:thridworldjoy@naver.com">thridworldjoy@naver.com</a>)</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="hr" aria-hidden="true"></div>
-
-    <form id="form" novalidate>
-      <div class="row">
-        <label for="sid">1. 과제 점수를 부여하기 위해 본인의 학번을 작성해주세요.</label>
-        <input
-          id="sid" name="sid" type="text" inputmode="numeric"
-          pattern="^\d{8}$" minlength="8" maxlength="8"
-          placeholder="예: 12345678" aria-describedby="sidHelp" style="max-width:260px">
-        <div id="sidHelp" class="small muted">숫자 <strong>8자</strong>를 정확히 입력해 주세요.</div>
-
-        <fieldset>
-          <legend>2. 성별</legend>
-          <label><input type="radio" name="gender" value="남" required> 남</label>
-          <label style="margin-left:12px"><input type="radio" name="gender" value="여"> 여</label>
-        </fieldset>
-
-        <label for="age">3. 나이</label>
-        <input id="age" name="age" type="number" min="14" max="99" placeholder="예: 23" style="max-width:120px">
+    <div class="card">
+      <form id="form" novalidate>
+        <div class="pretitle">설문 전 필수 정보 입력</div>
+        <div class="prereq">
+          <div class="field">
+            <label for="sid">학번 (8자리)</label>
+            <input id="sid" name="sid" type="text" inputmode="numeric" pattern="^\\d{8}$" minlength="8" maxlength="8" placeholder="예: 12345678" class="input">
+          </div>
+          <div class="field">
+            <label>성별</label>
+            <div class="light-group">
+              <div class="radio-col" role="radiogroup" aria-label="성별">
+                <label><input type="radio" name="gender" value="남" required> 남</label>
+                <label><input type="radio" name="gender" value="여"> 여</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="age">나이</label>
+            <input id="age" name="age" type="number" min="14" max="99" placeholder="예: 23" class="input short">
+          </div>
+        </div>
+      </form>
+      <div class="btnbar">
+        <button class="btn primary" data-next="1" id="next1">다음</button>
+        <button class="btn" data-force>강제 다음 →</button>
       </div>
-    </form>
-
-    <div class="btnbar">
-      <button class="btn primary" data-next="1" id="next1">다음</button>
     </div>
   </section>
 
   <!-- ==================== 섹션 2 ==================== -->
-  <section id="sec2" class="card" role="region" aria-labelledby="s2h" hidden>
-    <h2 id="s2h" class="h2">광고 영상 시청 (섹션 2)</h2>
-    <p class="brand"><strong>브랜드 안내</strong><br>Sunshine는 매일의 순간에 신선한 빛을 전하는 주스 브랜드입니다. “Fresh Sunlight in Every Glass”라는 메시지처럼, 한 잔의 주스 속에 건강하고 활기찬 태양의 에너지를 담아 전달합니다.</p>
-    <p id="aiNotice" class="notice" aria-live="polite">⚠️ 안내 문구가 여기에 표시됩니다.</p>
+  <section id="sec2" class="card" hidden>
+    <h2 class="h2">광고 영상 시청</h2>
+
+    <!-- 브랜드 안내 -->
+    <div class="info" style="margin-bottom:14px">
+      <div style="font-weight:800;margin-bottom:6px">브랜드 안내</div>
+      <div style="line-height:1.75">
+        <strong>Sunshine</strong>는 매일의 순간에 신선한 빛을 전하는 주스 브랜드입니다.<br>
+        <strong>“Fresh Sunlight in Every Glass”</strong>라는 메시지처럼, 한 잔의 주스 속에 건강하고 활기찬 태양의 에너지를 담아 전달합니다.
+      </div>
+    </div>
+
+    <p class="notice" id="aiNotice">⚠️ 안내 문구가 여기에 표시됩니다.</p>
+
     <div class="video-wrap">
       <video id="adVideo" width="100%" height="auto" controls playsinline preload="metadata">
-        <source id="adSrc" src="" type="video/mp4">
-        해당 브라우저는 video 태그를 지원하지 않습니다.
+        <source id="adSrc" src="" type="video/mp4">해당 브라우저는 video 태그를 지원하지 않습니다.
       </video>
       <div class="muted small" id="chosenInfo"></div>
     </div>
     <div class="btnbar">
       <button class="btn" data-prev>이전</button>
       <button class="btn primary" data-next="2" id="next2" disabled aria-disabled="true" title="영상을 끝까지 시청하면 활성화됩니다">다음</button>
+      <button class="btn" data-force>강제 다음 →</button>
     </div>
   </section>
 
   <!-- ==================== 섹션 3 ==================== -->
-  <section id="sec3" class="card" role="region" aria-labelledby="s3h" hidden>
-    <h2 id="s3h" class="h2">영상 시청 후 경험 평가 (섹션 3)</h2>
+  <section id="sec3" hidden>
+    <div class="card"><h2 class="h2">영상 시청 후 경험 평가</h2></div>
 
-    <fieldset class="row">
-      <legend><strong>1.</strong> 이 광고 시작부 또는 화면 하단에 어떤 안내 문구가 표시되었나요?</legend>
-      <label><input type="radio" name="manip1" value="전문가만" required> 광고 전문가가 AI 없이 제작</label>
-      <label><input type="radio" name="manip1" value="전문가+AI"> 광고 전문가가 AI를 활용하여 제작</label>
-      <label><input type="radio" name="manip1" value="100%AI"> 100% AI 자동 제작</label>
-      <label><input type="radio" name="manip1" value="기타"> 기타 안내 문구</label>
-      <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
-    </fieldset>
+    <div class="card">
+      <fieldset class="row">
+        <legend><strong>1.</strong> 이 광고 시작부 또는 화면 하단에 어떤 안내 문구가 표시되었나요?</legend>
+        <label><input type="radio" name="manip1" value="전문가만" required> 광고 전문가가 AI 없이 제작</label>
+        <label><input type="radio" name="manip1" value="전문가+AI"> 광고 전문가가 AI를 활용하여 제작</label>
+        <label><input type="radio" name="manip1" value="100%AI"> 100% AI 자동 제작</label>
+        <label><input type="radio" name="manip1" value="기타"> 기타 안내 문구</label>
+        <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
+      </fieldset>
+    </div>
 
-    <div class="row" style="margin-top:12px">
-      <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
+    <div class="card">
+      <div class="row">
+        <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
 
-      <div class="scale" aria-live="polite">
-        <output id="valBubble" class="value-bubble" for="involve">5</output>
-        <input id="involve" class="range" type="range" min="0" max="10" step="1" value="5" list="tickmarks" aria-label="전문가 개입 정도 0에서 10까지">
-        <datalist id="tickmarks">
-          <option value="0"></option><option value="1"></option><option value="2"></option>
-          <option value="3"></option><option value="4"></option><option value="5"></option>
-          <option value="6"></option><option value="7"></option><option value="8"></option>
-          <option value="9"></option><option value="10"></option>
-        </datalist>
-        <div class="tickline" aria-hidden="true"></div>
+        <div class="slider-wrap" aria-label="전문가 개입 정도 슬라이더">
+          <div class="slider-stack">
+            <output id="valBubble" class="value-bubble" for="involve" aria-live="polite">5</output>
+            <input id="involve" class="range" type="range"
+                   min="0" max="10" step="1" value="5"
+                   aria-label="전문가 개입 정도 0에서 10까지">
+          </div>
 
-        <div class="quick" aria-hidden="true">
-          <button type="button" data-jump="0">0</button>
-          <button type="button" data-jump="5">5</button>
-          <button type="button" data-jump="10">10</button>
-        </div>
-        <div class="ticks small" aria-hidden="true">
-          <span>0 전혀없음<br><span class="muted small">(AI가 완전히 제작)</span></span>
-          <span>5 사람과 AI가 비슷하게 참여</span>
-          <span>10 매우 큼<br><span class="muted small">(사람이 완전히 제작)</span></span>
+          <!-- 앵커 버튼 -->
+          <div class="anchorbar" role="group" aria-label="빠른 선택">
+            <button type="button" class="anchor" data-anchor="0">0</button>
+            <button type="button" class="anchor" data-anchor="5">5</button>
+            <button type="button" class="anchor" data-anchor="10">10</button>
+          </div>
+
+          <div class="desc" style="margin-top:8px">
+            0= 전혀없음(AI 완전 제작) ||| 5= 전문가와 AI 비슷함 ||| 10= 매우 큼(전문가 완전 제작)
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="section-note" role="note"><div class="title">안내</div><div>아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 평소에 느끼신 대로 응답해 주시면 됩니다.</div></div>
-
-    <div class="grid" style="margin-top:8px">
-      <table class="compact wide-likert">
-        <thead>
-          <tr>
-            <th style="width:60%">문항</th>
-            <th>1<br><span class="small">전혀 아니다</span></th>
-            <th>2</th>
-            <th>3<br><span class="small">보통이다</span></th>
-            <th>4</th>
-            <th>5<br><span class="small">매우 그렇다</span></th>
-          </tr>
-        </thead>
-        <tbody id="likertBody"></tbody>
-      </table>
-    </div>
-
-    <div class="btnbar">
-      <button class="btn" data-prev>이전</button>
-      <button class="btn primary" data-next="3">다음</button>
+    <div class="card">
+      <p class="desc"><strong>3.</strong> 아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 느끼신 대로 응답해 주시면 됩니다.</p>
+      <div class="grid" style="margin-top:8px">
+        <table class="compact wide-likert">
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2</th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4</th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="likertBody"></tbody>
+        </table>
+      </div>
+      <div class="btnbar">
+        <button class="btn" data-prev>이전</button>
+        <button class="btn primary" data-next="3">다음</button>
+        <button class="btn" data-force>강제 다음 →</button>
+      </div>
     </div>
   </section>
 
   <!-- ==================== 섹션 4 ==================== -->
-  <section id="sec4" class="card" role="region" aria-labelledby="s4h" hidden>
-    <h2 id="s4h" class="h2">생성형 AI 관련 인식 및 경험 (섹션 4)</h2>
-    <p class="muted small">아래 문항들은 귀하의 생성형 AI에 대한 이해와 인식을 묻는 질문입니다.</p>
+  <section id="sec4" hidden>
+    <div class="card"><h2 class="h2">생성형 AI 관련 인식 및 경험</h2></div>
 
-    <div class="grid">
-      <table class="compact wide-likert">
-        <thead><tr><th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-        <tbody id="aiLitBody"></tbody>
-      </table>
+    <div class="card">
+      <p class="desc"><strong>4.</strong> 아래 문항들은 귀하의 생성형 AI에 대한 이해와 인식을 묻는 질문입니다. 정답이나 오답은 없으며, 느끼신 대로 응답해 주시면 됩니다.</p>
+      <div class="grid" style="margin-top:8px">
+        <table class="compact wide-likert">
+          <thead>
+            <tr>
+              <th style="text-align:left">문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2</th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4</th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="aiLitBody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="hr"></div>
+    <div class="card">
+      <fieldset class="row">
+        <legend><strong>5.</strong> 본인의 생성형 AI 사용 경험 수준은 어느 정도입니까?</legend>
+        <label><input type="radio" name="AIUSE" value="1" required> 전혀 없다</label>
+        <label><input type="radio" name="AIUSE" value="2"> 한두 번 사용해 본 적이 있다 (1~2회 이하)</label>
+        <label><input type="radio" name="AIUSE" value="3"> 가끔 사용한다 (월 1회 이상)</label>
+        <label><input type="radio" name="AIUSE" value="4"> 자주 사용한다 (주 1회 이상)</label>
+        <label><input type="radio" name="AIUSE" value="5"> 매우 자주 사용한다 (거의 매일)</label>
+      </fieldset>
 
-    <fieldset class="row">
-      <legend><strong>본인의 생성형 AI 사용 경험 수준은 어느 정도입니까?</strong></legend>
-      <label><input type="radio" name="AIUSE" value="1" required> 전혀 없다</label>
-      <label><input type="radio" name="AIUSE" value="2"> 한두 번 사용해 본 적이 있다 (1~2회 이하)</label>
-      <label><input type="radio" name="AIUSE" value="3"> 가끔 사용한다 (월 1회 이상)</label>
-      <label><input type="radio" name="AIUSE" value="4"> 자주 사용한다 (주 1회 이상)</label>
-      <label><input type="radio" name="AIUSE" value="5"> 매우 자주 사용한다 (거의 매일)</label>
-    </fieldset>
+      <div id="svcBlock" class="row" hidden style="margin-top:12px">
+        <div><strong>사용해 본 생성형 AI 서비스</strong> (복수선택)</div>
+        <label><input type="checkbox" name="AIsvc" value="chat"> 텍스트/대화형 AI (ChatGPT, Gemini 등)</label>
+        <label><input type="checkbox" name="AIsvc" value="image"> 이미지 생성 AI (Midjourney, SD 등)</label>
+        <label><input type="checkbox" name="AIsvc" value="video"> 영상 생성 AI (Sora, Runway, Kling 등)</label>
+        <label><input type="checkbox" name="AIsvc" value="audio"> 음악/오디오 AI (Suno, Udio 등)</label>
+      </div>
 
-    <div id="svcBlock" class="row" hidden style="margin-top:12px">
-      <div><strong>아래 생성형 AI 중 사용해 본 서비스에 모두 표시해 주십시오. (복수선택)</strong></div>
-      <label><input type="checkbox" name="AIsvc" value="chat"> 텍스트/대화형 AI (ChatGPT, Gemini 등)</label>
-      <label><input type="checkbox" name="AIsvc" value="image"> 이미지 생성 AI (Midjourney, SD 등)</label>
-      <label><input type="checkbox" name="AIsvc" value="video"> 영상 생성 AI (Sora, Runway, Kling 등)</label>
-      <label><input type="checkbox" name="AIsvc" value="audio"> 음악/오디오 AI (Suno, Udio 등)</label>
-    </div>
-
-    <div class="btnbar">
-      <button class="btn" data-prev>이전</button>
-      <button class="btn primary" id="submitBtn">설문 제출</button>
+      <div class="btnbar">
+        <button class="btn" data-prev>이전</button>
+        <button class="btn primary" id="submitBtn">설문 제출</button>
+        <button class="btn" data-force>강제 다음 →</button>
+      </div>
+      <div id="submitStatus" aria-live="polite"></div>
     </div>
   </section>
 
   <!-- ==================== 완료 ==================== -->
   <section id="done" class="card" hidden>
     <h2 class="h2">제출 완료</h2>
-    <p>응답해 주셔서 감사합니다. (현재 페이지는 점검용으로, 실제 저장은 하지 않습니다.)</p>
+    <p>응답해 주셔서 감사합니다.</p>
+    <p class="small muted" id="serverMsg"></p>
     <pre id="dump" class="small" style="white-space:pre-wrap;background:#f0f4f7;border:1px solid var(--line);padding:12px;border-radius:10px;color:#444"></pre>
   </section>
 </div>
 
 <script>
-/***********************
- * 0) 유틸/상태
- ***********************/
-const qs=(s,sc=document)=>sc.querySelector(s);
-const qsa=(s,sc=document)=>Array.from(sc.querySelectorAll(s));
+/* ===== CONFIG (백엔드 URL만 교체하세요) ===== */
+const BACKEND_URL = "https://script.google.com/macros/s/xxxxxxxxxxxxxxxx/exec"; // ← GAS 등 배포 URL
+
+/* ===== helpers ===== */
+const $=(s,sc=document)=>sc.querySelector(s), $$=(s,sc=document)=>[...sc.querySelectorAll(s)];
 const steps=["sec1","sec2","sec3","sec4"]; let cur=0;
-const bar=qs('#bar'); const stepLabel=qs('#stepLabel');
-const setStep=(i)=>{
+const bar=$("#bar"), stepLabel=$("#stepLabel");
+const goTo=i=>{
   cur=i;
-  steps.forEach((id,idx)=>qs('#'+id).hidden=idx!==i);
-  qs('#done').hidden=true;
+  steps.forEach((id,k)=>$("#"+id).hidden=k!==i);
+  $("#done").hidden=true;
   bar.style.width=((i+1)/steps.length*100)+'%';
   stepLabel.textContent=`${i+1} / ${steps.length}`;
-
-  // 섹션4 진입 시 서비스 블록 재평가
-  if(i===3) updateSvcBlock();
-
-  // 섹션3이 처음 보이는 순간 슬라이더 버블 위치를 정확히 동기화
-  if(i===2){
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      if(typeof setRangeVisual==='function'){ setRangeVisual(range.value); }
-    }));
-  }
-  window.scrollTo({top:0,behavior:"smooth"});
+  if(i===3) toggleSvc();
+  if(i===2) requestAnimationFrame(()=>requestAnimationFrame(updateSlider));
+  scrollTo({top:0,behavior:"smooth"});
 };
 
-/***********************
- * A) 테스트 모드(BYPASS)
- ***********************/
-let BYPASS=false;
-const bypassToggle=qs('#bypassToggle');
-const forceNextBtn=qs('#forceNext');
-const bypassStatus=qs('#bypassStatus');
-
-function applyBypassEffects(){
-  const next2=qs('#next2');
-  if(next2){ next2.disabled=false; next2.ariaDisabled='false'; next2.title=''; }
-  try{ if(typeof watched!=='undefined') watched=true; }catch(e){}
+const valRadio = n => { const e = $(`input[name='${n}']:checked`); return e ? e.value : ""; };
+const valChecks = n => $$(`input[name='${n}']:checked`).map(x=>x.value);
+function clearWarns(scope=document){
+  $$("tr.warn", scope).forEach(tr=>tr.classList.remove("warn"));
+  $$("fieldset.warn", scope).forEach(fs=>fs.classList.remove("warn"));
 }
-function updateBypassUI(){
-  bypassToggle.textContent=BYPASS?'검증 건너뛰기 ON':'검증 건너뛰기 OFF';
-  bypassToggle.setAttribute('aria-pressed',BYPASS?'true':'false');
-  bypassStatus.textContent=BYPASS?'테스트 모드(검증 무시)':'일반 모드';
-  if(BYPASS) applyBypassEffects();
-}
-bypassToggle?.addEventListener('click',()=>{ BYPASS=!BYPASS; updateBypassUI(); });
-forceNextBtn?.addEventListener('click',()=>{ applyBypassEffects(); setStep(Math.min(cur+1,steps.length-1)); });
-if(new URLSearchParams(location.search).get('test')==='1'){ BYPASS=true; }
-updateBypassUI();
 
-/***********************
- * 1) 진행 제어(검증 포함)
- ***********************/
-const form=qs('#form');
-const validateS1=()=>{
-  if(BYPASS) return true;
-  const sid=qs('#sid');
-  const okID=/^\d{8}$/.test(sid.value.trim());
-  const genderChecked=!!qs('input[name="gender"]:checked');
-  if(!okID){
-    sid.setCustomValidity('학번은 숫자 8자로 정확히 입력해 주세요.');
-    sid.reportValidity();
+/* ===== dynamic tables ===== */
+const likertItems=[
+  "이 광고는 제품의 특성을 왜곡하지 않고 보여준다.",
+  "이 광고는 소비자를 속이려는 의도가 없어 보인다.",
+  "이 광고는 신뢰할 수 있다.",
+  "이 광고의 표현은 자연스럽다.",
+  "이 광고는 인간의 개입이 반영되어 있다.",
+  "이 광고는 기존의 광고들과는 다른 독특한 접근을 보여준다.",
+  "이 광고는 참신한 시각적 표현을 담고 있다.",
+  "이 광고는 예측하기 어려운 요소를 포함하고 있다.",
+  "이 광고는 브랜드와 관련성이 있다.",
+  "이 광고는 브랜드와 잘 어울린다.",
+  "이 광고는 진부하다. <span class='muted small'>(역채점)</span>",
+  "이 광고는 마음에 든다.",
+  "이 광고는 긍정적인 인상을 준다.",
+  "이 광고는 매력적이다.",
+  "이 광고에서 나온 제품을 구매할 가능성이 있다.",
+  "이 광고는 나의 구매 욕구를 자극한다.",
+  "나는 이 제품을 다른 사람에게 추천하고 싶다."
+];
+const groups = ["AUTH","AUTH","AUTH","AUTH","AUTH",
+                "ORIG","ORIG","ORIG","ORIG","ORIG","ORIG",
+                "ATT","ATT","ATT","PI","PI","PI"];
+const counters = { AUTH:0, ORIG:0, ATT:0, PI:0 };
+
+$("#likertBody").innerHTML = likertItems.map((t,i)=>{
+  const g = groups[i];
+  counters[g] += 1;
+  const name = g + counters[g]; // AUTH1..5, ORIG1..6, ATT1..3, PI1..3
+  return `<tr data-name="${name}">
+            <td>${t}</td>
+            ${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}
+          </tr>`;
+}).join("");
+
+const aiLitItems=[
+  "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.",
+  "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
+  "나는 AI가 만든 결과물을 신뢰할 수 있다."
+];
+$("#aiLitBody").innerHTML=aiLitItems.map((t,i)=>`<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="AILIT${i+1}" value="${k+1}"></td>`).join("")}</tr>`).join("");
+
+function requiredLikertNames(){
+  const req=[];
+  for (let i=1;i<=counters.AUTH;i++) req.push(`AUTH${i}`);
+  for (let i=1;i<=counters.ORIG;i++) req.push(`ORIG${i}`);
+  for (let i=1;i<=counters.ATT;i++)  req.push(`ATT${i}`);
+  for (let i=1;i<=counters.PI;i++)   req.push(`PI${i}`);
+  return req;
+}
+
+/* ===== nav + validation ===== */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-next],[data-prev],[data-force]");
+  if(!b) return; e.preventDefault();
+
+  if(b.hasAttribute("data-prev")) return goTo(Math.max(cur-1,0));
+  if(b.hasAttribute("data-force")) return goTo(Math.min(cur+1,steps.length-1));
+
+  const target=+b.dataset.next;
+
+  // 섹션별 부분 유효성
+  if(target===1 && !validateS1()) return;         // 섹션1 -> 섹션2
+  if(target===3 && !validateSec3()) return;       // 섹션3 -> 섹션4
+  if(b.id==="next2" && b.disabled) return;        // 영상 미시청
+
+  goTo(Math.min(target,steps.length-1));
+});
+
+function validateS1(){
+  const idOk=/^\d{8}$/.test($("#sid").value.trim());
+  const genderOk=!!$("input[name='gender']:checked");
+  if(!idOk){ $("#sid").setCustomValidity("학번은 숫자 8자로 정확히 입력해 주세요."); $("#sid").reportValidity(); return false; }
+  $("#sid").setCustomValidity("");
+  if(!genderOk){ alert("성별을 선택해 주세요."); return false; }
+  return true;
+}
+
+function validateSec3(){
+  clearWarns(document);
+  let ok=true;
+
+  // 1) 조작점검(manip1)
+  if(!valRadio("manip1")){
+    const fs1 = $$("fieldset").find(fs => fs.querySelector("input[name='manip1']"));
+    fs1 && fs1.classList.add("warn");
+    ok=false;
+  }
+
+  // 2) 리커트 전 항목
+  requiredLikertNames().forEach(n=>{
+    if(!valRadio(n)){
+      const tr = $(`tr[data-name='${n}']`);
+      tr && tr.classList.add("warn");
+      ok=false;
+    }
+  });
+
+  if(!ok){
+    const first = document.querySelector("tr.warn, fieldset.warn");
+    first?.scrollIntoView({behavior:"smooth", block:"center"});
+    alert("섹션 3의 미응답 항목을 완료해 주세요.");
+  }
+  return ok;
+}
+
+/* ===== stimuli & video gate ===== */
+const stimuli=[
+  {file:"A_H.mp4",code:"A_H",label:"⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다."},
+  {file:"A_L.mp4",code:"A_L",label:"⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다."},
+  {file:"B_H.mp4",code:"B_H",label:"⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다."},
+  {file:"B_L.mp4",code:"B_L",label:"⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다."},
+  {file:"C_H.mp4",code:"C_H",label:"⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다."},
+  {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다."}
+];
+const pick=new URLSearchParams(location.search).get("pick");
+const chosen=stimuli.find(s=>s.code===pick)||stimuli[Math.floor(Math.random()*stimuli.length)];
+$("#adSrc").src=chosen.file; $("#adVideo").load(); $("#aiNotice").textContent=chosen.label; $("#chosenInfo").textContent=`선정된 자극: ${chosen.code} (파일: ${chosen.file})`;
+
+const next2=$("#next2"); let watched=false;
+$("#adVideo").addEventListener("timeupdate",e=>{
+  const v=e.target;if(!v.duration) return;
+  if(v.currentTime/v.duration>=.95){watched=true;next2.disabled=false;next2.title="";}
+});
+$("#adVideo").addEventListener("ended",()=>{watched=true;next2.disabled=false;next2.title="";});
+
+/* ===== slider visuals ===== */
+const range=$("#involve"), bubble=$("#valBubble");
+function updateSlider(){
+  const min=+range.min, max=+range.max, val=+range.value, pct=(val-min)/(max-min);
+  bubble.textContent=val;
+  range.style.setProperty("--pct",(pct*100)+"%");
+  const w=range.offsetWidth, x=w*pct;
+  bubble.style.left=x+"px";
+}
+["input","change"].forEach(ev=>range.addEventListener(ev,updateSlider));
+addEventListener("resize",updateSlider,{passive:true});
+
+/* 앵커 버튼 */
+$$(".anchor").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const v=+btn.dataset.anchor;
+    range.value=String(v);
+    range.dispatchEvent(new Event("input",{bubbles:true}));
+    range.dispatchEvent(new Event("change",{bubbles:true}));
+    range.focus({preventScroll:true});
+  });
+});
+
+/* ===== svc block toggle ===== */
+function toggleSvc(){
+  const v=$("input[name='AIUSE']:checked");
+  const use1 = !!(v && v.value==="1");
+  $("#svcBlock").hidden = !v || use1 ? true : false;
+  if(use1){ $$("input[name='AIsvc']:checked").forEach(c=>c.checked=false); }
+}
+$$("input[name='AIUSE']").forEach(r=>r.addEventListener("change",toggleSvc));
+
+/* ===== Submit to Backend ===== */
+function uuid(){ // RFC4122-ish simple
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+    const r=crypto.getRandomValues(new Uint8Array(1))[0]&15;
+    const v=c==='x'?r:(r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+const SESSION_ID = sessionStorage.getItem("sess_id") || (sessionStorage.setItem("sess_id", uuid()), sessionStorage.getItem("sess_id"));
+
+function getPayload(){
+  const AUTH = Object.fromEntries(Array.from({length:counters.AUTH},(_,i)=>[`AUTH${i+1}`, valRadio(`AUTH${i+1}`)]));
+  const ORIG = Object.fromEntries(Array.from({length:counters.ORIG},(_,i)=>[`ORIG${i+1}`, valRadio(`ORIG${i+1}`)]));
+  const ATT  = Object.fromEntries(Array.from({length:counters.ATT}, (_,i)=>[`ATT${i+1}`,  valRadio(`ATT${i+1}`)]));
+  const PI   = Object.fromEntries(Array.from({length:counters.PI},  (_,i)=>[`PI${i+1}`,   valRadio(`PI${i+1}`)]));
+
+  return {
+    meta:{
+      session_id: SESSION_ID,
+      user_agent: navigator.userAgent,
+      client_time_iso: new Date().toISOString(),
+      picked_code: chosen.code,
+      picked_file: chosen.file,
+      picked_label: chosen.label,
+      video_watched_95: watched
+    },
+    section1:{
+      student_id: $("#sid").value.trim(),
+      gender: valRadio("gender"),
+      age: $("#age").value
+    },
+    section3:{
+      manipulation_seen: valRadio("manip1"),
+      involvement_0to10: +range.value, // 슬라이더 값
+      AUTH, ORIG, ATT, PI
+    },
+    section4:{
+      AILIT:{
+        AILIT1: valRadio("AILIT1"),
+        AILIT2: valRadio("AILIT2"),
+        AILIT3: valRadio("AILIT3"),
+      },
+      AIUSE: valRadio("AIUSE"),
+      AIsvc: valChecks("AIsvc") // AIUSE=1이면 빈 배열 가능
+    }
+  };
+}
+
+function showSubmitStatus(msg, ok=false){
+  const s=$("#submitStatus");
+  s.textContent=msg;
+  s.className = ok ? "ok" : "err";
+}
+
+function disableSubmit(disabled){
+  $("#submitBtn").disabled = disabled;
+}
+
+/* ===== final validation ===== */
+function validateAllRequired(){
+  clearWarns(document);
+  const missing = [];
+
+  if(!valRadio("manip1")){
+    const fs1 = $$("fieldset").find(fs => fs.querySelector("input[name='manip1']"));
+    fs1 && fs1.classList.add("warn");
+    missing.push({el:fs1});
+  }
+
+  requiredLikertNames().forEach(n=>{
+    if(!valRadio(n)){
+      const tr = $(`tr[data-name='${n}']`);
+      tr && tr.classList.add("warn");
+      missing.push({el:tr});
+    }
+  });
+
+  ["AILIT1","AILIT2","AILIT3"].forEach((n,i)=>{
+    if(!valRadio(n)){
+      const tr = $(`#aiLitBody tr:nth-child(${i+1})`);
+      tr && tr.classList.add("warn");
+      missing.push({el:tr});
+    }
+  });
+
+  if(!valRadio("AIUSE")){
+    const fs2 = $$("fieldset").find(fs => fs.querySelector("input[name='AIUSE']"));
+    fs2 && fs2.classList.add("warn");
+    missing.push({el:fs2});
+  }
+
+  if(missing.length){
+    const first = missing[0].el;
+    first?.scrollIntoView?.({behavior:"smooth", block:"center"});
+    alert(`미응답 문항이 ${missing.length}개 있습니다. 붉게 표시된 항목을 채워주세요.`);
     return false;
   }
-  sid.setCustomValidity('');
-  if(!genderChecked){ alert('성별을 선택해 주세요.'); return false; }
   return true;
-};
-document.addEventListener('click',(e)=>{
-  const btn=e.target.closest('[data-next],[data-prev]'); if(!btn) return;
+}
+
+/* ===== robust POST with timeout & retry ===== */
+async function postJSON(url, data, {timeoutMs=10000, retries=2}={}){
+  const body = JSON.stringify(data);
+  for(let attempt=0; attempt<=retries; attempt++){
+    const ac = new AbortController();
+    const t  = setTimeout(()=>ac.abort(), timeoutMs);
+    try{
+      const res = await fetch(url, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body,
+        mode:"cors",
+        credentials:"omit",
+        cache:"no-store",
+        signal: ac.signal
+      });
+      clearTimeout(t);
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      // 응답이 JSON이라고 가정
+      const json = await res.json().catch(()=>({ok:true}));
+      return { ok:true, json };
+    }catch(err){
+      clearTimeout(t);
+      if(attempt===retries) return { ok:false, error:String(err) };
+      await new Promise(r=>setTimeout(r, 400*(attempt+1))); // 지수 백오프
+    }
+  }
+}
+
+/* ===== submit ===== */
+let submitted = false;
+$("#submitBtn")?.addEventListener("click",async e=>{
   e.preventDefault();
-  if(btn.hasAttribute('data-prev')){ setStep(Math.max(cur-1,0)); return; }
-  const target=parseInt(btn.getAttribute('data-next'),10);
-  if(target===1 && !validateS1()) return;         // sec1 -> sec2
-  if(btn.id==='next2' && btn.disabled && !BYPASS) return; // 영상 gating
-  setStep(Math.min(target,steps.length-1));
+  if(submitted){ return; } // 중복 제출 방지
+  if(!validateAllRequired()) return;
+
+  submitted = true;
+  disableSubmit(true);
+  showSubmitStatus("제출 중입니다… 잠시만 기다려 주세요.");
+
+  const payload = getPayload();
+  const result = await postJSON(BACKEND_URL, payload);
+
+  if(result.ok){
+    const serverText = result.json?.message || result.json?.status || "서버 저장 성공";
+    showSubmitStatus("제출이 완료되었습니다.", true);
+
+    steps.forEach(id=>$("#"+id).hidden=true);
+    $("#done").hidden=false; bar.style.width="100%"; stepLabel.textContent="완료";
+    $("#serverMsg").textContent = `서버 응답: ${serverText}${result.json?.id ? " (id: "+result.json.id+")" : ""}`;
+    $("#dump").textContent = JSON.stringify(payload,null,2);
+    scrollTo({top:0,behavior:"smooth"});
+  }else{
+    showSubmitStatus("서버 전송에 실패했습니다. 네트워크를 확인 후 다시 시도해 주세요.", false);
+    alert("전송 실패: " + (result.error||"알 수 없는 오류"));
+    disableSubmit(false);
+    submitted = false; // 실패 시 다시 제출 가능
+  }
 });
 
-/***********************
- * 2) 자극 로딩 (쿼리 pick 지원)
- ***********************/
-const stimuli=[
-  {file:'A_H.mp4', code:'A_H', label:'⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다.'},
-  {file:'A_L.mp4', code:'A_L', label:'⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다.'},
-  {file:'B_H.mp4', code:'B_H', label:'⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다.'},
-  {file:'B_L.mp4', code:'B_L', label:'⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다.'},
-  {file:'C_H.mp4', code:'C_H', label:'⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다.'},
-  {file:'C_L.mp4', code:'C_L', label:'⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다.'}
-];
-const urlParams=new URLSearchParams(location.search); const prePick=urlParams.get('pick');
-const chosen= stimuli.find(s=>s.code===prePick) || stimuli[Math.floor(Math.random()*stimuli.length)];
-const adSrc=qs('#adSrc'); const adVideo=qs('#adVideo'); const aiNotice=qs('#aiNotice'); const chosenInfo=qs('#chosenInfo');
-const mountVideo=()=>{ adSrc.src=chosen.file; adVideo.load(); aiNotice.textContent=chosen.label; chosenInfo.textContent=`선정된 자극: ${chosen.code} (파일: ${chosen.file})`; };
-mountVideo();
-
-// 영상 95% 이상 시청 gating
-const next2=qs('#next2');
-let watched=false;
-adVideo.addEventListener('timeupdate',()=>{ if(!adVideo.duration) return; const pct=adVideo.currentTime/adVideo.duration; if(pct>=0.95){ watched=true; next2.disabled=false; next2.ariaDisabled='false'; next2.title=''; }});
-adVideo.addEventListener('ended',()=>{ watched=true; next2.disabled=false; next2.ariaDisabled='false'; next2.title=''; });
-if(BYPASS) applyBypassEffects();
-
-/***********************
- * 3) Likert 항목 생성
- ***********************/
-const likertItems=[
-  {name:'AUTH1', txt:'이 광고는 제품의 특성을 왜곡하지 않고 보여준다.'},
-  {name:'AUTH2', txt:'이 광고는 소비자를 속이려는 의도가 없어 보인다.'},
-  {name:'AUTH3', txt:'이 광고는 신뢰할 수 있다.'},
-  {name:'AUTH4', txt:'이 광고의 표현은 자연스럽다.'},
-  {name:'AUTH5', txt:'이 광고는 인간의 개입이 반영되어 있다.'},
-  {name:'ORIG1', txt:'이 광고는 기존의 광고들과는 다른 독특한 접근을 보여준다.'},
-  {name:'ORIG2', txt:'이 광고는 참신한 시각적 표현을 담고 있다.'},
-  {name:'ORIG3', txt:'이 광고는 예측하기 어려운 요소를 포함하고 있다.'},
-  {name:'ORIG4', txt:'이 광고는 브랜드와 관련성이 있다.'},
-  {name:'ORIG5', txt:'이 광고는 브랜드와 잘 어울린다.'},
-  {name:'ORIG6', txt:'이 광고는 진부하다.', rev:true},
-  {name:'ATT1', txt:'이 광고는 마음에 든다.'},
-  {name:'ATT2', txt:'이 광고는 긍정적인 인상을 준다.'},
-  {name:'ATT3', txt:'이 광고는 매력적이다.'},
-  {name:'PI1', txt:'이 광고에서 나온 제품을 구매할 가능성이 있다.'},
-  {name:'PI2', txt:'이 광고는 나의 구매 욕구를 자극한다.'},
-  {name:'PI3', txt:'나는 이 제품을 다른 사람에게 추천하고 싶다.'}
-];
-const makeRow=(name,txt)=>`<tr><td>${txt}${name==='ORIG6'? ' <span class="muted small">(역채점)</span>':''}</td>${Array.from({length:5},(_,i)=>`<td><input type="radio" name="${name}" value="${i+1}"></td>`).join('')}</tr>`;
-qs('#likertBody').innerHTML=likertItems.map(x=>makeRow(x.name,x.txt)).join('');
-
-// AI 리터러시 항목
-const aiLitItems=[
-  {name:'AILIT1', txt:'나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.'},
-  {name:'AILIT2', txt:'나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.'},
-  {name:'AILIT3', txt:'나는 AI가 만든 결과물을 신뢰할 수 있다.'}
-];
-qs('#aiLitBody').innerHTML=aiLitItems.map(x=>makeRow(x.name,x.txt)).join('');
-
-/***********************
- * 4) 슬라이더 표시/접근성
- ***********************/
-const range=qs('#involve'); const bubble=qs('#valBubble');
-function setRangeVisual(v){
-  const min=parseFloat(range.min), max=parseFloat(range.max), val=parseFloat(v);
-  const pct=(val - min)/(max - min); // 0~1
-  bubble.textContent=Math.round(val);
-  range.style.setProperty('--pct',(pct*100)+'%'); // 진행색
-
-  // px 기반 + 좌우 클램프 (보이는 상태에서만 정확)
-  const railW = range.offsetWidth || 0;
-  const halfBubble = bubble.offsetWidth / 2;
-  const x = Math.max(halfBubble, Math.min(Math.max(halfBubble, railW - halfBubble), railW * pct));
-  bubble.style.left = x + 'px';
-  bubble.style.transform='translateX(-50%)';
-}
-['input','change'].forEach(ev=>range.addEventListener(ev,()=>setRangeVisual(range.value)));
-window.addEventListener('resize',()=>setRangeVisual(range.value), {passive:true});
-// 초깃값: 섹션3이 표시될 때 setStep()에서 2번의 rAF로 재동기화
-
-qsa('[data-jump]').forEach(b=>b.addEventListener('click',()=>{ range.value=b.dataset.jump; setRangeVisual(range.value); }));
-
-/***********************
- * 5) AI 사용경험에 따른 서비스 블록 표시
- ***********************/
-function setSvcVisible(visible){
-  const el=qs('#svcBlock'); if(!el) return;
-  if(visible){ el.hidden=false; el.style.display=''; el.setAttribute('aria-hidden','false'); }
-  else{ el.hidden=true; el.style.display='none'; el.setAttribute('aria-hidden','true'); }
-}
-function updateSvcBlock(){
-  const selected=qs("input[name='AIUSE']:checked");
-  const shouldShow=!!(selected && selected.value!=='1'); // 전혀 없다(1)면 숨김
-  setSvcVisible(shouldShow);
-}
-qsa("input[name='AIUSE']").forEach(r=>r.addEventListener('change',updateSvcBlock));
-document.addEventListener('input',(e)=>{ if(e.target && e.target.name==='AIUSE') updateSvcBlock(); });
-updateSvcBlock();
-
-/***********************
- * 6) 제출(점검용): 직렬화
- ***********************/
-const getRadio=(name)=>{const el=qs(`input[name='${name}']:checked`); return el?el.value:''};
-const getChecks=(name)=>qsa(`input[name='${name}']:checked`).map(x=>x.value);
-
-qs('#submitBtn').addEventListener('click',e=>{
-  e.preventDefault();
-  if(!BYPASS && !getRadio('manip1')){ alert('문항 1(안내 문구)을 선택해 주세요.'); return; }
-
-  const payload={
-    meta:{ picked_code:chosen.code, picked_file:chosen.file, picked_label:chosen.label, ts:new Date().toISOString(), video_watched_95:watched||BYPASS },
-    section1:{ student_id:qs('#sid').value.trim(), gender:getRadio('gender'), age:qs('#age').value },
-    section3:{
-      manipulation_seen:getRadio('manip1'), involvement_0to10:parseFloat(range.value),
-      AUTH:{AUTH1:getRadio('AUTH1'),AUTH2:getRadio('AUTH2'),AUTH3:getRadio('AUTH3'),AUTH4:getRadio('AUTH4'),AUTH5:getRadio('AUTH5')},
-      ORIG:{ORIG1:getRadio('ORIG1'),ORIG2:getRadio('ORIG2'),ORIG3:getRadio('ORIG3'),ORIG4:getRadio('ORIG4'),ORIG5:getRadio('ORIG5'),ORIG6:getRadio('ORIG6')},
-      ATT:{ATT1:getRadio('ATT1'),ATT2:getRadio('ATT2'),ATT3:getRadio('ATT3')},
-      PI:{PI1:getRadio('PI1'),PI2:getRadio('PI2'),PI3:getRadio('PI3')}
-    },
-    section4:{ AILIT:{AILIT1:getRadio('AILIT1'),AILIT2:getRadio('AILIT2'),AILIT3:getRadio('AILIT3')}, AIUSE:getRadio('AIUSE'), AIsvc:getChecks('AIsvc') }
-  };
-
-  steps.forEach(id=>qs('#'+id).hidden=true);
-  qs('#done').hidden=false; bar.style.width='100%'; stepLabel.textContent='완료';
-  qs('#dump').textContent=JSON.stringify(payload,null,2);
-  window.scrollTo({top:0,behavior:'smooth'});
-});
-
-/***********************
- * 7) 초기 진입
- ***********************/
-setStep(0);
+/* ===== init ===== */
+goTo(0);
+const age=$("#age"); age?.addEventListener("focus",()=>{if(!age.value) age.value=20},{once:true});
+updateSlider();
 </script>
 </body>
 </html>

@@ -31,9 +31,24 @@
   .small{font-size:.9rem}
   .pill{display:inline-block;background:#f3f4f6;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.85rem}
   .video-wrap{display:grid;gap:10px}
-  .slider-wrap{display:grid;gap:8px}
-  .ticks{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted)}
   .hr{height:1px;background:var(--line);margin:12px 0}
+
+  /* 안내 배너 + 굵은 구분선 (요청 반영) */
+  .section-note{display:flex;gap:12px;align-items:flex-start;background:#f8fafc;border:2px solid #111;border-left-width:8px;border-radius:12px;padding:12px 14px;margin:12px 0}
+  .section-note .note-title{font-weight:800;letter-spacing:.02em;margin-top:2px}
+  .section-note .note-text{line-height:1.55}
+  .thick-sep{height:4px;background:#111;border-radius:2px;margin:12px 0}
+  table.compact th, table.compact td{padding:7px 9px}
+
+  /* 타원 마커 스타일 슬라이더 (요청 반영) */
+  .major-ticks {display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 10px;font-weight:600;text-align:center;}
+  .scale-wrap { position:relative;width:100%; }
+  .scale-track {position:relative;height:20px;border-radius:999px;background:#d1e3ff;box-shadow: inset 0 0 0 2px #6b8bd9;}
+  .scale-fill {position:absolute;left:0;top:0;height:100%;width:50%;background:#3b82f6;border-radius:999px;transition:width .12s ease}
+  .scale-marks {position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:-12px;}
+  .mark {appearance:none;border:none;background:#fff;color:#111;width:42px;height:28px;border-radius:999px;box-shadow:0 0 0 2px #6b8bd9,0 1px 2px rgba(0,0,0,.08);display:grid;place-items:center;font-weight:700;cursor:pointer}
+  .mark.active {box-shadow:0 0 0 2px #1d4ed8,0 0 0 6px rgba(29,78,216,.15)}
+  .sr-only-range{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -96,7 +111,6 @@
   <!-- 섹션 3: 시청 후 경험 평가 -->
   <section id="sec3" class="card" style="display:none">
     <h2 style="margin-top:0">영상 시청 후 경험 평가 (섹션 3)</h2>
-    <p class="muted small">방금 시청한 영상에 대해 느끼신 점을 묻는 질문입니다. 각 문항에는 정답이나 오답이 없으며, 평소에 느끼신 대로 솔직하게 응답해 주시면 됩니다.</p>
 
     <!-- 1. 조작점검 -->
     <div class="row">
@@ -108,28 +122,36 @@
       <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
     </div>
 
-    <!-- 2. 전문가 개입 정도 (0~10 슬라이더 + 빠른클릭 0/5/10) -->
+    <!-- 2. 전문가 개입 정도: 타원 마커 슬라이더 -->
     <div class="row" style="margin-top:12px">
       <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
-      <div class="slider-wrap">
-        <input id="involve" type="range" min="0" max="10" step="1" value="5" />
-        <div class="ticks"><span>0 전혀없음(AI가 완전히 제작)</span><span>5 사람과 AI가 비슷하게 참여</span><span>10 매우 큼(사람이 완전히 제작)</span></div>
-        <div class="btnbar">
-          <button class="btn" data-set="0">0로 설정</button>
-          <button class="btn" data-set="5">5로 설정</button>
-          <button class="btn" data-set="10">10으로 설정</button>
-          <span class="muted">현재값: <span id="involveVal">5</span></span>
-        </div>
+      <div class="major-ticks" aria-hidden="true">
+        <span>0 전혀없음<br><span class="small muted">(AI가 완전히 제작)</span></span>
+        <span>5 사람과 AI가 비슷하게 참여</span>
+        <span>10 매우 큼<br><span class="small muted">(사람이 완전히 제작)</span></span>
+      </div>
+      <div class="scale-wrap" role="group" aria-label="전문가 개입 정도 0에서 10까지">
+        <div class="scale-track"><div id="scaleFill" class="scale-fill"></div></div>
+        <div id="scaleMarks" class="scale-marks"></div>
+        <input id="involve" class="sr-only-range" type="range" min="0" max="10" step="1" value="5" aria-hidden="true"/>
+      </div>
+      <div class="btnbar">
+        <button class="btn" data-set="0">0로 설정</button>
+        <button class="btn" data-set="5">5로 설정</button>
+        <button class="btn" data-set="10">10으로 설정</button>
+        <span class="muted">현재값: <span id="involveVal">5</span></span>
       </div>
     </div>
 
-    <!-- 3~6 묶음: 안내문 1개만 표기, 데이터는 변수별로 구분 -->
-    <div class="hr"></div>
-    <p><strong>아래 문항들은 방금 시청한 영상과 제품에 대해 느끼신 점을 묻습니다.</strong> 정답이나 오답은 없으며, 평소에 느끼신 대로 응답해 주시면 됩니다.</p>
+    <!-- 안내 배너 -->
+    <div class="section-note" role="note" aria-label="문항 안내">
+      <div class="note-title">안내</div>
+      <div class="note-text">아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 평소에 느끼신 대로 응답해 주시면 됩니다.</div>
+    </div>
 
     <!-- 3. 진정성(5문항) -->
     <div class="grid" style="margin-top:8px">
-      <table>
+      <table class="compact">
         <thead>
           <tr>
             <th style="text-align:left">문항</th>
@@ -185,14 +207,15 @@
       </table>
     </div>
 
+    <div class="thick-sep" aria-hidden="true"></div>
+
     <!-- 4. 독창성(6문항) -->
-    <div class="grid" style="margin-top:16px">
-      <table>
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
         <thead>
-        <tr>
-          <th style="text-align:left">문항</th>
-          <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
-        </tr>
+          <tr>
+            <th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+          </tr>
         </thead>
         <tbody id="likert-orig">
           <tr>
@@ -247,9 +270,11 @@
       </table>
     </div>
 
+    <div class="thick-sep" aria-hidden="true"></div>
+
     <!-- 5. 광고 태도(3문항) -->
-    <div class="grid" style="margin-top:16px">
-      <table>
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
         <thead><tr><th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
         <tbody id="likert-att">
           <tr>
@@ -280,9 +305,11 @@
       </table>
     </div>
 
+    <div class="thick-sep" aria-hidden="true"></div>
+
     <!-- 6. 구매의도(3문항) -->
-    <div class="grid" style="margin-top:16px">
-      <table>
+    <div class="grid" style="margin-top:8px">
+      <table class="compact">
         <thead><tr><th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
         <tbody id="likert-pi">
           <tr>
@@ -447,14 +474,33 @@
   mountVideo();
 
   // ---------------------
-  // 2) 슬라이더 0/5/10 퀵 버튼
+  // 2) 슬라이더(타원 마커) + 퀵 버튼
   // ---------------------
   const involve = document.getElementById("involve");
   const involveVal = document.getElementById("involveVal");
-  involve.addEventListener("input",()=>involveVal.textContent = involve.value);
+  const scaleFill = document.getElementById("scaleFill");
+  const marksWrap = document.getElementById("scaleMarks");
+
+  // 0~10 버튼 생성
+  for(let i=0;i<=10;i++){
+    const b=document.createElement("button");
+    b.type="button"; b.className="mark"; b.dataset.val=i; b.textContent=i;
+    b.addEventListener("click",()=> setInvolve(i));
+    marksWrap.appendChild(b);
+  }
+
+  function setInvolve(val){
+    val = Math.max(0, Math.min(10, Number(val)));
+    involve.value = val;
+    involveVal.textContent = String(val);
+    scaleFill.style.width = (val/10*100) + "%";
+    marksWrap.querySelectorAll('.mark').forEach(m=> m.classList.toggle('active', Number(m.dataset.val)===val));
+  }
+
   document.querySelectorAll("[data-set]").forEach(b=>{
-    b.addEventListener("click",()=>{ involve.value = b.dataset.set; involve.dispatchEvent(new Event("input")); });
+    b.addEventListener("click",()=> setInvolve(b.dataset.set));
   });
+  setInvolve(involve.value);
 
   // ---------------------
   // 3) AI 사용경험 수준에 따라 서비스 블록 표시
@@ -462,7 +508,6 @@
   const svcBlock = document.getElementById("svcBlock");
   document.querySelectorAll("input[name='AIUSE']").forEach(r=>{
     r.addEventListener("change",()=>{
-      // 1(전혀 없다)이면 숨김, 그 외 표시
       svcBlock.style.display = (r.value==="1") ? "none" : "";
     });
   });
@@ -499,7 +544,7 @@
         },
         ORIG: {
           ORIG1:getRadio("ORIG1"), ORIG2:getRadio("ORIG2"), ORIG3:getRadio("ORIG3"),
-          ORIG4:getRadio("ORIG4"), ORIG5:getRadio("ORIG5"), ORIG6:getRadio("ORIG6") // 역채점
+          ORIG4:getRadio("ORIG4"), ORIG5:getRadio("ORIG5"), ORIG6:getRadio("ORIG6")
         },
         ATT: { ATT1:getRadio("ATT1"), ATT2:getRadio("ATT2"), ATT3:getRadio("ATT3") },
         PI:  { PI1:getRadio("PI1"), PI2:getRadio("PI2"), PI3:getRadio("PI3") }
@@ -521,13 +566,6 @@
     document.getElementById("dump").textContent = JSON.stringify(payload, null, 2);
     window.scrollTo({top:0,behavior:"smooth"});
   });
-
-  // ---------------------
-  // (참고) 실제 배포시 검증/시청 강제
-  // - 섹션2에서 video.onended 이벤트로 [다음] 활성화
-  // - 필수 문항 체크 후 다음 버튼 활성화 등
-  // 현재 파일은 점검용으로 항상 이동 가능하도록 설정됨
-  // ---------------------
 </script>
 </body>
 </html>

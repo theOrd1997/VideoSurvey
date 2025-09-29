@@ -108,20 +108,45 @@
       <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
     </div>
 
-    <!-- 2. 전문가 개입 정도 (0~10 슬라이더 + 빠른클릭 0/5/10) -->
-    <div class="row" style="margin-top:12px">
-      <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
-      <div class="slider-wrap">
-        <input id="involve" type="range" min="0" max="10" step="1" value="5" />
-        <div class="ticks"><span>0 전혀없음(AI가 완전히 제작)</span><span>5 사람과 AI가 비슷하게 참여</span><span>10 매우 큼(사람이 완전히 제작)</span></div>
-        <div class="btnbar">
-          <button class="btn" data-set="0">0로 설정</button>
-          <button class="btn" data-set="5">5로 설정</button>
-          <button class="btn" data-set="10">10으로 설정</button>
-          <span class="muted">현재값: <span id="involveVal">5</span></span>
-        </div>
-      </div>
-    </div>
+   <!-- 2. 전문가 개입 정도 (개선된 슬라이더 UI) -->
+<div class="row" style="margin-top:12px">
+  <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
+
+  <!-- 큰 기준 라벨 -->
+  <div class="ticks major-ticks">
+    <span>0 전혀없음<br><span class="small muted">(AI가 완전히 제작)</span></span>
+    <span>5 사람과 AI가 비슷하게 참여</span>
+    <span>10 매우 큼<br><span class="small muted">(사람이 완전히 제작)</span></span>
+  </div>
+
+  <!-- 값 버블 + 눈금 슬라이더 -->
+  <div class="range-wrap">
+    <input id="involve" type="range" min="0" max="10" step="1" value="5" list="minorTicks"/>
+    <output id="bubble" for="involve">5</output>
+    <datalist id="minorTicks">
+      <option value="0"></option>
+      <option value="1"></option>
+      <option value="2"></option>
+      <option value="3"></option>
+      <option value="4"></option>
+      <option value="5"></option>
+      <option value="6"></option>
+      <option value="7"></option>
+      <option value="8"></option>
+      <option value="9"></option>
+      <option value="10"></option>
+    </datalist>
+  </div>
+
+  <!-- 퀵 버튼 -->
+  <div class="btnbar">
+    <button class="btn" data-set="0">0로 설정</button>
+    <button class="btn" data-set="5">5로 설정</button>
+    <button class="btn" data-set="10">10으로 설정</button>
+    <span class="muted">현재값: <span id="involveVal">5</span></span>
+  </div>
+</div>
+
 
     <!-- 3~6 묶음: 안내문 1개만 표기, 데이터는 변수별로 구분 -->
     <div class="hr"></div>
@@ -447,14 +472,32 @@
   mountVideo();
 
   // ---------------------
-  // 2) 슬라이더 0/5/10 퀵 버튼
-  // ---------------------
-  const involve = document.getElementById("involve");
-  const involveVal = document.getElementById("involveVal");
-  involve.addEventListener("input",()=>involveVal.textContent = involve.value);
-  document.querySelectorAll("[data-set]").forEach(b=>{
-    b.addEventListener("click",()=>{ involve.value = b.dataset.set; involve.dispatchEvent(new Event("input")); });
+// ------- 슬라이더 값 버블 위치/값 반영 -------
+const involve = document.getElementById("involve");
+const involveVal = document.getElementById("involveVal");
+const bubble = document.getElementById("bubble");
+
+function setBubble(range, bubble){
+  const val = +range.value;
+  const min = +range.min || 0;
+  const max = +range.max || 100;
+  const pct = (val - min) * 100 / (max - min);
+
+  bubble.textContent = val;
+  involveVal.textContent = val;
+  bubble.style.left = `calc(${pct}% + (${8 - pct*0.15}px))`;
+}
+
+involve.addEventListener("input", ()=> setBubble(involve, bubble));
+setBubble(involve, bubble);
+
+// 0/5/10 퀵 버튼
+document.querySelectorAll("[data-set]").forEach(b=>{
+  b.addEventListener("click",()=>{
+    involve.value = b.dataset.set;
+    involve.dispatchEvent(new Event("input"));
   });
+});
 
   // ---------------------
   // 3) AI 사용경험 수준에 따라 서비스 블록 표시

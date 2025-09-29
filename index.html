@@ -3,398 +3,253 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>광고 영상 시청 시 소비자 경험 설문(점검용)</title>
+<title>광고 영상 시청 시 소비자 경험 설문(점검용·실험 전체)</title>
 <style>
-  :root { --gap: 16px; --fg:#222; --muted:#666; --line:#e5e7eb; --brand:#f59e0b; }
-  html,body{margin:0;padding:0;background:#fff;color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
-  .wrap{max-width:920px;margin:24px auto;padding:0 16px}
-  h1{font-size:1.4rem;margin:0 0 6px}
-  .card{border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.04);margin-top:var(--gap)}
-  .muted{color:var(--muted);font-size:.95rem}
-  .row{display:grid;gap:10px}
-  .row2{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-  .progress{height:6px;background:#f3f4f6;border-radius:999px;overflow:hidden;margin:8px 0 0}
-  .progress > div{height:100%;background:var(--brand);width:0%}
+:root{
+  --gap:20px; --fg:#222; --muted:#667085; --line:#e5e7eb; --bg:#f7f8fb;
+  --brand:#3b82f6; --brand-900:#1d4ed8; --brand-50:#eff6ff; --radius:12px;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+.wrap{max-width:920px;margin:40px auto;padding:0 20px}
 
-  .btn{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
-  .btn.primary{background:var(--brand);border-color:var(--brand);color:#111;font-weight:600}
-  .btn:disabled{opacity:.5;cursor:not-allowed}
-  .btnbar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+/* hidden 보강: 환경 충돌 방지 */
+[hidden]{display:none!important}
 
-  .grid{overflow-x:auto}
-  table{border-collapse:collapse;width:100%;min-width:680px}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}
-  th{background:#fafafa;font-weight:600}
+/* 공통 UI */
+.h1{font-size:1.6rem;margin:0 0 6px;font-weight:700}
+.h2{font-size:1.25rem;margin:0 0 8px;font-weight:700}
+.card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.05);margin-top:var(--gap)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.hr{height:1px;background:var(--line);margin:18px 0}
+.pill{display:inline-block;background:var(--brand-50);border:1px solid var(--brand);color:var(--brand-900);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:700}
 
-  .notice{padding:10px 12px;border:1px solid #fde68a;background:#fef3c7;color:#92400e;border-radius:10px}
-  .brand{padding:10px 12px;border:1px dashed var(--line);border-radius:10px;background:#fcfcfc}
-  .small{font-size:.9rem}
-  .pill{display:inline-block;background:#f3f4f6;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.85rem}
-  .video-wrap{display:grid;gap:10px}
-  .hr{height:1px;background:var(--line);margin:12px 0}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:var(--brand);width:0%;transition:width .3s ease}
 
-  /* 안내 배너 + 굵은 구분선 (요청 반영) */
-  .section-note{display:flex;gap:12px;align-items:flex-start;background:#f8fafc;border:2px solid #111;border-left-width:8px;border-radius:12px;padding:12px 14px;margin:12px 0}
-  .section-note .note-title{font-weight:800;letter-spacing:.02em;margin-top:2px}
-  .section-note .note-text{line-height:1.55}
-  .thick-sep{height:4px;background:#111;border-radius:2px;margin:12px 0}
-  table.compact th, table.compact td{padding:7px 9px}
+.btn{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:600;transition:transform .06s ease,box-shadow .2s,border-color .2s;text-decoration:none}
+.btn:hover{box-shadow:0 1px 4px rgba(0,0,0,.08);border-color:#d0d5dd}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btnbar{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-900);border-color:var(--brand-900)}
+.notice{padding:12px;border:1px solid #fde68a;background:#fffbe0;color:#92400e;border-radius:10px;font-size:.95rem}
+.brand{padding:12px;border:1px dashed var(--brand);border-radius:10px;background:var(--brand-50)}
 
-  /* 타원 마커 스타일 슬라이더 (요청 반영) */
-  .major-ticks {display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 10px;font-weight:600;text-align:center;}
-  .scale-wrap { position:relative;width:100%; }
-  .scale-track {position:relative;height:20px;border-radius:999px;background:#d1e3ff;box-shadow: inset 0 0 0 2px #6b8bd9;}
-  .scale-fill {position:absolute;left:0;top:0;height:100%;width:50%;background:#3b82f6;border-radius:999px;transition:width .12s ease}
-  .scale-marks {position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:-12px;}
-  .mark {appearance:none;border:none;background:#fff;color:#111;width:42px;height:28px;border-radius:999px;box-shadow:0 0 0 2px #6b8bd9,0 1px 2px rgba(0,0,0,.08);display:grid;place-items:center;font-weight:700;cursor:pointer}
-  .mark.active {box-shadow:0 0 0 2px #1d4ed8,0 0 0 6px rgba(29,78,216,.15)}
-  .sr-only-range{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.section-note{display:flex;gap:12px;align-items:flex-start;background:var(--brand-50);border:1px solid var(--brand);border-left:8px solid var(--brand);border-radius:var(--radius);padding:14px;margin:var(--gap) 0}
+.section-note .title{font-weight:800;letter-spacing:.01em}
+
+/* 테이블 */
+.grid{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:580px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:center}
+th{background:#f9fafb;font-weight:700;border-top:2px solid var(--line)}
+.wide-likert tbody tr:nth-child(even){background:#fcfcfc}
+.wide-likert tbody tr:nth-child(odd){background:#fff}
+.wide-likert th:first-child,.wide-likert td:first-child{text-align:left;width:60%;padding-left:18px}
+
+/* 폼 */
+input[type="text"],input[type="number"]{padding:10px;border:1px solid var(--line);border-radius:8px;transition:border-color .2s,box-shadow .2s}
+input[type="text"]:focus,input[type="number"]:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px var(--brand-50)}
+input[type="radio"],input[type="checkbox"]{transform:scale(1.12);margin-right:6px;vertical-align:middle}
+
+/* 슬라이더 & 버블 & 줄눈 */
+.scale{position:relative;display:block; padding-top:44px;} /* ← 여백 추가 */
+.range{appearance:none;width:100%;height:12px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,var(--brand) 0,var(--brand) var(--pct,50%),#e5e7eb var(--pct,50%),#e5e7eb 100%) border-box;border:1px solid var(--line);border-radius:999px;margin:0}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--brand);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--brand-900)}
+.range::-moz-range-thumb{width:20px;height:20px;background:var(--brand);border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--brand-900)}
+.value-bubble{position:absolute;top:6px;left:0;transform:translateX(-50%);background:var(--brand-900);color:#fff;padding:3px 8px;border-radius:6px;font-size:.85rem;font-weight:800;white-space:nowrap}
+.value-bubble:after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:var(--brand-900)}
+/* 보조 줄눈(10% 간격) */
+.tickline{position:absolute;left:0;right:0;top:32px;height:10px; /* ← 위치 조정 */
+  background:
+    repeating-linear-gradient(to right,
+      transparent 0, transparent calc(10% - 1px),
+      #d1d5db calc(10% - 1px), #d1d5db 10%
+    );
+  pointer-events:none; opacity:.8; border-radius:999px
+}
+.quick{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
+.quick button{border:none;background:var(--brand-50);color:var(--brand-900);padding:6px 12px;border-radius:8px;font-weight:800;cursor:pointer}
+.quick button:hover{background:var(--brand);color:#fff}
+.ticks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;text-align:center;font-weight:700;font-size:.95rem}
+
+/* 레이아웃 */
+.row{display:grid;gap:14px}
+.row2{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.video-wrap{display:grid;gap:12px}
+
+/* 테스트바 */
+.topbar{
+  position: sticky; top: 0; z-index: 999;
+  display:flex; gap:8px; align-items:center;
+  padding:8px 12px; border-bottom:1px solid var(--line);
+  background:#fffbe0;
+}
+.btn.sm{ padding:6px 10px; font-size:.85rem; border-radius:8px }
 </style>
 </head>
 <body>
+<!-- 테스트 도구 -->
+<div class="topbar small" role="note" aria-live="polite">
+  <span class="muted">테스트 도구:</span>
+  <button type="button" class="btn sm" id="bypassToggle" aria-pressed="false" title="검증(학번/성별/영상95%/필수문항) 건너뛰기 토글">검증 건너뛰기 OFF</button>
+  <button type="button" class="btn sm" id="forceNext" title="현재 단계 검증 없이 다음으로 이동">강제 다음 →</button>
+  <span class="muted" id="bypassStatus" style="margin-left:8px">일반 모드</span>
+</div>
+
 <div class="wrap">
-  <div class="row2">
-    <h1>광고 영상 시청 시 소비자 경험 설문 <span class="pill">점검용</span></h1>
+  <div class="row2" aria-live="polite">
+    <h1 class="h1">광고 영상 시청 시 소비자 경험 설문 <span class="pill">점검용</span></h1>
     <div style="min-width:180px">
       <div class="progress" aria-hidden="true"><div id="bar"></div></div>
-      <div class="muted" id="stepLabel" style="text-align:right;margin-top:6px">1 / 4</div>
+      <div class="muted small" id="stepLabel" style="text-align:right;margin-top:6px">1 / 4</div>
     </div>
   </div>
 
-  <!-- 섹션 1: 안내 및 기본정보 -->
-  <section id="sec1" class="card">
-    <h2 style="margin-top:0">설문조사 안내문 (섹션 1)</h2>
+  <!-- ==================== 섹션 1 ==================== -->
+  <section id="sec1" class="card" role="region" aria-labelledby="s1h">
+    <h2 id="s1h" class="h2">설문조사 안내문 (섹션 1)</h2>
     <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다. 저는 대구대학교 심리학과 최주형입니다. 본 설문지는 영상 시청 과정에서 나타나는 광고와 관련된 전반적인 경험을 알아보기 위한 것입니다. 제시되는 문항에는 정답이나 오답이 없으니, 평소에 느끼고 생각하시는 대로 응답해 주시면 됩니다. 자신에게 꼭 맞는 응답이 없더라도 가장 가깝다고 생각되는 항목을 선택해 주시기 바랍니다.</p>
     <p>응답하신 내용은 익명으로 처리되며 연구 목적 외에는 사용되지 않습니다. 또한 한 문항에는 반드시 하나의 응답만 선택해 주시고, 빠짐없이 작성해 주셔야 설문이 유효하게 처리됩니다.</p>
     <p>본 설문지는 총 11문항과 약 20초 정도의 광고 영상으로 구성되어 있으며, 약 5분 정도 소요됩니다. 귀하의 소중한 응답은 연구에 큰 도움이 됩니다. 참여해 주셔서 다시 한 번 감사드립니다.</p>
-    <div class="brand small">
-      <strong>대구대학교 일반대학원 심리학과</strong><br/>
+    <div class="brand small" role="note">
+      <strong>대구대학교 일반대학원 심리학과</strong><br>
       조사자 — 지도교수 박은아 (eunap@daegu.ac.kr), 석사과정 수료 최주형 (thridworldjoy@naver.com)
     </div>
-    <div class="hr"></div>
-    <div class="row">
-      <label>1. 과제 점수를 부여하기 위해 본인의 학번을 작성해주세요.<br/>
-        <input id="sid" type="text" placeholder="예: 12345678" style="width:260px;padding:8px;border:1px solid var(--line);border-radius:8px;opacity:.8"/>
-      </label>
-      <div>
-        <div>2. 성별</div>
-        <label><input type="radio" name="gender" value="남"> 남</label>
-        <label style="margin-left:12px"><input type="radio" name="gender" value="여"> 여</label>
+    <div class="hr" aria-hidden="true"></div>
+
+    <form id="form" novalidate>
+      <div class="row">
+        <label for="sid">1. 과제 점수를 부여하기 위해 본인의 학번을 작성해주세요.</label>
+        <input id="sid" name="sid" type="text" inputmode="numeric" pattern="\\d{5,}" placeholder="예: 12345678" aria-describedby="sidHelp" style="max-width:260px">
+        <div id="sidHelp" class="small muted">숫자 5자 이상 입력</div>
+
+        <fieldset>
+          <legend>2. 성별</legend>
+          <label><input type="radio" name="gender" value="남" required> 남</label>
+          <label style="margin-left:12px"><input type="radio" name="gender" value="여"> 여</label>
+        </fieldset>
+
+        <label for="age">3. 나이</label>
+        <input id="age" name="age" type="number" min="14" max="99" placeholder="예: 23" style="max-width:120px">
       </div>
-      <label>3. 나이<br/>
-        <input id="age" type="number" min="14" max="99" placeholder="예: 23" style="width:120px;padding:8px;border:1px solid var(--line);border-radius:8px"/>
-      </label>
-    </div>
+    </form>
+
     <div class="btnbar">
-      <button class="btn primary" data-next>다음</button>
+      <button class="btn primary" data-next="1" id="next1">다음</button>
     </div>
   </section>
 
-  <!-- 섹션 2: 영상 시청 -->
-  <section id="sec2" class="card" style="display:none">
-    <h2 style="margin-top:0">광고 영상 시청 (섹션 2)</h2>
-    <p class="brand"><strong>브랜드 안내</strong><br/>Sunshine는 매일의 순간에 신선한 빛을 전하는 주스 브랜드입니다. “Fresh Sunlight in Every Glass”라는 메시지처럼, 한 잔의 주스 속에 건강하고 활기찬 태양의 에너지를 담아 전달합니다.</p>
-    <p id="aiNotice" class="notice">⚠️ 안내 문구가 여기에 표시됩니다.</p>
+  <!-- ==================== 섹션 2 ==================== -->
+  <section id="sec2" class="card" role="region" aria-labelledby="s2h" hidden>
+    <h2 id="s2h" class="h2">광고 영상 시청 (섹션 2)</h2>
+    <p class="brand"><strong>브랜드 안내</strong><br>Sunshine는 매일의 순간에 신선한 빛을 전하는 주스 브랜드입니다. “Fresh Sunlight in Every Glass”라는 메시지처럼, 한 잔의 주스 속에 건강하고 활기찬 태양의 에너지를 담아 전달합니다.</p>
+    <p id="aiNotice" class="notice" aria-live="polite">⚠️ 안내 문구가 여기에 표시됩니다.</p>
     <div class="video-wrap">
-      <video id="adVideo" width="100%" height="auto" controls playsinline>
-        <source id="adSrc" src="" type="video/mp4"/>
+      <video id="adVideo" width="100%" height="auto" controls playsinline preload="metadata">
+        <source id="adSrc" src="" type="video/mp4">
         해당 브라우저는 video 태그를 지원하지 않습니다.
       </video>
       <div class="muted small" id="chosenInfo"></div>
     </div>
     <div class="btnbar">
-      <!-- 점검용: 시청·응답 없이도 이동 가능 -->
-      <button class="btn primary" data-next>다음</button>
+      <button class="btn" data-prev>이전</button>
+      <button class="btn primary" data-next="2" id="next2" disabled aria-disabled="true" title="영상을 끝까지 시청하면 활성화됩니다">다음</button>
     </div>
   </section>
 
-  <!-- 섹션 3: 시청 후 경험 평가 -->
-  <section id="sec3" class="card" style="display:none">
-    <h2 style="margin-top:0">영상 시청 후 경험 평가 (섹션 3)</h2>
+  <!-- ==================== 섹션 3 ==================== -->
+  <section id="sec3" class="card" role="region" aria-labelledby="s3h" hidden>
+    <h2 id="s3h" class="h2">영상 시청 후 경험 평가 (섹션 3)</h2>
 
-    <!-- 1. 조작점검 -->
-    <div class="row">
-      <div><strong>1.</strong> 이 광고 시작부 또는 화면 하단에 어떤 안내 문구가 표시되었나요?</div>
-      <label><input type="radio" name="manip1" value="전문가만"> 광고 전문가가 AI 없이 제작</label>
+    <fieldset class="row">
+      <legend><strong>1.</strong> 이 광고 시작부 또는 화면 하단에 어떤 안내 문구가 표시되었나요?</legend>
+      <label><input type="radio" name="manip1" value="전문가만" required> 광고 전문가가 AI 없이 제작</label>
       <label><input type="radio" name="manip1" value="전문가+AI"> 광고 전문가가 AI를 활용하여 제작</label>
       <label><input type="radio" name="manip1" value="100%AI"> 100% AI 자동 제작</label>
       <label><input type="radio" name="manip1" value="기타"> 기타 안내 문구</label>
       <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
-    </div>
+    </fieldset>
 
-    <!-- 2. 전문가 개입 정도: 타원 마커 슬라이더 -->
     <div class="row" style="margin-top:12px">
       <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
-      <div class="major-ticks" aria-hidden="true">
-        <span>0 전혀없음<br><span class="small muted">(AI가 완전히 제작)</span></span>
-        <span>5 사람과 AI가 비슷하게 참여</span>
-        <span>10 매우 큼<br><span class="small muted">(사람이 완전히 제작)</span></span>
-      </div>
-      <div class="scale-wrap" role="group" aria-label="전문가 개입 정도 0에서 10까지">
-        <div class="scale-track"><div id="scaleFill" class="scale-fill"></div></div>
-        <div id="scaleMarks" class="scale-marks"></div>
-        <input id="involve" class="sr-only-range" type="range" min="0" max="10" step="1" value="5" aria-hidden="true"/>
-      </div>
-      <div class="btnbar">
-        <button class="btn" data-set="0">0로 설정</button>
-        <button class="btn" data-set="5">5로 설정</button>
-        <button class="btn" data-set="10">10으로 설정</button>
-        <span class="muted">현재값: <span id="involveVal">5</span></span>
+
+      <div class="scale" aria-live="polite">
+        <output id="valBubble" class="value-bubble" for="involve">5</output>
+        <input id="involve" class="range" type="range" min="0" max="10" step="1" value="5" list="tickmarks" aria-label="전문가 개입 정도 0에서 10까지">
+        <!-- 네이티브 줄눈 -->
+        <datalist id="tickmarks">
+          <option value="0"></option><option value="1"></option><option value="2"></option>
+          <option value="3"></option><option value="4"></option><option value="5"></option>
+          <option value="6"></option><option value="7"></option><option value="8"></option>
+          <option value="9"></option><option value="10"></option>
+        </datalist>
+        <!-- 보조 시각적 줄눈(10% 간격) -->
+        <div class="tickline" aria-hidden="true"></div>
+
+        <div class="quick" aria-hidden="true">
+          <button type="button" data-jump="0">0</button>
+          <button type="button" data-jump="5">5</button>
+          <button type="button" data-jump="10">10</button>
+        </div>
+        <div class="ticks small" aria-hidden="true">
+          <span>0 전혀없음<br><span class="muted small">(AI가 완전히 제작)</span></span>
+          <span>5 사람과 AI가 비슷하게 참여</span>
+          <span>10 매우 큼<br><span class="muted small">(사람이 완전히 제작)</span></span>
+        </div>
       </div>
     </div>
 
-    <!-- 안내 배너 -->
-    <div class="section-note" role="note" aria-label="문항 안내">
-      <div class="note-title">안내</div>
-      <div class="note-text">아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 평소에 느끼신 대로 응답해 주시면 됩니다.</div>
-    </div>
+    <div class="section-note" role="note"><div class="title">안내</div><div>아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 평소에 느끼신 대로 응답해 주시면 됩니다.</div></div>
 
-    <!-- 3. 진정성(5문항) -->
     <div class="grid" style="margin-top:8px">
-      <table class="compact">
+      <table class="compact wide-likert">
         <thead>
           <tr>
-            <th style="text-align:left">문항</th>
-            <th>1<br/><span class="small">전혀 아니다</span></th>
+            <th style="width:60%">문항</th>
+            <th>1<br><span class="small">전혀 아니다</span></th>
             <th>2</th>
-            <th>3<br/><span class="small">보통이다</span></th>
+            <th>3<br><span class="small">보통이다</span></th>
             <th>4</th>
-            <th>5<br/><span class="small">매우 그렇다</span></th>
+            <th>5<br><span class="small">매우 그렇다</span></th>
           </tr>
         </thead>
-        <tbody id="likert-auth">
-          <tr>
-            <td style="text-align:left">이 광고는 제품의 특성을 왜곡하지 않고 보여준다.</td>
-            <td><input type="radio" name="AUTH1" value="1"></td>
-            <td><input type="radio" name="AUTH1" value="2"></td>
-            <td><input type="radio" name="AUTH1" value="3"></td>
-            <td><input type="radio" name="AUTH1" value="4"></td>
-            <td><input type="radio" name="AUTH1" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 소비자를 속이려는 의도가 없어 보인다.</td>
-            <td><input type="radio" name="AUTH2" value="1"></td>
-            <td><input type="radio" name="AUTH2" value="2"></td>
-            <td><input type="radio" name="AUTH2" value="3"></td>
-            <td><input type="radio" name="AUTH2" value="4"></td>
-            <td><input type="radio" name="AUTH2" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 신뢰할 수 있다.</td>
-            <td><input type="radio" name="AUTH3" value="1"></td>
-            <td><input type="radio" name="AUTH3" value="2"></td>
-            <td><input type="radio" name="AUTH3" value="3"></td>
-            <td><input type="radio" name="AUTH3" value="4"></td>
-            <td><input type="radio" name="AUTH3" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고의 표현은 자연스럽다.</td>
-            <td><input type="radio" name="AUTH4" value="1"></td>
-            <td><input type="radio" name="AUTH4" value="2"></td>
-            <td><input type="radio" name="AUTH4" value="3"></td>
-            <td><input type="radio" name="AUTH4" value="4"></td>
-            <td><input type="radio" name="AUTH4" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 인간의 개입이 반영되어 있다.</td>
-            <td><input type="radio" name="AUTH5" value="1"></td>
-            <td><input type="radio" name="AUTH5" value="2"></td>
-            <td><input type="radio" name="AUTH5" value="3"></td>
-            <td><input type="radio" name="AUTH5" value="4"></td>
-            <td><input type="radio" name="AUTH5" value="5"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="thick-sep" aria-hidden="true"></div>
-
-    <!-- 4. 독창성(6문항) -->
-    <div class="grid" style="margin-top:8px">
-      <table class="compact">
-        <thead>
-          <tr>
-            <th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
-          </tr>
-        </thead>
-        <tbody id="likert-orig">
-          <tr>
-            <td style="text-align:left">이 광고는 기존의 광고들과는 다른 독특한 접근을 보여준다.</td>
-            <td><input type="radio" name="ORIG1" value="1"></td>
-            <td><input type="radio" name="ORIG1" value="2"></td>
-            <td><input type="radio" name="ORIG1" value="3"></td>
-            <td><input type="radio" name="ORIG1" value="4"></td>
-            <td><input type="radio" name="ORIG1" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 참신한 시각적 표현을 담고 있다.</td>
-            <td><input type="radio" name="ORIG2" value="1"></td>
-            <td><input type="radio" name="ORIG2" value="2"></td>
-            <td><input type="radio" name="ORIG2" value="3"></td>
-            <td><input type="radio" name="ORIG2" value="4"></td>
-            <td><input type="radio" name="ORIG2" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 예측하기 어려운 요소를 포함하고 있다.</td>
-            <td><input type="radio" name="ORIG3" value="1"></td>
-            <td><input type="radio" name="ORIG3" value="2"></td>
-            <td><input type="radio" name="ORIG3" value="3"></td>
-            <td><input type="radio" name="ORIG3" value="4"></td>
-            <td><input type="radio" name="ORIG3" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 브랜드와 관련성이 있다.</td>
-            <td><input type="radio" name="ORIG4" value="1"></td>
-            <td><input type="radio" name="ORIG4" value="2"></td>
-            <td><input type="radio" name="ORIG4" value="3"></td>
-            <td><input type="radio" name="ORIG4" value="4"></td>
-            <td><input type="radio" name="ORIG4" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 브랜드와 잘 어울린다.</td>
-            <td><input type="radio" name="ORIG5" value="1"></td>
-            <td><input type="radio" name="ORIG5" value="2"></td>
-            <td><input type="radio" name="ORIG5" value="3"></td>
-            <td><input type="radio" name="ORIG5" value="4"></td>
-            <td><input type="radio" name="ORIG5" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 진부하다. <span class="muted small">(역채점)</span></td>
-            <td><input type="radio" name="ORIG6" value="1"></td>
-            <td><input type="radio" name="ORIG6" value="2"></td>
-            <td><input type="radio" name="ORIG6" value="3"></td>
-            <td><input type="radio" name="ORIG6" value="4"></td>
-            <td><input type="radio" name="ORIG6" value="5"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="thick-sep" aria-hidden="true"></div>
-
-    <!-- 5. 광고 태도(3문항) -->
-    <div class="grid" style="margin-top:8px">
-      <table class="compact">
-        <thead><tr><th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-        <tbody id="likert-att">
-          <tr>
-            <td style="text-align:left">이 광고는 마음에 든다.</td>
-            <td><input type="radio" name="ATT1" value="1"></td>
-            <td><input type="radio" name="ATT1" value="2"></td>
-            <td><input type="radio" name="ATT1" value="3"></td>
-            <td><input type="radio" name="ATT1" value="4"></td>
-            <td><input type="radio" name="ATT1" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 긍정적인 인상을 준다.</td>
-            <td><input type="radio" name="ATT2" value="1"></td>
-            <td><input type="radio" name="ATT2" value="2"></td>
-            <td><input type="radio" name="ATT2" value="3"></td>
-            <td><input type="radio" name="ATT2" value="4"></td>
-            <td><input type="radio" name="ATT2" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 매력적이다.</td>
-            <td><input type="radio" name="ATT3" value="1"></td>
-            <td><input type="radio" name="ATT3" value="2"></td>
-            <td><input type="radio" name="ATT3" value="3"></td>
-            <td><input type="radio" name="ATT3" value="4"></td>
-            <td><input type="radio" name="ATT3" value="5"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="thick-sep" aria-hidden="true"></div>
-
-    <!-- 6. 구매의도(3문항) -->
-    <div class="grid" style="margin-top:8px">
-      <table class="compact">
-        <thead><tr><th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-        <tbody id="likert-pi">
-          <tr>
-            <td style="text-align:left">이 광고에서 나온 제품을 구매할 가능성이 있다.</td>
-            <td><input type="radio" name="PI1" value="1"></td>
-            <td><input type="radio" name="PI1" value="2"></td>
-            <td><input type="radio" name="PI1" value="3"></td>
-            <td><input type="radio" name="PI1" value="4"></td>
-            <td><input type="radio" name="PI1" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">이 광고는 나의 구매 욕구를 자극한다.</td>
-            <td><input type="radio" name="PI2" value="1"></td>
-            <td><input type="radio" name="PI2" value="2"></td>
-            <td><input type="radio" name="PI2" value="3"></td>
-            <td><input type="radio" name="PI2" value="4"></td>
-            <td><input type="radio" name="PI2" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">나는 이 제품을 다른 사람에게 추천하고 싶다.</td>
-            <td><input type="radio" name="PI3" value="1"></td>
-            <td><input type="radio" name="PI3" value="2"></td>
-            <td><input type="radio" name="PI3" value="3"></td>
-            <td><input type="radio" name="PI3" value="4"></td>
-            <td><input type="radio" name="PI3" value="5"></td>
-          </tr>
-        </tbody>
+        <tbody id="likertBody"></tbody>
       </table>
     </div>
 
     <div class="btnbar">
       <button class="btn" data-prev>이전</button>
-      <!-- 점검용: 응답 없이 이동 가능 -->
-      <button class="btn primary" data-next>다음</button>
+      <button class="btn primary" data-next="3">다음</button>
     </div>
   </section>
 
-  <!-- 섹션 4: 생성형 AI 인식/경험 -->
-  <section id="sec4" class="card" style="display:none">
-    <h2 style="margin-top:0">생성형 AI 관련 인식 및 경험 (섹션 4)</h2>
-
+  <!-- ==================== 섹션 4 ==================== -->
+  <section id="sec4" class="card" role="region" aria-labelledby="s4h" hidden>
+    <h2 id="s4h" class="h2">생성형 AI 관련 인식 및 경험 (섹션 4)</h2>
     <p class="muted small">아래 문항들은 귀하의 생성형 AI에 대한 이해와 인식을 묻는 질문입니다.</p>
+
     <div class="grid">
-      <table>
+      <table class="compact wide-likert">
         <thead><tr><th style="text-align:left">문항</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-        <tbody id="likert-ailit">
-          <tr>
-            <td style="text-align:left">나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.</td>
-            <td><input type="radio" name="AILIT1" value="1"></td>
-            <td><input type="radio" name="AILIT1" value="2"></td>
-            <td><input type="radio" name="AILIT1" value="3"></td>
-            <td><input type="radio" name="AILIT1" value="4"></td>
-            <td><input type="radio" name="AILIT1" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.</td>
-            <td><input type="radio" name="AILIT2" value="1"></td>
-            <td><input type="radio" name="AILIT2" value="2"></td>
-            <td><input type="radio" name="AILIT2" value="3"></td>
-            <td><input type="radio" name="AILIT2" value="4"></td>
-            <td><input type="radio" name="AILIT2" value="5"></td>
-          </tr>
-          <tr>
-            <td style="text-align:left">나는 AI가 만든 결과물을 신뢰할 수 있다.</td>
-            <td><input type="radio" name="AILIT3" value="1"></td>
-            <td><input type="radio" name="AILIT3" value="2"></td>
-            <td><input type="radio" name="AILIT3" value="3"></td>
-            <td><input type="radio" name="AILIT3" value="4"></td>
-            <td><input type="radio" name="AILIT3" value="5"></td>
-          </tr>
-        </tbody>
+        <tbody id="aiLitBody"></tbody>
       </table>
     </div>
 
     <div class="hr"></div>
-    <div class="row">
-      <div><strong>본인의 생성형 AI 사용 경험 수준은 어느 정도입니까?</strong></div>
-      <label><input type="radio" name="AIUSE" value="1"> 전혀 없다</label>
+
+    <fieldset class="row">
+      <legend><strong>본인의 생성형 AI 사용 경험 수준은 어느 정도입니까?</strong></legend>
+      <label><input type="radio" name="AIUSE" value="1" required> 전혀 없다</label>
       <label><input type="radio" name="AIUSE" value="2"> 한두 번 사용해 본 적이 있다 (1~2회 이하)</label>
       <label><input type="radio" name="AIUSE" value="3"> 가끔 사용한다 (월 1회 이상)</label>
       <label><input type="radio" name="AIUSE" value="4"> 자주 사용한다 (주 1회 이상)</label>
       <label><input type="radio" name="AIUSE" value="5"> 매우 자주 사용한다 (거의 매일)</label>
-    </div>
+    </fieldset>
 
-    <div id="svcBlock" class="row" style="display:none;margin-top:10px">
+    <div id="svcBlock" class="row" hidden style="margin-top:12px">
       <div><strong>아래 생성형 AI 중 사용해 본 서비스에 모두 표시해 주십시오. (복수선택)</strong></div>
       <label><input type="checkbox" name="AIsvc" value="chat"> 텍스트/대화형 AI (ChatGPT, Gemini 등)</label>
       <label><input type="checkbox" name="AIsvc" value="image"> 이미지 생성 AI (Midjourney, SD 등)</label>
@@ -408,164 +263,208 @@
     </div>
   </section>
 
-  <!-- 제출 완료 -->
-  <section id="done" class="card" style="display:none">
-    <h2 style="margin-top:0">제출 완료</h2>
+  <!-- ==================== 완료 ==================== -->
+  <section id="done" class="card" hidden>
+    <h2 class="h2">제출 완료</h2>
     <p>응답해 주셔서 감사합니다. (현재 페이지는 점검용으로, 실제 저장은 하지 않습니다.)</p>
-    <pre id="dump" class="small" style="white-space:pre-wrap;background:#f9fafb;border:1px solid var(--line);padding:12px;border-radius:10px"></pre>
+    <pre id="dump" class="small" style="white-space:pre-wrap;background:#f0f4f7;border:1px solid var(--line);padding:12px;border-radius:10px;color:#444"></pre>
   </section>
 </div>
 
 <script>
-  // ---------------------
-  // 0) 공용 상태/유틸
-  // ---------------------
-  const steps = ["sec1","sec2","sec3","sec4"];
-  let cur = 0;
+/***********************
+ * 0) 유틸/상태
+ ***********************/
+const qs=(s,sc=document)=>sc.querySelector(s);
+const qsa=(s,sc=document)=>Array.from(sc.querySelectorAll(s));
+const steps=["sec1","sec2","sec3","sec4"]; let cur=0;
+const bar=qs('#bar'); const stepLabel=qs('#stepLabel');
+const setStep=(i)=>{
+  cur=i;
+  steps.forEach((id,idx)=>qs('#'+id).hidden=idx!==i);
+  qs('#done').hidden=true;
+  bar.style.width=((i+1)/steps.length*100)+'%';
+  stepLabel.textContent=`${i+1} / ${steps.length}`;
+  if(i===3) updateSvcBlock(); // 섹션4 진입 시 재평가
+  window.scrollTo({top:0,behavior:"smooth"});
+};
 
-  function showStep(idx){
-    steps.forEach((id,i)=>{
-      document.getElementById(id).style.display = (i===idx) ? "" : "none";
-    });
-    document.getElementById("done").style.display = "none";
-    cur = idx;
-    const bar = document.getElementById("bar");
-    const pct = ((idx+1)/steps.length)*100;
-    bar.style.width = pct + "%";
-    document.getElementById("stepLabel").textContent = (idx+1) + " / " + steps.length;
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
+/***********************
+ * A) 테스트 모드(BYPASS)
+ ***********************/
+let BYPASS=false;
+const bypassToggle=qs('#bypassToggle');
+const forceNextBtn=qs('#forceNext');
+const bypassStatus=qs('#bypassStatus');
 
-  document.querySelectorAll("[data-next]").forEach(btn=>{
-    btn.addEventListener("click",()=>showStep(Math.min(cur+1, steps.length-1)));
-  });
-  document.querySelectorAll("[data-prev]").forEach(btn=>{
-    btn.addEventListener("click",()=>showStep(Math.max(cur-1, 0)));
-  });
+function applyBypassEffects(){
+  const next2=qs('#next2');
+  if(next2){ next2.disabled=false; next2.ariaDisabled='false'; next2.title=''; }
+  try{ if(typeof watched!=='undefined') watched=true; }catch(e){}
+}
+function updateBypassUI(){
+  bypassToggle.textContent=BYPASS?'검증 건너뛰기 ON':'검증 건너뛰기 OFF';
+  bypassToggle.setAttribute('aria-pressed',BYPASS?'true':'false');
+  bypassStatus.textContent=BYPASS?'테스트 모드(검증 무시)':'일반 모드';
+  if(BYPASS) applyBypassEffects();
+}
+bypassToggle?.addEventListener('click',()=>{ BYPASS=!BYPASS; updateBypassUI(); });
+forceNextBtn?.addEventListener('click',()=>{ applyBypassEffects(); setStep(Math.min(cur+1,steps.length-1)); });
+if(new URLSearchParams(location.search).get('test')==='1'){ BYPASS=true; }
+updateBypassUI();
 
-  // ---------------------
-  // 1) 6개 자극: 파일명/라벨 매핑 + 랜덤 고르기
-  // ---------------------
-  const stimuli = [
-    { file:"A_H.mp4", code:"A_H", label:"⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다." },
-    { file:"A_L.mp4", code:"A_L", label:"⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다." },
-    { file:"B_H.mp4", code:"B_H", label:"⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다." },
-    { file:"B_L.mp4", code:"B_L", label:"⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다." },
-    { file:"C_H.mp4", code:"C_H", label:"⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다." },
-    { file:"C_L.mp4", code:"C_L", label:"⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다." }
-  ];
+/***********************
+ * 1) 진행 제어(검증 포함)
+ ***********************/
+const form=qs('#form');
+const validateS1=()=>{
+  if(BYPASS) return true;
+  const sid=qs('#sid'); const okID=/^\d{5,}$/.test(sid.value.trim());
+  const genderChecked=!!qs('input[name="gender"]:checked');
+  if(!okID){ sid.setCustomValidity('숫자 5자 이상 입력'); sid.reportValidity(); return false; }
+  sid.setCustomValidity('');
+  if(!genderChecked){ alert('성별을 선택해 주세요.'); return false; }
+  return true;
+};
+document.addEventListener('click',(e)=>{
+  const btn=e.target.closest('[data-next],[data-prev]'); if(!btn) return;
+  e.preventDefault();
+  if(btn.hasAttribute('data-prev')){ setStep(Math.max(cur-1,0)); return; }
+  const target=parseInt(btn.getAttribute('data-next'),10);
+  if(target===1 && !validateS1()) return;         // sec1 -> sec2
+  if(btn.id==='next2' && btn.disabled && !BYPASS) return; // 영상 gating
+  setStep(Math.min(target,steps.length-1));
+});
 
-  // 선택 방식: URL 파라미터 ?pick=A_H 있으면 고정, 없으면 랜덤
-  const urlParams = new URLSearchParams(location.search);
-  const prePick = urlParams.get("pick");
-  let chosen = stimuli.find(s=>s.code===prePick) || stimuli[Math.floor(Math.random()*stimuli.length)];
+/***********************
+ * 2) 자극 로딩 (쿼리 pick 지원)
+ ***********************/
+const stimuli=[
+  {file:'A_H.mp4', code:'A_H', label:'⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다.'},
+  {file:'A_L.mp4', code:'A_L', label:'⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다.'},
+  {file:'B_H.mp4', code:'B_H', label:'⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다.'},
+  {file:'B_L.mp4', code:'B_L', label:'⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다.'},
+  {file:'C_H.mp4', code:'C_H', label:'⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다.'},
+  {file:'C_L.mp4', code:'C_L', label:'⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다.'}
+];
+const urlParams=new URLSearchParams(location.search); const prePick=urlParams.get('pick');
+const chosen= stimuli.find(s=>s.code===prePick) || stimuli[Math.floor(Math.random()*stimuli.length)];
+const adSrc=qs('#adSrc'); const adVideo=qs('#adVideo'); const aiNotice=qs('#aiNotice'); const chosenInfo=qs('#chosenInfo');
+const mountVideo=()=>{ adSrc.src=chosen.file; adVideo.load(); aiNotice.textContent=chosen.label; chosenInfo.textContent=`선정된 자극: ${chosen.code} (파일: ${chosen.file})`; };
+mountVideo();
 
-  const adSrc = document.getElementById("adSrc");
-  const adVideo = document.getElementById("adVideo");
-  const aiNotice = document.getElementById("aiNotice");
-  const chosenInfo = document.getElementById("chosenInfo");
+// 영상 95% 이상 시청 gating
+const next2=qs('#next2');
+let watched=false;
+adVideo.addEventListener('timeupdate',()=>{ if(!adVideo.duration) return; const pct=adVideo.currentTime/adVideo.duration; if(pct>=0.95){ watched=true; next2.disabled=false; next2.ariaDisabled='false'; next2.title=''; }});
+adVideo.addEventListener('ended',()=>{ watched=true; next2.disabled=false; next2.ariaDisabled='false'; next2.title=''; });
+if(BYPASS) applyBypassEffects();
 
-  function mountVideo(){
-    adSrc.src = chosen.file;
-    adVideo.load();
-    aiNotice.textContent = chosen.label;
-    chosenInfo.textContent = `선정된 자극: ${chosen.code} (파일: ${chosen.file})`;
-  }
-  mountVideo();
+/***********************
+ * 3) Likert 항목 생성
+ ***********************/
+const likertItems=[
+  {name:'AUTH1', txt:'이 광고는 제품의 특성을 왜곡하지 않고 보여준다.'},
+  {name:'AUTH2', txt:'이 광고는 소비자를 속이려는 의도가 없어 보인다.'},
+  {name:'AUTH3', txt:'이 광고는 신뢰할 수 있다.'},
+  {name:'AUTH4', txt:'이 광고의 표현은 자연스럽다.'},
+  {name:'AUTH5', txt:'이 광고는 인간의 개입이 반영되어 있다.'},
+  {name:'ORIG1', txt:'이 광고는 기존의 광고들과는 다른 독특한 접근을 보여준다.'},
+  {name:'ORIG2', txt:'이 광고는 참신한 시각적 표현을 담고 있다.'},
+  {name:'ORIG3', txt:'이 광고는 예측하기 어려운 요소를 포함하고 있다.'},
+  {name:'ORIG4', txt:'이 광고는 브랜드와 관련성이 있다.'},
+  {name:'ORIG5', txt:'이 광고는 브랜드와 잘 어울린다.'},
+  {name:'ORIG6', txt:'이 광고는 진부하다.', rev:true},
+  {name:'ATT1', txt:'이 광고는 마음에 든다.'},
+  {name:'ATT2', txt:'이 광고는 긍정적인 인상을 준다.'},
+  {name:'ATT3', txt:'이 광고는 매력적이다.'},
+  {name:'PI1', txt:'이 광고에서 나온 제품을 구매할 가능성이 있다.'},
+  {name:'PI2', txt:'이 광고는 나의 구매 욕구를 자극한다.'},
+  {name:'PI3', txt:'나는 이 제품을 다른 사람에게 추천하고 싶다.'}
+];
+const makeRow=(name,txt)=>`<tr><td>${txt}${name==='ORIG6'? ' <span class="muted small">(역채점)</span>':''}</td>${Array.from({length:5},(_,i)=>`<td><input type="radio" name="${name}" value="${i+1}"></td>`).join('')}</tr>`;
+qs('#likertBody').innerHTML=likertItems.map(x=>makeRow(x.name,x.txt)).join('');
 
-  // ---------------------
-  // 2) 슬라이더(타원 마커) + 퀵 버튼
-  // ---------------------
-  const involve = document.getElementById("involve");
-  const involveVal = document.getElementById("involveVal");
-  const scaleFill = document.getElementById("scaleFill");
-  const marksWrap = document.getElementById("scaleMarks");
+// AI 리터러시 항목
+const aiLitItems=[
+  {name:'AILIT1', txt:'나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.'},
+  {name:'AILIT2', txt:'나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.'},
+  {name:'AILIT3', txt:'나는 AI가 만든 결과물을 신뢰할 수 있다.'}
+];
+qs('#aiLitBody').innerHTML=aiLitItems.map(x=>makeRow(x.name,x.txt)).join('');
 
-  // 0~10 버튼 생성
-  for(let i=0;i<=10;i++){
-    const b=document.createElement("button");
-    b.type="button"; b.className="mark"; b.dataset.val=i; b.textContent=i;
-    b.addEventListener("click",()=> setInvolve(i));
-    marksWrap.appendChild(b);
-  }
+/***********************
+ * 4) 슬라이더 표시/접근성
+ ***********************/
+const range=qs('#involve'); const bubble=qs('#valBubble');
+const setRangeVisual=(v)=>{
+  const min=parseFloat(range.min), max=parseFloat(range.max), val=parseFloat(v);
+  const pct=(val - min)/(max - min); // 0~1
+  bubble.textContent=Math.round(val);
+  range.style.setProperty('--pct',(pct*100)+'%'); // 진행색
 
-  function setInvolve(val){
-    val = Math.max(0, Math.min(10, Number(val)));
-    involve.value = val;
-    involveVal.textContent = String(val);
-    scaleFill.style.width = (val/10*100) + "%";
-    marksWrap.querySelectorAll('.mark').forEach(m=> m.classList.toggle('active', Number(m.dataset.val)===val));
-  }
+  /* ← 변경: px 기반 + 좌우 클램프 */
+  const railW = range.offsetWidth;
+  const halfBubble = bubble.offsetWidth / 2;
+  const x = Math.max(halfBubble, Math.min(railW - halfBubble, railW * pct));
+  bubble.style.left = x + 'px';
+  bubble.style.transform='translateX(-50%)';
+};
+['input','change'].forEach(ev=>range.addEventListener(ev,()=>setRangeVisual(range.value)));
+window.addEventListener('resize',()=>setRangeVisual(range.value), {passive:true});
+setRangeVisual(range.value);
+qsa('[data-jump]').forEach(b=>b.addEventListener('click',()=>{ range.value=b.dataset.jump; setRangeVisual(range.value); }));
 
-  document.querySelectorAll("[data-set]").forEach(b=>{
-    b.addEventListener("click",()=> setInvolve(b.dataset.set));
-  });
-  setInvolve(involve.value);
+/***********************
+ * 5) AI 사용경험에 따른 서비스 블록 표시
+ ***********************/
+function setSvcVisible(visible){
+  const el=qs('#svcBlock'); if(!el) return;
+  if(visible){ el.hidden=false; el.style.display=''; el.setAttribute('aria-hidden','false'); }
+  else{ el.hidden=true; el.style.display='none'; el.setAttribute('aria-hidden','true'); }
+}
+function updateSvcBlock(){
+  const selected=qs("input[name='AIUSE']:checked");
+  const shouldShow=!!(selected && selected.value!=='1'); // 전혀 없다(1)면 숨김
+  setSvcVisible(shouldShow);
+}
+qsa("input[name='AIUSE']").forEach(r=>r.addEventListener('change',updateSvcBlock));
+document.addEventListener('input',(e)=>{ if(e.target && e.target.name==='AIUSE') updateSvcBlock(); });
+updateSvcBlock(); // 초기 반영
 
-  // ---------------------
-  // 3) AI 사용경험 수준에 따라 서비스 블록 표시
-  // ---------------------
-  const svcBlock = document.getElementById("svcBlock");
-  document.querySelectorAll("input[name='AIUSE']").forEach(r=>{
-    r.addEventListener("change",()=>{
-      svcBlock.style.display = (r.value==="1") ? "none" : "";
-    });
-  });
+/***********************
+ * 6) 제출(점검용): 직렬화
+ ***********************/
+const getRadio=(name)=>{const el=qs(`input[name='${name}']:checked`); return el?el.value:''};
+const getChecks=(name)=>qsa(`input[name='${name}']:checked`).map(x=>x.value);
 
-  // ---------------------
-  // 4) 제출(점검용): 수집 값 콘솔/화면 출력
-  // ---------------------
-  function getRadio(name){
-    const el = document.querySelector(`input[name='${name}']:checked`);
-    return el ? el.value : "";
-  }
-  function getChecks(name){
-    return Array.from(document.querySelectorAll(`input[name='${name}']:checked`)).map(x=>x.value);
-  }
+qs('#submitBtn').addEventListener('click',e=>{
+  e.preventDefault();
+  if(!BYPASS && !getRadio('manip1')){ alert('문항 1(안내 문구)을 선택해 주세요.'); return; }
 
-  document.getElementById("submitBtn").addEventListener("click", ()=>{
-    const payload = {
-      meta: {
-        picked_code: chosen.code,
-        picked_file: chosen.file,
-        picked_label: chosen.label,
-        ts: new Date().toISOString()
-      },
-      section1: {
-        student_id: document.getElementById("sid").value.trim(),
-        gender: getRadio("gender"),
-        age: document.getElementById("age").value
-      },
-      section3: {
-        manipulation_seen: getRadio("manip1"),
-        involvement_0to10: Number(involve.value),
-        AUTH: {
-          AUTH1:getRadio("AUTH1"), AUTH2:getRadio("AUTH2"), AUTH3:getRadio("AUTH3"), AUTH4:getRadio("AUTH4"), AUTH5:getRadio("AUTH5")
-        },
-        ORIG: {
-          ORIG1:getRadio("ORIG1"), ORIG2:getRadio("ORIG2"), ORIG3:getRadio("ORIG3"),
-          ORIG4:getRadio("ORIG4"), ORIG5:getRadio("ORIG5"), ORIG6:getRadio("ORIG6")
-        },
-        ATT: { ATT1:getRadio("ATT1"), ATT2:getRadio("ATT2"), ATT3:getRadio("ATT3") },
-        PI:  { PI1:getRadio("PI1"), PI2:getRadio("PI2"), PI3:getRadio("PI3") }
-      },
-      section4: {
-        AILIT: { AILIT1:getRadio("AILIT1"), AILIT2:getRadio("AILIT2"), AILIT3:getRadio("AILIT3") },
-        AIUSE: getRadio("AIUSE"),
-        AIsvc: getChecks("AIsvc")
-      }
-    };
+  const payload={
+    meta:{ picked_code:chosen.code, picked_file:chosen.file, picked_label:chosen.label, ts:new Date().toISOString(), video_watched_95:watched||BYPASS },
+    section1:{ student_id:qs('#sid').value.trim(), gender:getRadio('gender'), age:qs('#age').value },
+    section3:{
+      manipulation_seen:getRadio('manip1'), involvement_0to10:parseFloat(range.value),
+      AUTH:{AUTH1:getRadio('AUTH1'),AUTH2:getRadio('AUTH2'),AUTH3:getRadio('AUTH3'),AUTH4:getRadio('AUTH4'),AUTH5:getRadio('AUTH5')},
+      ORIG:{ORIG1:getRadio('ORIG1'),ORIG2:getRadio('ORIG2'),ORIG3:getRadio('ORIG3'),ORIG4:getRadio('ORIG4'),ORIG5:getRadio('ORIG5'),ORIG6:getRadio('ORIG6')},
+      ATT:{ATT1:getRadio('ATT1'),ATT2:getRadio('ATT2'),ATT3:getRadio('ATT3')},
+      PI:{PI1:getRadio('PI1'),PI2:getRadio('PI2'),PI3:getRadio('PI3')}
+    },
+    section4:{ AILIT:{AILIT1:getRadio('AILIT1'),AILIT2:getRadio('AILIT2'),AILIT3:getRadio('AILIT3')}, AIUSE:getRadio('AIUSE'), AIsvc:getChecks('AIsvc') }
+  };
 
-    console.log("점검용 제출 payload:", payload);
+  steps.forEach(id=>qs('#'+id).hidden=true);
+  qs('#done').hidden=false; bar.style.width='100%'; stepLabel.textContent='완료';
+  qs('#dump').textContent=JSON.stringify(payload,null,2);
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
-    // 화면에 덤프(점검)
-    steps.forEach(id=>document.getElementById(id).style.display="none");
-    document.getElementById("done").style.display="";
-    document.getElementById("bar").style.width="100%";
-    document.getElementById("stepLabel").textContent="완료";
-    document.getElementById("dump").textContent = JSON.stringify(payload, null, 2);
-    window.scrollTo({top:0,behavior:"smooth"});
-  });
+/***********************
+ * 7) 초기 진입
+ ***********************/
+setStep(0);
 </script>
 </body>
 </html>

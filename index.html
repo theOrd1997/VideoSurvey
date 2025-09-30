@@ -478,6 +478,7 @@ const stimuli=[
 ];
 const pick=new URLSearchParams(location.search).get("pick");
 const chosen=stimuli.find(s=>s.code===pick)||stimuli[Math.floor(Math.random()*stimuli.length)];
+$("#adSrc").src=chosen.file; $("#adVideo").load(); $("#aiNotice").textContent=chosen.label; $("#chosenInfo").textContent=`(제거예정)선정된 자극: ${chosen.code} (파일: ${chosen.file})`;
 const next2=$("#next2"); let watched=false;
 $("#adVideo").addEventListener("timeupdate",e=>{
   const v=e.target;if(!v.duration) return;

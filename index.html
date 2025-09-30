@@ -69,20 +69,6 @@ label{font-weight:700}
 input[type="radio"],input[type="checkbox"]{transform:scale(1.12);accent-color:var(--brand)}
 .input.short{max-width:160px;min-height:48px;padding:12px 14px;font-size:1rem}
 
-/* Slider */
-.slider-wrap{max-width:100%;margin:0 auto;text-align:center}
-.slider-stack{position:relative;padding-top:36px}
-.range{appearance:none;width:100%;height:10px;border-radius:999px;outline:none;margin:12px 0;
-  background:linear-gradient(90deg,var(--brand) var(--pct,50%),#e5e7eb var(--pct,50%));transition:background .25s ease;}
-.range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--brand);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
-.range::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--brand);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
-.value-bubble{position:absolute;top:0;transform:translateX(-50%);background:var(--brand-900);color:#fff;padding:4px 8px;border-radius:6px;font-size:.9rem;font-weight:700}
-.value-bubble:after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:var(--brand-900)}
-.slider-labels{display:flex;justify-content:space-between;font-size:.92rem;color:var(--muted);margin-top:6px}
-.anchorbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
-.anchor{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer}
-.anchor:hover{border-color:#cdd3de}
-
 /* Layout bits */
 .row{display:grid;gap:14px}
 .row2{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
@@ -100,25 +86,6 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 #submitStatus{margin-top:10px;font-size:.95rem}
 #submitStatus.ok{color:#166534}
 #submitStatus.err{color:#991b1b}
-
-/* ===== DETAILS: 요인 배지 & 설명 (이 블록 전체 삭제 시 세부설명 기능 완전 제거) ===== */
-/* DETAILS:START */
-.factor-badge{
-  display:none;
-  margin-right:8px;
-  padding:2px 8px;
-  border-radius:999px;
-  font-size:.78rem;
-  font-weight:800;
-  border:1px solid var(--line);
-  color:#1f2937;
-  background:#f9fafb;
-}
-/* 세부설명 ON일 때(섹션3/4)만 배지 노출 */
-.show-factors .factor-badge{ display:inline-block; }
-.details{margin-top:10px}
-.details[hidden]{display:none!important}
-/* DETAILS:END */
 </style>
 </head>
 <body>
@@ -137,7 +104,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 
     <div class="card">
       <div class="instructions">
-        <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다.<br>저는 대구대학교 심리학과 최주형입니다.</p>
+        <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다.<br>저는 대구대학교 일반대학원심리학과 최주형입니다.</p>
         <p>본 설문지는 영상 시청 과정에서 나타나는 광고와 관련된 전반적인 경험을 알아보기 위한 것입니다.</p>
         <p>제시되는 문항에는 정답이나 오답이 없으니, 평소에 느끼고 생각하시는 대로 응답해 주시면 됩니다.</p>
         <p>자신에게 꼭 맞는 응답이 없더라도 <strong>가장 가깝다고 생각되는 항목</strong>을 선택해 주시기 바랍니다.</p>
@@ -215,28 +182,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
       <!-- FORCE-NEXT:START -->
       <button class="btn" data-force>강제 다음 →</button>
       <!-- FORCE-NEXT:END -->
-      <!-- DETAILS:START -->
-      <button class="btn" id="toggleDetails2" type="button">세부설명</button>
-      <!-- DETAILS:END -->
     </div>
-
-    <!-- DETAILS:START -->
-    <div id="details2" class="info details" hidden>
-      <div style="font-weight:800;margin-bottom:6px">자극 코드 해석</div>
-      <div class="small" id="codeExpl">
-        <p style="margin:6px 0"><b>A/B/C</b> = 제작 주체 구분</p>
-        <ul style="margin:0 0 8px 18px">
-          <li><b>A</b>: 100% AI 자동 제작</li>
-          <li><b>B</b>: 광고 전문가가 AI를 <u>활용</u>하여 제작</li>
-          <li><b>C</b>: 광고 전문가만으로 제작(AI 미활용)</li>
-        </ul>
-        <p style="margin:6px 0"><b>H/L</b> = 독창성(Originality) 수준</p>
-        <ul style="margin:0 0 0 18px">
-          <li><b>H</b>: 고(High) 독창성</li>
-          <li><b>L</b>: 저(Low) 독창성</li>
-        </ul>
-    </div>
-    <!-- DETAILS:END -->
   </section>
 
   <!-- ==================== 섹션 3 ==================== -->
@@ -249,38 +195,11 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
         <label><input type="radio" name="manip1" value="전문가만" required> 광고 전문가가 AI 없이 제작</label>
         <label><input type="radio" name="manip1" value="전문가+AI"> 광고 전문가가 AI를 활용하여 제작</label>
         <label><input type="radio" name="manip1" value="100%AI"> 100% AI 자동 제작</label>
-        <label><input type="radio" name="manip1" value="기타"> 기타 안내 문구</label>
-        <label><input type="radio" name="manip1" value="모름"> 기억나지 않음</label>
       </fieldset>
     </div>
 
     <div class="card">
-      <div class="row">
-        <div><strong>2.</strong> 당신이 보기에, 이 광고 제작에서 광고 전문가의 개입 정도는 어느 정도였습니까?</div>
-
-        <div class="slider-wrap" aria-label="전문가 개입 정도 슬라이더">
-          <div class="slider-stack">
-            <output id="valBubble" class="value-bubble" for="involve" aria-live="polite">5</output>
-            <input id="involve" class="range" type="range"
-                   min="0" max="10" step="1" value="5"
-                   aria-label="전문가 개입 정도 0에서 10까지">
-          </div>
-
-          <div class="anchorbar" role="group" aria-label="빠른 선택">
-            <button type="button" class="anchor" data-anchor="0">0</button>
-            <button type="button" class="anchor" data-anchor="5">5</button>
-            <button type="button" class="anchor" data-anchor="10">10</button>
-          </div>
-
-          <div class="desc" style="margin-top:8px">
-            0= 전혀없음(AI 완전 제작) ||| 5= 전문가와 AI 비슷함 ||| 10= 매우 큼(전문가 완전 제작)
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <p class="desc"><strong>3.</strong> 아래 문항들은 <strong>방금 시청한 영상과 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 느끼신 대로 응답해 주시면 됩니다.</p>
+      <p class="desc"><strong>2.</strong> 아래 문항들은 <strong>방금 시청한 광고와 제품에 대해 느끼신 점</strong>을 묻습니다. 정답이나 오답은 없으며, 느끼신 대로 응답해 주시면 됩니다.</p>
       <div class="grid" style="margin-top:8px">
         <table class="compact wide-likert">
           <thead>
@@ -302,19 +221,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
         <!-- FORCE-NEXT:START -->
         <button class="btn" data-force>강제 다음 →</button>
         <!-- FORCE-NEXT:END -->
-        <!-- DETAILS:START -->
-        <button class="btn" id="toggleDetails3" type="button">세부설명</button>
-        <!-- DETAILS:END -->
       </div>
-
-      <!-- DETAILS:START -->
-      <div class="info details" style="margin-top:8px">
-        <div style="font-weight:800;margin-bottom:6px">요인 안내</div>
-        <div class="small">
-          <b>진정성</b>, <b>독창성</b>, <b>광고 태도</b>, <b>구매의도</b> (세부설명 버튼으로 문항 옆 배지 표시를 On/Off 합니다. 응답·제출 로직에는 영향이 없습니다.)
-        </div>
-      </div>
-      <!-- DETAILS:END -->
     </div>
   </section>
 
@@ -343,7 +250,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 
     <div class="card">
       <fieldset class="row">
-        <legend><strong>5.</strong> 본인의 생성형 AI 사용 경험 수준은 어느 정도입니까?</legend>
+        <legend><strong>5.</strong> 본인의 생성형 AI 사용 경험은 어느 정도입니까?</legend>
         <label><input type="radio" name="AIUSE" value="1" required> 전혀 없다</label>
         <label><input type="radio" name="AIUSE" value="2"> 한두 번 사용해 본 적이 있다 (1~2회 이하)</label>
         <label><input type="radio" name="AIUSE" value="3"> 가끔 사용한다 (월 1회 이상)</label>
@@ -383,7 +290,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 /* =============================================================
    운영 모드 전환 가이드
    1) 강제 다음 제거: <!-- FORCE-NEXT:START --> ~ <!-- FORCE-NEXT:END --> 블록 전체 삭제
-   2) 세부설명 제거:   <!-- DETAILS:START --> ~ <!-- DETAILS:END -->  블록 전체 삭제
+   2) 세부설명 제거:   (이미 전부 제거됨)
    ============================================================= */
 
 /* ===== CONFIG (백엔드 URL만 교체하세요) ===== */
@@ -400,7 +307,6 @@ function goTo(i){
   bar.style.width=((i+1)/steps.length*100)+'%';
   stepLabel.textContent=`${i+1} / ${steps.length}`;
   if(i===3) toggleSvc();
-  if(i===2) requestAnimationFrame(()=>requestAnimationFrame(updateSlider));
   scrollTo({top:0,behavior:"smooth"});
 }
 
@@ -414,17 +320,14 @@ function clearWarns(scope=document){
   $(".light-group")?.classList.remove("warn");
 }
 
-/* ===== 요인 라벨(한글) ===== */
-const FACTOR_LABELS = {
-  AUTH: "진정성",
-  ORIG: "독창성",
-  ATT:  "광고 태도",
-  PI:   "구매의도",
-  AILIT:"AI 리터러시"
-};
-
 /* ===== dynamic tables ===== */
+/* 영상 품질(QUAL) 3문항을 최상단에 추가 */
 const likertItems=[
+  // --- 품질 3문항 (상단 삽입) ---
+  "이 광고는 전반적으로 잘 만들어졌다.",
+  "이 광고는 표현 방식이 일관된다.",
+  "이 광고는 시각적 완성도가 높다.",
+  // --- 기존 AUTH/ORIG/ATT/PI 문항 ---
   "이 광고는 제품의 특성을 왜곡하지 않고 보여준다.",
   "이 광고는 소비자를 속이려는 의도가 없어 보인다.",
   "이 광고는 신뢰할 수 있다.",
@@ -439,36 +342,45 @@ const likertItems=[
   "이 광고는 마음에 든다.",
   "이 광고는 긍정적인 인상을 준다.",
   "이 광고는 매력적이다.",
-  "이 광고에서 나온 제품을 구매할 가능성이 있다.",
+  "이 광고에 나온 제품을 구매하고 싶다.",
   "이 광고는 나의 구매 욕구를 자극한다.",
   "나는 이 제품을 다른 사람에게 추천하고 싶다."
 ];
-const groups = ["AUTH","AUTH","AUTH","AUTH","AUTH",
-                "ORIG","ORIG","ORIG","ORIG","ORIG","ORIG",
-                "ATT","ATT","ATT","PI","PI","PI"];
-const counters = { AUTH:0, ORIG:0, ATT:0, PI:0 };
+
+/* 각 문항의 그룹 코드 (요인명 표시는 제거했지만 필드명/필수검증을 위해 사용) */
+const groups = [
+  "QUAL","QUAL","QUAL",                 // 새로 추가된 품질 3문항
+  "AUTH","AUTH","AUTH","AUTH","AUTH",   // 진정성
+  "ORIG","ORIG","ORIG","ORIG","ORIG","ORIG", // 독창성(역채점 포함)
+  "ATT","ATT","ATT",                    // 광고 태도
+  "PI","PI","PI"                        // 구매의도
+];
+
+const counters = { QUAL:0, AUTH:0, ORIG:0, ATT:0, PI:0 };
 
 $("#likertBody").innerHTML = likertItems.map((t,i)=>{
   const g = groups[i]; counters[g] += 1; const name = g + counters[g];
   return `<tr data-name="${name}">
-            <td><span class="factor-badge">${FACTOR_LABELS[g]||g}</span>${t}</td>
+            <td>${t}</td>
             ${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}
           </tr>`;
 }).join("");
 
+/* AI 리터러시 3문항 */
 const aiLitItems=[
   "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.",
   "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
-  "나는 AI가 만든 결과물을 신뢰할 수 있다."
+  "나는 AI가 만든 결과물이 사실과 다른 정보를 포함하는지 검토할 수 있다."
 ];
 $("#aiLitBody").innerHTML=aiLitItems.map((t,i)=>`
   <tr>
-    <td><span class="factor-badge">${FACTOR_LABELS.AILIT}</span>${t}</td>
+    <td>${t}</td>
     ${Array.from({length:5},(_,k)=>`<td><input type="radio" name="AILIT${i+1}" value="${k+1}"></td>`).join("")}
   </tr>`).join("");
 
 function requiredLikertNames(){
   const req=[];
+  for (let i=1;i<=counters.QUAL;i++) req.push(`QUAL${i}`);  // 품질 필수 포함
   for (let i=1;i<=counters.AUTH;i++) req.push(`AUTH${i}`);
   for (let i=1;i<=counters.ORIG;i++) req.push(`ORIG${i}`);
   for (let i=1;i<=counters.ATT;i++)  req.push(`ATT${i}`);
@@ -483,7 +395,7 @@ document.addEventListener("click",e=>{
   const forceBtn = e.target.closest('[data-force]');
 
   if(prevBtn){ e.preventDefault(); return goTo(Math.max(cur-1,0)); }
-  if(forceBtn){ e.preventDefault(); return goTo(Math.min(cur+1,steps.length-1)); } // FORCE-NEXT (운영 시 블록 삭제)
+  if(forceBtn){ e.preventDefault(); return goTo(Math.min(cur+1,steps.length-1)); } // FORCE-NEXT
   if(!nextBtn) return;
 
   e.preventDefault();
@@ -566,37 +478,12 @@ const stimuli=[
 ];
 const pick=new URLSearchParams(location.search).get("pick");
 const chosen=stimuli.find(s=>s.code===pick)||stimuli[Math.floor(Math.random()*stimuli.length)];
-$("#adSrc").src=chosen.file; $("#adVideo").load(); $("#aiNotice").textContent=chosen.label; $("#chosenInfo").textContent=`(제거예정)선정된 자극: ${chosen.code} (파일: ${chosen.file})`;
-
 const next2=$("#next2"); let watched=false;
 $("#adVideo").addEventListener("timeupdate",e=>{
   const v=e.target;if(!v.duration) return;
   if(v.currentTime/v.duration>=.95){watched=true;next2.disabled=false;next2.title="";}
 });
 $("#adVideo").addEventListener("ended",()=>{watched=true;next2.disabled=false;next2.title="";});
-
-/* ===== slider visuals ===== */
-const range=$("#involve"), bubble=$("#valBubble");
-function updateSlider(){
-  const min=+range.min, max=+range.max, val=+range.value, pct=(val-min)/(max-min);
-  bubble.textContent=val;
-  range.style.setProperty("--pct",(pct*100)+"%");
-  const w=range.offsetWidth, x=w*pct;
-  bubble.style.left=x+"px";
-}
-["input","change"].forEach(ev=>range.addEventListener(ev,updateSlider));
-addEventListener("resize",updateSlider,{passive:true});
-
-/* 앵커 버튼 */
-$$(".anchor").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    const v=+btn.dataset.anchor;
-    range.value=String(v);
-    range.dispatchEvent(new Event("input",{bubbles:true}));
-    range.dispatchEvent(new Event("change",{bubbles:true}));
-    range.focus({preventScroll:true});
-  });
-});
 
 /* ===== svc block toggle ===== */
 function toggleSvc(){
@@ -610,25 +497,6 @@ function toggleSvc(){
 }
 $$("input[name='AIUSE']").forEach(r=>r.addEventListener("change",toggleSvc));
 
-/* ===== DETAILS 토글 ===== */
-/* DETAILS:START */
-const toggleDetails2Btn = $("#toggleDetails2");
-const details2 = $("#details2");
-toggleDetails2Btn?.addEventListener("click", ()=>{
-  const on = details2.hasAttribute("hidden");
-  if (on) details2.removeAttribute("hidden"); else details2.setAttribute("hidden","true");
-  toggleDetails2Btn.textContent = on ? "세부설명 숨기기" : "세부설명(제거예정)";
-});
-
-const toggleDetails3Btn = $("#toggleDetails3");
-toggleDetails3Btn?.addEventListener("click", ()=>{
-  // 섹션3/4 모두에 요인 배지 적용
-  document.body.classList.toggle("show-factors");
-  const on = document.body.classList.contains("show-factors");
-  toggleDetails3Btn.textContent = on ? "세부설명 숨기기" : "세부설명";
-});
-/* DETAILS:END */
-
 /* ===== Submit to Backend ===== */
 function uuid(){
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
@@ -640,6 +508,7 @@ function uuid(){
 const SESSION_ID = sessionStorage.getItem("sess_id") || (sessionStorage.setItem("sess_id", uuid()), sessionStorage.getItem("sess_id"));
 
 function getPayload(){
+  const QUAL = Object.fromEntries(Array.from({length:counters.QUAL},(_,i)=>[`QUAL${i+1}`, valRadio(`QUAL${i+1}`)]));
   const AUTH = Object.fromEntries(Array.from({length:counters.AUTH},(_,i)=>[`AUTH${i+1}`, valRadio(`AUTH${i+1}`)]));
   const ORIG = Object.fromEntries(Array.from({length:counters.ORIG},(_,i)=>[`ORIG${i+1}`, valRadio(`ORIG${i+1}`)]));
   const ATT  = Object.fromEntries(Array.from({length:counters.ATT}, (_,i)=>[`ATT${i+1}`,  valRadio(`ATT${i+1}`)]));
@@ -662,8 +531,7 @@ function getPayload(){
     },
     section3:{
       manipulation_seen: valRadio("manip1"),
-      involvement_0to10: +range.value,
-      AUTH, ORIG, ATT, PI
+      QUAL, AUTH, ORIG, ATT, PI
     },
     section4:{
       AILIT:{
@@ -815,7 +683,6 @@ $("#submitBtn")?.addEventListener("click",async e=>{
     $("#done").hidden=false; bar.style.width="100%"; stepLabel.textContent="완료";
     $("#serverMsg").textContent = `서버 응답: ${serverText}${result.json?.id ? " (id: "+result.json.id+")" : ""}`;
 
-    // JSON 출력 숨김
     const dump = $("#dump");
     if (dump) { dump.textContent = ""; dump.setAttribute("hidden","true"); }
 
@@ -831,7 +698,6 @@ $("#submitBtn")?.addEventListener("click",async e=>{
 /* ===== init ===== */
 goTo(0);
 const age=$("#age"); age?.addEventListener("focus",()=>{if(!age.value) age.value=20},{once:true});
-updateSlider();
 </script>
 </body>
 </html>

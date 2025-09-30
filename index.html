@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>광고 영상 시청 시 소비자 경험 설문(최적화 풀버전)</title>
+<title>광고 영상 시청 시 소비자 경험 설문(운영/점검 통합본)</title>
 <style>
 /* ===== Design Tokens ===== */
 :root{
@@ -100,6 +100,25 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 #submitStatus{margin-top:10px;font-size:.95rem}
 #submitStatus.ok{color:#166534}
 #submitStatus.err{color:#991b1b}
+
+/* ===== DETAILS: 요인 배지 & 설명 (이 블록 전체 삭제 시 세부설명 기능 완전 제거) ===== */
+/* DETAILS:START */
+.factor-badge{
+  display:none;
+  margin-right:8px;
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:800;
+  border:1px solid var(--line);
+  color:#1f2937;
+  background:#f9fafb;
+}
+/* 세부설명 ON일 때(섹션3/4)만 배지 노출 */
+.show-factors .factor-badge{ display:inline-block; }
+.details{margin-top:10px}
+.details[hidden]{display:none!important}
+/* DETAILS:END */
 </style>
 </head>
 <body>
@@ -121,10 +140,10 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
         <p>안녕하십니까? 귀중한 시간을 내어 설문에 응해 주셔서 감사합니다.<br>저는 대구대학교 심리학과 최주형입니다.</p>
         <p>본 설문지는 영상 시청 과정에서 나타나는 광고와 관련된 전반적인 경험을 알아보기 위한 것입니다.</p>
         <p>제시되는 문항에는 정답이나 오답이 없으니, 평소에 느끼고 생각하시는 대로 응답해 주시면 됩니다.</p>
-        <p>자신에게 꼭 맞는 응답이 없더라도 가장 가깝다고 생각되는 항목을 선택해 주시기 바랍니다.</p>
+        <p>자신에게 꼭 맞는 응답이 없더라도 <strong>가장 가깝다고 생각되는 항목</strong>을 선택해 주시기 바랍니다.</p>
         <p>응답하신 내용은 익명으로 처리되며 연구 목적 외에는 사용되지 않습니다.</p>
-        <p>또한 한 문항에는 반드시 하나의 응답만 선택해 주시고, <strong>빠짐없이 작성</strong>해 주셔야 설문이 유효하게 처리됩니다.</p>
-        <p>본 설문지는 <strong>총 11문항과 약 20초 정도의 광고 영상 하나</strong>로 구성되어 있으며, 약 5분 정도 소요됩니다.</p>
+        <p>또한 한 문항에는 <strong>반드시 하나의 응답만 선택</strong>해 주시고, <strong>빠짐없이 작성</strong>해 주셔야 설문이 유효하게 처리됩니다.</p>
+        <p>본 설문지는 총 11문항과 약 20초 정도의 광고 영상으로 구성되어 있으며, 약 5분 정도 소요됩니다.</p>
         <p>귀하의 소중한 응답은 연구에 큰 도움이 됩니다. 참여해 주셔서 다시 한 번 감사드립니다.</p>
       </div>
       <hr class="divider">
@@ -189,13 +208,35 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
       </video>
       <div class="muted small" id="chosenInfo"></div>
     </div>
+
     <div class="btnbar">
       <button class="btn" data-prev>이전</button>
       <button class="btn primary" data-next="2" id="next2" disabled aria-disabled="true" title="영상을 끝까지 시청하면 활성화됩니다">다음</button>
       <!-- FORCE-NEXT:START -->
       <button class="btn" data-force>강제 다음 →</button>
       <!-- FORCE-NEXT:END -->
+      <!-- DETAILS:START -->
+      <button class="btn" id="toggleDetails2" type="button">세부설명</button>
+      <!-- DETAILS:END -->
     </div>
+
+    <!-- DETAILS:START -->
+    <div id="details2" class="info details" hidden>
+      <div style="font-weight:800;margin-bottom:6px">자극 코드 해석</div>
+      <div class="small" id="codeExpl">
+        <p style="margin:6px 0"><b>A/B/C</b> = 제작 주체 구분</p>
+        <ul style="margin:0 0 8px 18px">
+          <li><b>A</b>: 100% AI 자동 제작</li>
+          <li><b>B</b>: 광고 전문가가 AI를 <u>활용</u>하여 제작</li>
+          <li><b>C</b>: 광고 전문가만으로 제작(AI 미활용)</li>
+        </ul>
+        <p style="margin:6px 0"><b>H/L</b> = 독창성(Originality) 수준</p>
+        <ul style="margin:0 0 0 18px">
+          <li><b>H</b>: 고(High) 독창성</li>
+          <li><b>L</b>: 저(Low) 독창성</li>
+        </ul>
+    </div>
+    <!-- DETAILS:END -->
   </section>
 
   <!-- ==================== 섹션 3 ==================== -->
@@ -261,7 +302,19 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
         <!-- FORCE-NEXT:START -->
         <button class="btn" data-force>강제 다음 →</button>
         <!-- FORCE-NEXT:END -->
+        <!-- DETAILS:START -->
+        <button class="btn" id="toggleDetails3" type="button">세부설명</button>
+        <!-- DETAILS:END -->
       </div>
+
+      <!-- DETAILS:START -->
+      <div class="info details" style="margin-top:8px">
+        <div style="font-weight:800;margin-bottom:6px">요인 안내</div>
+        <div class="small">
+          <b>진정성</b>, <b>독창성</b>, <b>광고 태도</b>, <b>구매의도</b> (세부설명 버튼으로 문항 옆 배지 표시를 On/Off 합니다. 응답·제출 로직에는 영향이 없습니다.)
+        </div>
+      </div>
+      <!-- DETAILS:END -->
     </div>
   </section>
 
@@ -322,26 +375,24 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
     <h2 class="h2">제출 완료</h2>
     <p>응답해 주셔서 감사합니다.</p>
     <p class="small muted" id="serverMsg"></p>
-    <pre id="dump" class="small" style="white-space:pre-wrap;background:#f0f4f7;border:1px solid var(--line);padding:12px;border-radius:10px;color:#444"></pre>
+    <pre id="dump" class="small" style="white-space:pre-wrap;background:#f0f4f7;border:1px solid var(--line);padding:12px;border-radius:10px;color:#444" hidden></pre>
   </section>
 </div>
 
 <script>
 /* =============================================================
-   FORCE-NEXT 제거 가이드 (실험용 버튼 완전 삭제용)
-   - HTML에서 <!-- FORCE-NEXT:START --> ~ <!-- FORCE-NEXT:END --> 주석 블록을 모두 삭제
-   - JS에서 "FORCE-NEXT BLOCK"으로 표시된 코드 블록 전체를 삭제
-   이렇게 하면 강제 다음 기능의 흔적이 완전히 사라집니다.
+   운영 모드 전환 가이드
+   1) 강제 다음 제거: <!-- FORCE-NEXT:START --> ~ <!-- FORCE-NEXT:END --> 블록 전체 삭제
+   2) 세부설명 제거:   <!-- DETAILS:START --> ~ <!-- DETAILS:END -->  블록 전체 삭제
    ============================================================= */
 
 /* ===== CONFIG (백엔드 URL만 교체하세요) ===== */
-const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxtBU7CtqXQG2uo9N5uIMVaJPFgxAVAUmk1w9k9fGqyyLAG9HbW4Vjjr2eZrrVsfCEYQg/exec"; // ← 배포 URL로 교체
+const BACKEND_URL = "https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec";
 
 /* ===== helpers ===== */
 const $=(s,sc=document)=>sc.querySelector(s), $$=(s,sc=document)=>[...sc.querySelectorAll(s)];
 const steps=["sec1","sec2","sec3","sec4"]; let cur=0;
 const bar=$("#bar"), stepLabel=$("#stepLabel");
-
 function goTo(i){
   cur=i;
   steps.forEach((id,k)=>$("#"+id).hidden=k!==i);
@@ -363,6 +414,15 @@ function clearWarns(scope=document){
   $(".light-group")?.classList.remove("warn");
 }
 
+/* ===== 요인 라벨(한글) ===== */
+const FACTOR_LABELS = {
+  AUTH: "진정성",
+  ORIG: "독창성",
+  ATT:  "광고 태도",
+  PI:   "구매의도",
+  AILIT:"AI 리터러시"
+};
+
 /* ===== dynamic tables ===== */
 const likertItems=[
   "이 광고는 제품의 특성을 왜곡하지 않고 보여준다.",
@@ -375,7 +435,7 @@ const likertItems=[
   "이 광고는 예측하기 어려운 요소를 포함하고 있다.",
   "이 광고는 브랜드와 관련성이 있다.",
   "이 광고는 브랜드와 잘 어울린다.",
-  "이 광고는 진부하다. <span class='muted small'>(역채점, 제거예정)</span>",
+  "이 광고는 진부하다. <span class='muted small'>(역채점)</span>",
   "이 광고는 마음에 든다.",
   "이 광고는 긍정적인 인상을 준다.",
   "이 광고는 매력적이다.",
@@ -389,11 +449,9 @@ const groups = ["AUTH","AUTH","AUTH","AUTH","AUTH",
 const counters = { AUTH:0, ORIG:0, ATT:0, PI:0 };
 
 $("#likertBody").innerHTML = likertItems.map((t,i)=>{
-  const g = groups[i];
-  counters[g] += 1;
-  const name = g + counters[g];
+  const g = groups[i]; counters[g] += 1; const name = g + counters[g];
   return `<tr data-name="${name}">
-            <td>${t}</td>
+            <td><span class="factor-badge">${FACTOR_LABELS[g]||g}</span>${t}</td>
             ${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}
           </tr>`;
 }).join("");
@@ -403,7 +461,11 @@ const aiLitItems=[
   "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
   "나는 AI가 만든 결과물을 신뢰할 수 있다."
 ];
-$("#aiLitBody").innerHTML=aiLitItems.map((t,i)=>`<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="AILIT${i+1}" value="${k+1}"></td>`).join("")}</tr>`).join("");
+$("#aiLitBody").innerHTML=aiLitItems.map((t,i)=>`
+  <tr>
+    <td><span class="factor-badge">${FACTOR_LABELS.AILIT}</span>${t}</td>
+    ${Array.from({length:5},(_,k)=>`<td><input type="radio" name="AILIT${i+1}" value="${k+1}"></td>`).join("")}
+  </tr>`).join("");
 
 function requiredLikertNames(){
   const req=[];
@@ -415,39 +477,22 @@ function requiredLikertNames(){
 }
 
 /* ===== Navigation (prev/next only) ===== */
-function onClickNav(e){
+document.addEventListener("click",e=>{
   const prevBtn = e.target.closest('[data-prev]');
   const nextBtn = e.target.closest('[data-next]');
-  if(!(prevBtn||nextBtn)) return;
+  const forceBtn = e.target.closest('[data-force]');
+
+  if(prevBtn){ e.preventDefault(); return goTo(Math.max(cur-1,0)); }
+  if(forceBtn){ e.preventDefault(); return goTo(Math.min(cur+1,steps.length-1)); } // FORCE-NEXT (운영 시 블록 삭제)
+  if(!nextBtn) return;
+
   e.preventDefault();
-
-  if(prevBtn){
-    goTo(Math.max(cur-1,0));
-    return;
-  }
-
-  // next
   const target=+nextBtn.dataset.next;
   if(target===1 && !validateS1()) return;         // 섹션1 -> 섹션2
   if(target===3 && !validateSec3()) return;       // 섹션3 -> 섹션4
   if(nextBtn.id==="next2" && nextBtn.disabled) return; // 영상 미시청
-
   goTo(Math.min(target,steps.length-1));
-}
-
-document.addEventListener("click", onClickNav);
-
-/* ===== FORCE-NEXT BLOCK (실험 점검 전용) =====
-   이 블록 전체를 삭제하면 강제 다음 기능이 완전히 제거됩니다. */
-function handleForceNext(){ goTo(Math.min(cur+1,steps.length-1)); }
-function onClickForce(e){
-  const forceBtn = e.target.closest('[data-force]');
-  if(!forceBtn) return;
-  e.preventDefault();
-  handleForceNext();
-}
-document.addEventListener('click', onClickForce);
-/* ===== END FORCE-NEXT BLOCK ===== */
+});
 
 /* ===== Validation ===== */
 function validateS1(){
@@ -462,8 +507,7 @@ function validateS1(){
     sidEl.reportValidity();
     return false;
   }
-  sidEl.classList.remove("warn");
-  sidEl.setCustomValidity("");
+  sidEl.classList.remove("warn"); sidEl.setCustomValidity("");
 
   const genderOk = !!$("input[name='gender']:checked");
   if(!genderOk){
@@ -481,9 +525,7 @@ function validateS1(){
     ageEl.reportValidity();
     return false;
   }
-  ageEl.classList.remove("warn");
-  ageEl.setCustomValidity("");
-
+  ageEl.classList.remove("warn"); ageEl.setCustomValidity("");
   return true;
 }
 
@@ -524,7 +566,7 @@ const stimuli=[
 ];
 const pick=new URLSearchParams(location.search).get("pick");
 const chosen=stimuli.find(s=>s.code===pick)||stimuli[Math.floor(Math.random()*stimuli.length)];
-$("#adSrc").src=chosen.file; $("#adVideo").load(); $("#aiNotice").textContent=chosen.label; $("#chosenInfo").textContent=`선정된 자극: ${chosen.code} (파일: ${chosen.file})`;
+$("#adSrc").src=chosen.file; $("#adVideo").load(); $("#aiNotice").textContent=chosen.label; $("#chosenInfo").textContent=`(제거예정)선정된 자극: ${chosen.code} (파일: ${chosen.file})`;
 
 const next2=$("#next2"); let watched=false;
 $("#adVideo").addEventListener("timeupdate",e=>{
@@ -561,13 +603,31 @@ function toggleSvc(){
   const v=$("input[name='AIUSE']:checked");
   const use1 = !!(v && v.value==="1");
   $("#svcBlock").hidden = !v || use1 ? true : false;
-
   if(use1){
     $$("input[name='AIsvc']:checked").forEach(c=>c.checked=false);
     $("#svcBlock").classList.remove("warn");
   }
 }
 $$("input[name='AIUSE']").forEach(r=>r.addEventListener("change",toggleSvc));
+
+/* ===== DETAILS 토글 ===== */
+/* DETAILS:START */
+const toggleDetails2Btn = $("#toggleDetails2");
+const details2 = $("#details2");
+toggleDetails2Btn?.addEventListener("click", ()=>{
+  const on = details2.hasAttribute("hidden");
+  if (on) details2.removeAttribute("hidden"); else details2.setAttribute("hidden","true");
+  toggleDetails2Btn.textContent = on ? "세부설명 숨기기" : "세부설명";
+});
+
+const toggleDetails3Btn = $("#toggleDetails3");
+toggleDetails3Btn?.addEventListener("click", ()=>{
+  // 섹션3/4 모두에 요인 배지 적용
+  document.body.classList.toggle("show-factors");
+  const on = document.body.classList.contains("show-factors");
+  toggleDetails3Btn.textContent = on ? "세부설명 숨기기" : "세부설명";
+});
+/* DETAILS:END */
 
 /* ===== Submit to Backend ===== */
 function uuid(){
@@ -629,7 +689,7 @@ function validateAllRequired(){
   clearWarns(document);
   const missing = [];
 
-  // --- 섹션1: 학번/성별/나이 ---
+  // 섹션1
   const sidEl = $("#sid");
   const ageEl = $("#age");
 
@@ -639,19 +699,14 @@ function validateAllRequired(){
     sidEl.setCustomValidity("학번은 숫자 8자로 정확히 입력해 주세요.");
     sidEl.reportValidity();
     missing.push({el:sidEl});
-  } else {
-    sidEl.classList.remove("warn");
-    sidEl.setCustomValidity("");
-  }
+  } else { sidEl.classList.remove("warn"); sidEl.setCustomValidity(""); }
 
   const genderOk = !!$("input[name='gender']:checked");
   if(!genderOk){
     const gw = $(".light-group");
     gw?.classList.add("warn");
     missing.push({el:gw || $("#sec1")});
-  } else {
-    $(".light-group")?.classList.remove("warn");
-  }
+  } else { $(".light-group")?.classList.remove("warn"); }
 
   const ageVal = ageEl.value.trim();
   const ageOk = ageVal !== "" && +ageVal >= 14 && +ageVal <= 99;
@@ -660,12 +715,9 @@ function validateAllRequired(){
     ageEl.setCustomValidity("나이는 14~99 사이의 숫자로 입력해 주세요.");
     ageEl.reportValidity();
     missing.push({el:ageEl});
-  } else {
-    ageEl.classList.remove("warn");
-    ageEl.setCustomValidity("");
-  }
+  } else { ageEl.classList.remove("warn"); ageEl.setCustomValidity(""); }
 
-  // --- 섹션3: manip1 + 리커트 전 항목 ---
+  // 섹션3
   if(!valRadio("manip1")){
     const fs1 = $$("fieldset").find(fs => fs.querySelector("input[name='manip1']"));
     fs1 && fs1.classList.add("warn");
@@ -679,7 +731,7 @@ function validateAllRequired(){
     }
   });
 
-  // --- 섹션4: AILIT 전 항목 ---
+  // 섹션4
   ["AILIT1","AILIT2","AILIT3"].forEach((n,i)=>{
     if(!valRadio(n)){
       const tr = $(`#aiLitBody tr:nth-child(${i+1})`);
@@ -688,7 +740,6 @@ function validateAllRequired(){
     }
   });
 
-  // --- 섹션4: AIUSE 필수 + AIsvc(경험 있을 때 최소 1개) ---
   if(!valRadio("AIUSE")){
     const fs2 = $$("fieldset").find(fs => fs.querySelector("input[name='AIUSE']"));
     fs2 && fs2.classList.add("warn");
@@ -701,12 +752,8 @@ function validateAllRequired(){
         const svc = $("#svcBlock");
         if (svc && !svc.hidden) svc.classList.add("warn");
         missing.push({el:svc || $("#sec4")});
-      } else {
-        $("#svcBlock")?.classList.remove("warn");
-      }
-    } else {
-      $("#svcBlock")?.classList.remove("warn");
-    }
+      } else { $("#svcBlock")?.classList.remove("warn"); }
+    } else { $("#svcBlock")?.classList.remove("warn"); }
   }
 
   if(missing.length){
@@ -719,41 +766,32 @@ function validateAllRequired(){
 }
 
 /* ===== robust POST with timeout & retry ===== */
-/* ===== robust POST with timeout & retry ===== */
-async function postJSON(url, data, {timeoutMs=10000, retries=2} = {}) {
-  // ✅ 프리플라이트 회피: x-www-form-urlencoded 로 전송
-  const body = "data=" + encodeURIComponent(JSON.stringify(data));
-
-  for (let attempt = 0; attempt <= retries; attempt++) {
+async function postJSON(url, data, {timeoutMs=10000, retries=2}={}){
+  const body = "data=" + encodeURIComponent(JSON.stringify(data)); // 프리플라이트 회피
+  for(let attempt=0; attempt<=retries; attempt++){
     const ac = new AbortController();
-    const t = setTimeout(() => ac.abort(), timeoutMs);
-    try {
+    const t  = setTimeout(()=>ac.abort(), timeoutMs);
+    try{
       const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        method:"POST",
+        headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
         body,
-        // mode: "cors",  // 있어도 되고 없어도 됩니다. 기본값도 괜찮아요.
-        credentials: "omit",
-        cache: "no-store",
+        credentials:"omit",
+        cache:"no-store",
         signal: ac.signal
       });
       clearTimeout(t);
-
-      // Apps Script가 JSON 문자열을 돌려주므로 그대로 파싱
       const text = await res.text();
-      let json;
-      try { json = JSON.parse(text); } catch (_) { json = { ok: true }; }
-
-      if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-      return { ok: true, json };
-    } catch (err) {
+      let json; try{ json = JSON.parse(text); } catch{ json = { ok:true }; }
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      return { ok:true, json };
+    }catch(err){
       clearTimeout(t);
-      if (attempt === retries) return { ok: false, error: String(err && err.message || err) };
-      await new Promise(r => setTimeout(r, 400 * (attempt + 1)));
+      if(attempt===retries) return { ok:false, error:String(err) };
+      await new Promise(r=>setTimeout(r, 400*(attempt+1)));
     }
   }
 }
-
 
 /* ===== submit ===== */
 let submitted = false;
@@ -776,7 +814,11 @@ $("#submitBtn")?.addEventListener("click",async e=>{
     steps.forEach(id=>$("#"+id).hidden=true);
     $("#done").hidden=false; bar.style.width="100%"; stepLabel.textContent="완료";
     $("#serverMsg").textContent = `서버 응답: ${serverText}${result.json?.id ? " (id: "+result.json.id+")" : ""}`;
-    $("#dump").textContent = JSON.stringify(payload,null,2);
+
+    // JSON 출력 숨김
+    const dump = $("#dump");
+    if (dump) { dump.textContent = ""; dump.setAttribute("hidden","true"); }
+
     scrollTo({top:0,behavior:"smooth"});
   }else{
     showSubmitStatus("서버 전송에 실패했습니다. 네트워크를 확인 후 다시 시도해 주세요.", false);

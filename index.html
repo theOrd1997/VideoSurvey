@@ -801,7 +801,7 @@ const App = {
       const body2 = $("#r2s3Q2Body"); body2.innerHTML="";
       COPY.r2s3Q2Items.forEach((txt, i) => {
         const [left, right] = txt.split("~").map(s=>s.trim());
-        const titleHTML = `${left} ↔ ${right}`;
+        const titleHTML = `AI 상담사는 ${left} ↔ ${right}`;
         App.slider.addRow({ name:`R2S3_Q2_${i+1}`, titleHTML, leftLabel:left, rightLabel:right, mountTbody: body2, initial:4 });
       });
     }

@@ -33,7 +33,7 @@ html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,
 .btn.danger:hover{border-color:#fca5a5}
 :where(a,button,input,textarea,.btn):focus-visible{outline:2px solid transparent;box-shadow:0 0 0 3px var(--brand-50),0 0 0 5px rgba(37,99,235,.35)}
 .pill{display:inline-block;background:var(--brand-50);border:1px solid var(--brand);color:var(--brand-900);border-radius:999px;padding:2px 10px;font-size:.82rem;font-weight:700}
-.notice{padding:12px;border:1px solid #fde68a;background:#fffbea;color:#92400e;border-radius:10px}
+.notice{padding:12px;border:1px solid #fde68a;background:#fffbea;color:#92400e;border-radius:10px; line-height:1.7 }
 .info{padding:14px;border:1px solid var(--line);background:#fcfcff;border-radius:12px}
 .progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
 .progress>div{height:100%;background:var(--brand);width:0;transition:width .3s}
@@ -59,6 +59,29 @@ th{background:#f9fafb;font-weight:800;border-top:2px solid var(--line)}
 @media (max-width:600px){
   .wide-likert td:first-child{ font-size:1.07rem }
 }
+
+/* === Mobile tables: scroll, sticky first col, touch size === */
+.grid{overflow-x:auto; -webkit-overflow-scrolling:touch; position:relative}
+.grid.scroll-hint::after{
+  content:"← 좌우로 밀어 더 보기 →";
+  position:sticky; right:8px; bottom:-6px; display:inline-block;
+  background:#111827; color:#fff; font-size:.78rem; padding:4px 8px; border-radius:999px;
+  opacity:.9; margin-left:auto;
+}
+@media (max-width:720px){
+  table.wide-likert{ min-width: 720px; }
+  .wide-likert th:first-child, .wide-likert td:first-child{
+    position: sticky; left: 0; z-index: 2; background: #fff;
+    box-shadow: 2px 0 0 rgba(0,0,0,.04);
+  }
+  th,td{ padding:10px 8px }
+  .wide-likert td:first-child{ font-size:1.02rem; line-height:1.6 }
+  .small{ font-size:.84rem }
+  input[type="radio"]{ transform: scale(1.25); }
+  th, td{ white-space:normal; word-break:keep-all }
+}
+/* 줄무늬 가독성(선택) */
+.wide-likert tbody tr:nth-child(odd) td{ background:#fcfcff }
 
 /* Inputs */
 label{font-weight:700}
@@ -124,6 +147,11 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 
 /* 말풍선 제거(이전 스타일 잔재 방지) */
 .sd-badge{display:none!important}
+
+/* 보너스: 모바일에서 공지 크기 살짝 조정 */
+@media (max-width:480px){
+  #aiNotice{ font-size:.96rem }
+}
 </style>
 </head>
 <body>
@@ -186,16 +214,15 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
     </div>
 
     <p class="notice" id="aiNotice" role="alert" aria-live="polite">
-  ⚠️ 안내 문구가 여기에 표시됩니다.
-</p>
-
+      ⚠️ 안내 문구가 여기에 표시됩니다.
+    </p>
 
     <div class="video-wrap">
       <video id="adVideo" width="100%" height="auto" controls playsinline preload="metadata"
        aria-describedby="aiNotice">
-  <source id="adSrc" src="" type="video/mp4">
-  해당 브라우저는 video 태그를 지원하지 않습니다.
-</video>
+        <source id="adSrc" src="" type="video/mp4">
+        해당 브라우저는 video 태그를 지원하지 않습니다.
+      </video>
       <div class="muted small" id="chosenInfo"></div>
     </div>
 
@@ -496,8 +523,8 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxtBU7CtqXQG2uo9N5u
    텍스트/문항
    ======================= */
 const COPY = {
-instructions: [
-"안녕하십니까? 귀중한 시간을 내어 설문에 참여해 주셔서 감사합니다.<br>저는 대구대학교 일반대학원 심리학과 최주형입니다.",
+  instructions: [
+    "안녕하십니까? 귀중한 시간을 내어 설문에 참여해 주셔서 감사합니다.<br>저는 대구대학교 일반대학원 심리학과 최주형입니다.",
     "본 설문은 광고 영상을 시청한 후 이에 대한 경험과 인식을 평가하고, 새로운 상담 서비스에 대한 귀하의 의견을 알아보고자 하는 것입니다.",
     "설문 과정에서는 <strong>약 20초 분량의 소리가 포함된 광고 영상을 한 편 시청</strong>하신 후<br>이어지는 <strong>총 14개의 질문</strong>에 응답해 주시게 됩니다. 응답에는 평균적으로 약 <strong>10~15분</strong> 정도가 소요될 것으로 예상됩니다.",
     "제시되는 질문에는 옳고 그름이 없으므로, 평소 느끼고 생각하시는 대로 솔직하게 응답해 주시기 바랍니다.<br>자신에게 꼭 맞는 응답이 없을 경우에는 가장 가깝다고 생각되는 항목을 선택해 주시면 됩니다.",
@@ -517,11 +544,11 @@ instructions: [
   `,
   stimuli: [
     {file:"A_H.mp4",code:"A_H",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작</strong>된 콘텐츠입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
-    {file:"A_L.mp4",code:"A_L",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작된 콘텐츠</strong>입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong>시청해 주시기 바랍니다."},
+    {file:"A_L.mp4",code:"A_L",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작된 콘텐츠</strong>입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
     {file:"B_H.mp4",code:"B_H",label:"⚠️ 해당 영상은 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
     {file:"B_L.mp4",code:"B_L",label:"⚠️ 해당 영상은 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
     {file:"C_H.mp4",code:"C_H",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
-    {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong>시청해 주시기 바랍니다."}
+    {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."}
   ],
   likertItems:[
     "이 광고는 전반적으로 잘 만들어졌다.",
@@ -537,7 +564,7 @@ instructions: [
     "이 광고는 예측하기 어려운 요소를 포함하고 있다.",
     "이 광고는 브랜드와 관련성이 있다.",
     "이 광고는 브랜드와 잘 어울린다.",
-    "이 광고는 진부하다. <span class='muted small'>(역채점)</span>",
+    "이 광고는 진부하다.", /* ← 역채점: 표시 제거, 로직으로 반전 처리 */
     "이 광고는 마음에 든다.",
     "이 광고는 긍정적인 인상을 준다.",
     "이 광고는 매력적이다.",
@@ -546,7 +573,7 @@ instructions: [
     "나는 이 제품을 다른 사람에게 추천하고 싶다."
   ],
   aiLitItems:[
-    "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다..",
+    "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.",
     "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
     "나는 AI가 만든 결과물이 사실과 다른 정보를 포함하는지 검토할 수 있다.",
     "나는 AI 결과를 활용하기 전에 그 근거와 출처를 검토할 수 있다.",
@@ -657,7 +684,8 @@ const App = {
     midSaved: false,
     submitted: false,
     SESSION_ID: sessionStorage.getItem("sess_id") || (sessionStorage.setItem("sess_id", uuid()), sessionStorage.getItem("sess_id")),
-    chosen: null
+    chosen: null,
+    reverse: new Set() // 역채점 항목의 name 키 보관
   },
 
   init(){
@@ -670,6 +698,8 @@ const App = {
     this.formPrefill();
     this.render.intent3();
     this.navigation.updateStepUI();
+    this.ui.applyScrollHints();
+    window.addEventListener('resize', ()=>this.ui.applyScrollHints());
   },
 
   copy:{
@@ -688,30 +718,34 @@ const App = {
       const ct = App.state.counters;
       $("#likertBody").innerHTML = items.map((t,i)=>{
         const g = groups[i]; ct[g] += 1; const name = g + ct[g];
-        return `<tr data-name="${name}"><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}</tr>`;
+        const isRev = /진부하다/.test(t);
+        const textClean = t; // 역채점 표시는 문구에서 제거됨
+        const revAttr = isRev ? ' data-rev="1"' : '';
+        if(isRev) App.state.reverse.add(name);
+        return `<tr data-name="${name}"${revAttr}><td>${textClean}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}</tr>`;
       }).join("");
 
       $("#aiLitBody").innerHTML = COPY.aiLitItems.map((t,i)=>
-        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="AILIT${i+1}" value="${k+1}"></td>`).join("")}</tr>`
+        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type=\"radio\" name=\"AILIT${i+1}\" value=\"${k+1}\"></td>`).join("")}</tr>`
       ).join("");
 
       $("#r2s1AttBody").innerHTML = COPY.r2s1AttItems.map((t,i)=>
-        `<tr><td>${t}</td>${Array.from({length:4},(_,k)=>`<td><input type="radio" name="R2S1_ATT${i+1}" value="${k+1}"></td>`).join("")}</tr>`
+        `<tr><td>${t}</td>${Array.from({length:4},(_,k)=>`<td><input type=\"radio\" name=\"R2S1_ATT${i+1}\" value=\"${k+1}\"></td>`).join("")}</tr>`
       ).join("");
       $("#r2s2Q1Body").innerHTML = COPY.r2s2Q1Items.map((t,i)=>
-        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="R2S2_Q1_${i+1}" value="${k+1}"></td>`).join("")}</tr>`
+        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type=\"radio\" name=\"R2S2_Q1_${i+1}\" value=\"${k+1}\"></td>`).join("")}</tr>`
       ).join("");
       $("#r2s2Q2Body").innerHTML = COPY.r2s2Q2Items.map((t,i)=>
-        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="R2S2_Q2_${i+1}" value="${k+1}"></td>`).join("")}</tr>`
+        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type=\"radio\" name=\"R2S2_Q2_${i+1}\" value=\"${k+1}\"></td>`).join("")}</tr>`
       ).join("");
       $("#r2s2Q3Body").innerHTML = COPY.r2s2Q3Items.map((t,i)=>
-        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="R2S2_Q3_${i+1}" value="${k+1}"></td>`).join("")}</tr>`
+        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type=\"radio\" name=\"R2S2_Q3_${i+1}\" value=\"${k+1}\"></td>`).join("")}</tr>`
       ).join("");
     },
 
     intent3(){
       $("#r2s4Q1Body").innerHTML = COPY.r2s4Q1Items.map((t,i)=>
-        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="R2S4_Q1_${i+1}" value="${k+1}"></td>`).join("")}</tr>`
+        `<tr><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type=\"radio\" name=\"R2S4_Q1_${i+1}\" value=\"${k+1}\"></td>`).join("")}</tr>`
       ).join("");
     }
   },
@@ -892,6 +926,7 @@ const App = {
       $("#done").hidden = true;
       App.navigation.updateStepUI();
       if(i===3) App.validation.toggleSvc();
+      App.ui.applyScrollHints();
       scrollTo({top:0,behavior:"smooth"});
     },
 
@@ -1084,7 +1119,7 @@ const App = {
     allRequired(){
       const valRadio = (n)=>{ const e = $(`input[name='${n}']:checked`); return e?e.value:""; };
       const valChecks = (n)=>$$(`input[name='${n}']:checked`).map(x=>x.value);
-      const valAny = (n)=>{ const r=document.querySelector(`input[name='${n}']:checked`); if(r) return r.value; const h=document.querySelector(`input[name='${n}']`); return h?h.value:""; };
+      const valAny = (n)=>{ const r=document.querySelector(`input[name='${n}']:checked`); if(r) return r.value; const h=document.querySelector(`input[name='${n}']`); return h?h.value:"" };
 
       App.validation.clear(document);
       const missing=[];
@@ -1160,11 +1195,28 @@ const App = {
 
     const { counters, SESSION_ID, chosen, watched95 } = App.state;
 
-    const QUAL = Object.fromEntries(Array.from({length:counters.QUAL},(_,i)=>[`QUAL${i+1}`, valRadio(`QUAL${i+1}`)]));
-    const AUTH = Object.fromEntries(Array.from({length:counters.AUTH},(_,i)=>[`AUTH${i+1}`, valRadio(`AUTH${i+1}`)]));
-    const ORIG = Object.fromEntries(Array.from({length:counters.ORIG},(_,i)=>[`ORIG${i+1}`, valRadio(`ORIG${i+1}`)]));
-    const ATT  = Object.fromEntries(Array.from({length:counters.ATT}, (_,i)=>[`ATT${i+1}`,  valRadio(`ATT${i+1}`)]));
-    const PI   = Object.fromEntries(Array.from({length:counters.PI},  (_,i)=>[`PI${i+1}`,   valRadio(`PI${i+1}`)]));
+    // 역채점 적용 함수 (1~5 척도 → 반전)
+    const rs = (name, raw) => {
+      if(!raw) return raw;
+      if(App.state.reverse.has(name)) return String(6 - (+raw));
+      return raw;
+    };
+
+    const QUAL = Object.fromEntries(Array.from({length:counters.QUAL},(_,i)=>{
+      const key = `QUAL${i+1}`; const v = valRadio(key); return [key, rs(key, v)];
+    }));
+    const AUTH = Object.fromEntries(Array.from({length:counters.AUTH},(_,i)=>{
+      const key = `AUTH${i+1}`; const v = valRadio(key); return [key, rs(key, v)];
+    }));
+    const ORIG = Object.fromEntries(Array.from({length:counters.ORIG},(_,i)=>{
+      const key = `ORIG${i+1}`; const v = valRadio(key); return [key, rs(key, v)];
+    }));
+    const ATT  = Object.fromEntries(Array.from({length:counters.ATT}, (_,i)=>{
+      const key = `ATT${i+1}`; const v = valRadio(key); return [key, rs(key, v)];
+    }));
+    const PI   = Object.fromEntries(Array.from({length:counters.PI},  (_,i)=>{
+      const key = `PI${i+1}`; const v = valRadio(key); return [key, rs(key, v)];
+    }));
     const AILIT = Object.fromEntries(COPY.aiLitItems.map((_, i) => [`AILIT${i+1}`, valRadio(`AILIT${i+1}`)]));
 
     const R2 = {
@@ -1252,13 +1304,19 @@ const App = {
       if(!s) return;
       s.textContent = msg;
       s.className = ok ? "submitStatus ok" : "submitStatus err";
+    },
+    applyScrollHints(){
+      document.querySelectorAll('.grid').forEach(g=>{
+        const needsHint = g.scrollWidth > g.clientWidth + 4;
+        g.classList.toggle('scroll-hint', needsHint);
+      });
     }
   },
 
   features:{
     apply(){
       if(!FEATURES.SHOW_FORCE){
-        $$("[data-force], #forceSubmit").forEach(el => el.style.display="none");
+        $$('[data-force], #forceSubmit').forEach(el => el.style.display="none");
       }
     }
   },

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=0.75" />
 <title>광고 영상 시청 시 소비자 경험 설문(연구1+연구2 통합 최종본)</title>
 <style>
 /* ===== Design Tokens ===== */
@@ -50,9 +50,11 @@ th,td{border:1px solid var(--line);padding:12px;text-align:center;vertical-align
 th{background:#f9fafb;font-weight:800;border-top:2px solid var(--line)}
 
 /* Likert 공통 */
+:root{ --qcol: 38% } /* 문항 열 비율은 여기서만 조절 */
 .wide-likert{table-layout:fixed;width:100%}
-.wide-likert th:first-child, .wide-likert td:first-child{width:38%;text-align:left;padding-left:16px}
-.wide-likert thead th:not(:first-child) .small{font-size:.86rem;color:var(--muted)}
+.wide-likert th:first-child, .wide-likert td:first-child{width:var(--qcol);text-align:left;padding-left:16px}
+/* 번호 아래 보조라벨은 작게(열 간격 영향 X) */
+.wide-likert thead .small{display:block;font-size:.80rem;line-height:1.15;color:var(--muted)}
 /* 문항 텍스트 가독성 보강 */
 .wide-likert td:first-child{ font-size:1.05rem; line-height:1.7 }
 @media (max-width:600px){
@@ -124,26 +126,33 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 /* 말풍선 제거(이전 스타일 잔재 방지) */
 .sd-badge{display:none!important}
 
-/* ============ 추가: 균등 간격 고정 & 클릭 피드백(라디오) ============ */
-:root{ --qcol: 38% } /* 문항 텍스트 열 비율 (원하면 40%로 조정) */
-
-/* col5/col4로 정확히 동일 간격 분배 */
-.wide-likert th:first-child, .wide-likert td:first-child{ width:var(--qcol) }
-.wide-likert thead .small{ font-size:.80rem; color:var(--muted) }
-
-.wide-likert.col5 th:not(:first-child),
-.wide-likert.col5 td:not(:first-child){
-  width: calc((100% - var(--qcol)) / 5);
-}
-.wide-likert.col4 th:not(:first-child),
-.wide-likert.col4 td:not(:first-child){
-  width: calc((100% - var(--qcol)) / 4);
-}
-
 /* 셀 전체 클릭 느낌 & 라디오 크기 */
 .wide-likert td:not(:first-child){ cursor:pointer }
 .wide-likert tr:hover td{ background:#fcfcff }
 input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
+<style>
+  /* 기존 CSS 전부 … */
+
+  /* ===== Chrome parity overrides ===== */
+  html{
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body{
+    font-family: "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",
+                 "Segoe UI",Roboto,system-ui,Arial,sans-serif;
+    letter-spacing: -.003em;
+  }
+  .wide-likert thead th{ line-height: 1.25; }
+  .wide-likert thead .small{ line-height: 1.15; }
+  .wide-likert td input[type="radio"]{
+    vertical-align: middle;
+    position: relative;
+    top: -0.5px;
+  }
+  .wide-likert th, .wide-likert td{ min-width: 0; }
+  .wide-likert col{ width: auto; }
 </style>
 </head>
 <body>
@@ -238,20 +247,24 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
     <div class="card">
       <p class="desc"><strong>2.</strong> 아래 문항들은 <strong>방금 시청한 광고와 제품</strong>에 대한 평가입니다.</p>
       <div class="grid" style="margin-top:8px">
-        <!-- 5점 척도 고정 간격 -->
-        <table class="compact wide-likert col5">
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">전혀 아니다</span></th>
-              <th>2</th>
-              <th>3<br><span class="small">보통이다</span></th>
-              <th>4</th>
-              <th>5<br><span class="small">매우 그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="likertBody"></tbody>
-        </table>
+     <!-- 5점 척도 고정 간격 -->
+<table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="5" style="width:calc((100% - var(--qcol))/5)">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>문항</th>
+      <th>1<br><span class="small">전혀 아니다</span></th>
+      <th>2</th>
+      <th>3<br><span class="small">보통이다</span></th>
+      <th>4</th>
+      <th>5<br><span class="small">매우 그렇다</span></th>
+    </tr>
+  </thead>
+  <tbody id="likertBody"></tbody>
+</table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -267,19 +280,24 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>4.</strong> 아래 문항들은 귀하의 <strong>생성형 AI에 대한 이해와 인식</strong>을 묻습니다.</p>
       <div class="grid" style="margin-top:8px">
         <!-- 5점 척도 고정 간격 -->
-        <table class="compact wide-likert col5">
-          <thead>
-            <tr>
-              <th style="text-align:left">문항</th>
-              <th>1<br><span class="small">전혀 아니다</span></th>
-              <th>2</th>
-              <th>3<br><span class="small">보통이다</span></th>
-              <th>4</th>
-              <th>5<br><span class="small">매우 그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="aiLitBody"></tbody>
-        </table>
+        <table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="5" style="width:calc((100% - var(--qcol))/5)">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>문항</th>
+      <th>1<br><span class="small">전혀 아니다</span></th>
+      <th>2</th>
+      <th>3<br><span class="small">보통이다</span></th>
+      <th>4</th>
+      <th>5<br><span class="small">매우 그렇다</span></th>
+    </tr>
+  </thead>
+  <tbody id="aiLitBody"></tbody>
+</table>
+
       </div>
     </div>
 
@@ -344,18 +362,22 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q3.</strong> 다음은 <strong>AI 상담에 대한 당신의 생각이나 기대</strong>를 묻는 질문들입니다.<br>각 문항을 잘 읽고 자신의 의견에 가장 부합하는 번호에 표시해주세요(4점)</p>
       <div class="grid" style="margin-top:8px">
         <!-- 4점 척도 고정 간격 -->
-        <table class="compact wide-likert col4">
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">그렇지 않다</span></th>
-              <th>2</th>
-              <th>3</th>
-              <th>4<br><span class="small">그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="r2s1AttBody"></tbody>
-        </table>
+<table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="4" style="width:calc((100% - var(--qcol))/4)">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>문항</th>
+      <th>1<br><span class="small">그렇지 않다</span></th>
+      <th>2</th>
+      <th>3</th>
+      <th>4<br><span class="small">그렇다</span></th>
+    </tr>
+  </thead>
+  <tbody id="r2s1AttBody"></tbody>
+</table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -371,19 +393,23 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q1.</strong> 다음 문항들은 <strong>AI 상담을 받는 것</strong>에 대한 귀하의 의견을 묻는 것입니다.<br> 잘 읽고 귀하의 생각이나 느낌에 가장 일치하는 번호에 답해 주시기 바랍니다.</p>
       <div class="grid">
         <!-- 5점 척도 -->
-        <table class="compact wide-likert col5">
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">전혀 아니다</span></th>
-              <th>2</th>
-              <th>3<br><span class="small">보통이다</span></th>
-              <th>4</th>
-              <th>5<br><span class="small">매우 그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="r2s2Q1Body"></tbody>
-        </table>
+       <table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="5" style="width:calc((100% - var(--qcol))/5)">
+  </colgroup>
+<thead>
+  <tr>
+    <th>문항</th>
+    <th>1<br><span class="small">전혀 아니다</span></th>
+    <th>2</th>
+    <th>3<br><span class="small">보통이다</span></th>
+    <th>4</th>
+    <th>5<br><span class="small">매우 그렇다</span></th>
+  </tr>
+</thead>
+  <tbody id="r2s2Q1Body"></tbody>
+</table>
       </div>
     </div>
 
@@ -391,21 +417,24 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q2.</strong> AI 상담을 하게 된다면, 아래 각 문항들은 <strong>얼마나 장점</strong>이라고 생각하나요?</p>
       <div class="grid">
         <!-- 5점 척도 -->
-        <table class="compact wide-likert col5">
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">전혀 장점이 아니다</span></th>
-              <th>2</th>
-              <th>3</th>
-              <th>4</th>
-              <th>5<br><span class="small">매우 장점이다</span></th>
-            </tr>
-          </thead>
-          <tbody id="r2s2Q2Body"></tbody>
-        </table>
+      <table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="5" style="width:calc((100% - var(--qcol))/5)">
+  </colgroup>
+<thead>
+  <tr>
+    <th>문항</th>
+    <th>1<br><span class="small">전혀 장점이 아니다</span></th>
+    <th>2</th>
+    <th>3<br><span class="small">보통이다</span></th>
+    <th>4</th>
+    <th>5<br><span class="small">매우 장점이다</span></th>
+  </tr>
+</thead>
+  <tbody id="r2s2Q2Body"></tbody>
+</table>
       </div>
-
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
         <button class="btn primary" data-next="6">다음</button>
@@ -420,21 +449,24 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q3.</strong>  다음은 <strong>AI 상담에 대한 당신의 생각이나 기대</strong>를 묻는 질문들입니다.<br>각 문항을 잘 읽고 자신의 의견에 가장 부합하는 번호에 표시해주세요</p>
       <div class="grid">
         <!-- 5점 척도 -->
-        <table class="compact wide-likert col5">
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">전혀 아니다</span></th>
-              <th>2</th>
-              <th>3<br><span class="small">보통이다</span></th>
-              <th>4</th>
-              <th>5<br><span class="small">매우 그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="r2s2Q3Body"></tbody>
-        </table>
+       <table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="5" style="width:calc((100% - var(--qcol))/5)">
+  </colgroup>
+ <thead>
+  <tr>
+    <th>문항</th>
+    <th>1<br><span class="small">전혀 아니다</span></th>
+    <th>2</th>
+    <th>3<br><span class="small">보통이다</span></th>
+    <th>4</th>
+    <th>5<br><span class="small">매우 그렇다</span></th>
+  </tr>
+</thead>
+  <tbody id="r2s2Q3Body"></tbody>
+</table>
       </div>
-
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
         <button class="btn primary" data-next="7">다음</button>
@@ -474,21 +506,24 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q3.</strong> 앞으로 만일 귀하나 귀하의 지인에게 심리적인 어려움이 생기면 ~ </p>
       <div class="grid">
         <!-- 5점 척도 -->
-        <table class="compact wide-likert col5">
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">전혀 아니다</span></th>
-              <th>2</th>
-              <th>3</th>
-              <th>4</th>
-              <th>5<br><span class="small">매우 그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="r2s4Q1Body"></tbody>
-        </table>
+     <table class="compact wide-likert">
+  <colgroup>
+    <col style="width:var(--qcol)">
+    <col span="5" style="width:calc((100% - var(--qcol))/5)">
+  </colgroup>
+<thead>
+  <tr>
+    <th>문항</th>
+    <th>1<br><span class="small">전혀 아니다</span></th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5<br><span class="small">매우 그렇다</span></th>
+  </tr>
+</thead>
+  <tbody id="r2s4Q1Body"></tbody>
+</table>
       </div>
-
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
         <button class="btn primary" id="submitBtn">설문 제출</button>
@@ -572,7 +607,7 @@ const COPY = {
     "나는 이 제품을 다른 사람에게 추천하고 싶다."
   ],
   aiLitItems:[
-    "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다..",
+    "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.",
     "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
     "나는 AI가 만든 결과물이 사실과 다른 정보를 포함하는지 검토할 수 있다.",
     "나는 AI 결과를 활용하기 전에 그 근거와 출처를 검토할 수 있다.",

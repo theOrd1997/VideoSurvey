@@ -152,7 +152,7 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
         <div class="prereq">
           <div class="field">
             <label for="sid">학번 (8자리)</label>
-            <input id="sid" name="sid" type="text" inputmode="numeric" pattern="^\\d{8}$" minlength="8" maxlength="8" placeholder="예: 12345678" class="input">
+            <input id="sid" name="sid" type="text" inputmode="numeric" pattern="^\d{8}$" minlength="8" maxlength="8" placeholder="예: 12345678" class="input">
           </div>
           <div class="field">
             <label>성별</label>
@@ -185,12 +185,17 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
       <div id="brandBox" style="line-height:1.75"></div>
     </div>
 
-    <p class="notice" id="aiNotice">⚠️ 안내 문구가 여기에 표시됩니다.</p>
+    <p class="notice" id="aiNotice" role="alert" aria-live="polite">
+  ⚠️ 안내 문구가 여기에 표시됩니다.
+</p>
+
 
     <div class="video-wrap">
-      <video id="adVideo" width="100%" height="auto" controls playsinline preload="metadata">
-        <source id="adSrc" src="" type="video/mp4">해당 브라우저는 video 태그를 지원하지 않습니다.
-      </video>
+      <video id="adVideo" width="100%" height="auto" controls playsinline preload="metadata"
+       aria-describedby="aiNotice">
+  <source id="adSrc" src="" type="video/mp4">
+  해당 브라우저는 video 태그를 지원하지 않습니다.
+</video>
       <div class="muted small" id="chosenInfo"></div>
     </div>
 
@@ -494,7 +499,7 @@ const COPY = {
 instructions: [
 "안녕하십니까? 귀중한 시간을 내어 설문에 참여해 주셔서 감사합니다.<br>저는 대구대학교 일반대학원 심리학과 최주형입니다.",
     "본 설문은 광고 영상을 시청한 후 이에 대한 경험과 인식을 평가하고, 새로운 상담 서비스에 대한 귀하의 의견을 알아보고자 하는 것입니다.",
-    "설문 과정에서는 약 20초 분량의 광고 영상을 한 편 시청하신 후, 이어지는 <strong>총 14개의 질문</strong>에 응답해 주시게 됩니다.<br>응답에는 평균적으로 약 <strong>10~15분</strong> 정도가 소요될 것으로 예상됩니다.",
+    "설문 과정에서는 <strong>약 20초 분량의 소리가 포함된 광고 영상을 한 편 시청</strong>하신 후<br>이어지는 <strong>총 14개의 질문</strong>에 응답해 주시게 됩니다. 응답에는 평균적으로 약 <strong>10~15분</strong> 정도가 소요될 것으로 예상됩니다.",
     "제시되는 질문에는 옳고 그름이 없으므로, 평소 느끼고 생각하시는 대로 솔직하게 응답해 주시기 바랍니다.<br>자신에게 꼭 맞는 응답이 없을 경우에는 가장 가깝다고 생각되는 항목을 선택해 주시면 됩니다.",
     "응답하신 내용은 익명으로 처리되며 연구 목적 외에는 사용되지 않습니다.<br>모든 질문에 빠짐없이 응답해 주셔야 설문이 정상적으로 제출되며, 귀하의 성실한 참여가 연구에 큰 도움이 됩니다.",
     "귀하의 소중한 응답은 학술 연구 발전에 중요한 기여가 됩니다.<br>참여와 협조에 다시 한 번 깊이 감사드립니다."
@@ -511,12 +516,12 @@ instructions: [
     <strong>“Fresh Sunlight in Every Glass”</strong>라는 메시지처럼, 한 잔의 주스 속에 건강하고 활기찬 태양의 에너지를 담아 전달합니다.
   `,
   stimuli: [
-    {file:"A_H.mp4",code:"A_H",label:"⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다."},
-    {file:"A_L.mp4",code:"A_L",label:"⚠️ 본 영상은 생성형 AI에 의해 전적으로 자동 제작된 콘텐츠입니다."},
-    {file:"B_H.mp4",code:"B_H",label:"⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다."},
-    {file:"B_L.mp4",code:"B_L",label:"⚠️ 해당 영상은 광고 전문가가 생성형 AI를 활용하여 제작한 콘텐츠입니다."},
-    {file:"C_H.mp4",code:"C_H",label:"⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다."},
-    {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 영상은 전적으로 광고 전문가에 의해 제작되었으며, 생성형 AI는 활용되지 않았습니다."}
+    {file:"A_H.mp4",code:"A_H",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작</strong>된 콘텐츠입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"A_L.mp4",code:"A_L",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작된 콘텐츠</strong>입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong>시청해 주시기 바랍니다."},
+    {file:"B_H.mp4",code:"B_H",label:"⚠️ 해당 영상은 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"B_L.mp4",code:"B_L",label:"⚠️ 해당 영상은 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"C_H.mp4",code:"C_H",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong>시청해 주시기 바랍니다."}
   ],
   likertItems:[
     "이 광고는 전반적으로 잘 만들어졌다.",
@@ -541,7 +546,7 @@ instructions: [
     "나는 이 제품을 다른 사람에게 추천하고 싶다."
   ],
   aiLitItems:[
-    "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.",
+    "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다..",
     "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
     "나는 AI가 만든 결과물이 사실과 다른 정보를 포함하는지 검토할 수 있다.",
     "나는 AI 결과를 활용하기 전에 그 근거와 출처를 검토할 수 있다.",
@@ -810,7 +815,7 @@ const App = {
       App.state.chosen = chosen;
 
       $("#adSrc").src = chosen.file; $("#adVideo").load();
-      $("#aiNotice").textContent = chosen.label;
+      $("#aiNotice").innerHTML = chosen.label;
 
       const next2 = $("#next2");
       const unlock = ()=>{ App.state.watched95=true; next2.disabled=false; next2.title=""; };

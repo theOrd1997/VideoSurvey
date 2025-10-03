@@ -11,9 +11,14 @@
   --brand:#2563eb; --brand-900:#1e40af; --brand-50:#eef2ff;
   --radius:12px; --gap:20px; --shadow:0 2px 10px rgba(2,6,23,.04);
   --h1:1.7rem; --h2:1.28rem; --small:.9rem;
+  --qcol:38%;
 }
 @media (max-width:480px){ :root{ --h1:1.58rem; --h2:1.2rem } }
+html{
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility;
+}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,system-ui,Arial,sans-serif;letter-spacing:-.003em;}
 .wrap{max-width:960px;margin:40px auto;padding:0 20px}
 [hidden]{display:none!important}
 
@@ -48,18 +53,14 @@ html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,
 table{border-collapse:collapse;width:100%}
 th,td{border:1px solid var(--line);padding:12px;text-align:center;vertical-align:middle}
 th{background:#f9fafb;font-weight:800;border-top:2px solid var(--line)}
-
-/* Likert 공통 */
-:root{ --qcol: 38% } /* 문항 열 비율은 여기서만 조절 */
 .wide-likert{table-layout:fixed;width:100%}
 .wide-likert th:first-child, .wide-likert td:first-child{width:var(--qcol);text-align:left;padding-left:16px}
-/* 번호 아래 보조라벨은 작게(열 간격 영향 X) */
 .wide-likert thead .small{display:block;font-size:.80rem;line-height:1.15;color:var(--muted)}
-/* 문항 텍스트 가독성 보강 */
-.wide-likert td:first-child{ font-size:1.05rem; line-height:1.7 }
-@media (max-width:600px){
-  .wide-likert td:first-child{ font-size:1.07rem }
-}
+.wide-likert td:first-child{font-size:1.05rem;line-height:1.7}
+@media (max-width:600px){ .wide-likert td:first-child{font-size:1.07rem} }
+.wide-likert thead th{ line-height:1.25; }
+.wide-likert td input[type="radio"]{ vertical-align:middle; position:relative; top:-0.5px; }
+.wide-likert th, .wide-likert td{ min-width:0; }
 
 /* Inputs */
 label{font-weight:700}
@@ -95,13 +96,10 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
 
 /* ===== SD Slider (7점 의미미분: 일자형) ===== */
 .sd-row{padding:22px 8px}
-.sd-title{font-weight:900;font-size:1.08rem;margin:0 0 12px;text-align:center}
-.sd-legend{display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px;font-size:.95rem;color:#374151}
+.sd-title{font-weight:900;font-size:1.08rem;margin:0 0 3px;text-align:center}
+.sd-legend{display:flex;justify-content:space-between;align-items:center;margin:6px 0 30px;font-size:.95rem;color:#374151}
 .sd-legend .left,.sd-legend .right{font-weight:700}
-
-.sd-track{
-  position:relative;height:12px;background:#e5e7eb;border-radius:999px;margin:8px 0 12px
-}
+.sd-track{position:relative;height:12px;background:#e5e7eb;border-radius:999px;margin:8px 0 12px}
 .sd-fill{position:absolute;left:0;top:0;height:12px;border-radius:999px;background:var(--brand)}
 .sd-handle{
   position:absolute;top:50%;transform:translate(-50%,-50%);
@@ -112,53 +110,28 @@ fieldset.warn { border:2px solid #ef4444 !important; padding:12px; border-radius
   font-weight:800;font-size:.9rem;color:#111827;user-select:none
 }
 .sd-handle:active{cursor:grabbing}
+.sd-ticks{position:relative;margin-top:6px;display:flex;justify-content:space-between;align-items:center}
+.sd-ticks span{display:inline-block;min-width:16px;text-align:center;font-size:.85rem;color:#374151}
 
-/* 숫자 눈금(1~7) */
-.sd-ticks{
-  position:relative;margin-top:6px;
-  display:flex;justify-content:space-between;align-items:center
-}
-.sd-ticks span{
-  display:inline-block;min-width:16px;text-align:center;
-  font-size:.85rem;color:#374151
-}
-
-/* 말풍선 제거(이전 스타일 잔재 방지) */
-.sd-badge{display:none!important}
-
-/* 셀 전체 클릭 느낌 & 라디오 크기 */
+/* 셀 전체 클릭 & 라디오 크기 */
 .wide-likert td:not(:first-child){ cursor:pointer }
 .wide-likert tr:hover td{ background:#fcfcff }
 input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
-<style>
-  /* 기존 CSS 전부 … */
 
-  /* ===== Chrome parity overrides ===== */
-  html{
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
-  body{
-    font-family: "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",
-                 "Segoe UI",Roboto,system-ui,Arial,sans-serif;
-    letter-spacing: -.003em;
-  }
-  .wide-likert thead th{ line-height: 1.25; }
-  .wide-likert thead .small{ line-height: 1.15; }
-  .wide-likert td input[type="radio"]{
-    vertical-align: middle;
-    position: relative;
-    top: -0.5px;
-  }
-  .wide-likert th, .wide-likert td{ min-width: 0; }
-  .wide-likert col{ width: auto; }
-</style>
+/* ==== Slider caption (handle 위 작은 라벨) ==== */
+    .sd-caption{
+      position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+      font-size:.73rem; font-weight:800; color:#111827;
+      background:#fff; border:1px solid #e5e7eb; border-radius:999px;
+      padding:2px 8px; white-space:nowrap; box-shadow:0 1px 3px rgba(2,6,23,.08);
+      pointer-events:none;
+    }
+  </style>
 </head>
 <body>
 <div class="wrap">
   <div class="row2">
-    <h1 class="h1">광고 영상 시청과 AI 상담 서비스에 대한 경험 연구</h1>
+    <h1 class="h1">광고와 AI 상담 서비스에 대한 연구</h1>
     <div style="min-width:200px">
       <div class="progress"><div id="bar"></div></div>
       <div class="muted small" id="stepLabel" aria-live="polite" style="text-align:right;margin-top:6px">1 / 8</div>
@@ -207,7 +180,7 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
 
   <!-- ==================== 섹션 2 ==================== -->
   <section id="sec2" class="card" hidden>
-    <h2 class="h2">광고 영상 시청</h2>
+    <h2 class="h2">광고 시청</h2>
 
     <div class="info" style="margin-bottom:14px">
       <div style="font-weight:800;margin-bottom:6px">브랜드 안내</div>
@@ -238,33 +211,33 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
     <div class="card">
       <fieldset class="row">
         <legend><strong>1.</strong> 이 광고 시작부 또는 화면 하단에 어떤 안내 문구가 표시되었나요?</legend>
-        <label><input type="radio" name="manip1" value="전문가만" required> 광고 전문가가 AI 없이 제작</label>
+        <label><input type="radio" name="manip1" value="전문가만" required> 광고 전문가가 100% 제작</label>
         <label><input type="radio" name="manip1" value="전문가+AI"> 광고 전문가가 AI를 활용하여 제작</label>
-        <label><input type="radio" name="manip1" value="100%AI"> 100% AI 자동 제작</label>
+        <label><input type="radio" name="manip1" value="100%AI"> AI 100% 자동 제작</label>
       </fieldset>
     </div>
 
     <div class="card">
       <p class="desc"><strong>2.</strong> 아래 문항들은 <strong>방금 시청한 광고와 제품</strong>에 대한 평가입니다.</p>
       <div class="grid" style="margin-top:8px">
-     <!-- 5점 척도 고정 간격 -->
-<table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="5" style="width:calc((100% - var(--qcol))/5)">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>문항</th>
-      <th>1<br><span class="small">전혀 아니다</span></th>
-      <th>2</th>
-      <th>3<br><span class="small">보통이다</span></th>
-      <th>4</th>
-      <th>5<br><span class="small">매우 그렇다</span></th>
-    </tr>
-  </thead>
-  <tbody id="likertBody"></tbody>
-</table>
+        <!-- 5점 척도 고정 간격 -->
+        <table class="compact wide-likert">
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="5" style="width:calc((100% - var(--qcol))/5)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2<br><span class="small">아니다</span></th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4<br><span class="small">그렇다</span></th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="likertBody"></tbody>
+        </table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -279,46 +252,52 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
     <div class="card">
       <p class="desc"><strong>4.</strong> 아래 문항들은 귀하의 <strong>생성형 AI에 대한 이해와 인식</strong>을 묻습니다.</p>
       <div class="grid" style="margin-top:8px">
-        <!-- 5점 척도 고정 간격 -->
         <table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="5" style="width:calc((100% - var(--qcol))/5)">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>문항</th>
-      <th>1<br><span class="small">전혀 아니다</span></th>
-      <th>2</th>
-      <th>3<br><span class="small">보통이다</span></th>
-      <th>4</th>
-      <th>5<br><span class="small">매우 그렇다</span></th>
-    </tr>
-  </thead>
-  <tbody id="aiLitBody"></tbody>
-</table>
-
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="5" style="width:calc((100% - var(--qcol))/5)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2<br><span class="small">아니다</span></th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4<br><span class="small">그렇다</span></th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="aiLitBody"></tbody>
+        </table>
       </div>
     </div>
 
     <div class="card">
       <fieldset class="row">
-        <legend><strong>5.</strong> 본인의 <strong>생성형 AI 사용 경험</strong>은 어느 정도입니까?</legend>
+        <legend><strong>5.</strong> Q1. 본인의 <strong>생성형 AI 사용 경험</strong>은 어느 정도입니까?</legend>
         <div class="radio-col">
-          <label><input type="radio" name="AIUSE" value="1" required> 전혀 없다</label>
-          <label><input type="radio" name="AIUSE" value="2"> 한두 번 사용해 본 적이 있다 (1~2회 이하)</label>
-          <label><input type="radio" name="AIUSE" value="3"> 가끔 사용한다 (월 1회 이상)</label>
-          <label><input type="radio" name="AIUSE" value="4"> 자주 사용한다 (주 1회 이상)</label>
-          <label><input type="radio" name="AIUSE" value="5"> 매우 자주 사용한다 (거의 매일)</label>
+          <label><input type="radio" name="AIUSE" value="1" required> 전혀 사용해본 적 없음</label>
+          <label><input type="radio" name="AIUSE" value="2"> 매우 드물게 사용한다(월 1회 미만)</label>
+          <label><input type="radio" name="AIUSE" value="3"> 가끔 사용한다 (월 1회~3회)</label>
+          <label><input type="radio" name="AIUSE" value="4"> 주기적으로 사용한다(주 1회~2회)</label>
+          <label><input type="radio" name="AIUSE" value="5"> 자주 사용한다(주 3회 이상)</label>
+          <label><input type="radio" name="AIUSE" value="6"> 매우 자주 사용한다(거의 매일, 하루 1시간 미만)</label>
+          <label><input type="radio" name="AIUSE" value="7"> 항상 사용한다(거의 매일, 하루 1시간 이상)</label>
         </div>
       </fieldset>
 
       <div id="svcBlock" class="row" hidden style="margin-top:12px">
-        <div><strong>사용해 본 <strong>생성형 AI 서비스</strong>는 무엇인가요?</strong> (복수선택)</div>
+        <div><strong>Q2.</strong> 본인이 <strong>사용해 본 생성형 AI 서비스</strong>는 무엇인가요? (복수선택)</div>
         <label><input type="checkbox" name="AIsvc" value="chat"> 텍스트/대화형 AI (ChatGPT, Gemini 등)</label>
         <label><input type="checkbox" name="AIsvc" value="image"> 이미지 생성 AI (Midjourney, SD 등)</label>
         <label><input type="checkbox" name="AIsvc" value="video"> 영상 생성 AI (Sora, Runway, Kling 등)</label>
         <label><input type="checkbox" name="AIsvc" value="audio"> 음악/오디오 AI (Suno, Udio 등)</label>
+        <div class="row" style="gap:8px; margin-top:6px">
+          <label style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" name="AIsvc" value="other" id="svcOther"> 기타
+          </label>
+          <input type="text" id="svcOtherText" class="input" placeholder="기타 서비스명" disabled style="max-width:420px">
+        </div>
       </div>
 
       <div class="btnbar">
@@ -359,25 +338,25 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
     </div>
 
     <div class="card">
-      <p class="desc"><strong>Q3.</strong> 다음은 <strong>AI 상담에 대한 당신의 생각이나 기대</strong>를 묻는 질문들입니다.<br>각 문항을 잘 읽고 자신의 의견에 가장 부합하는 번호에 표시해주세요(4점)</p>
+      <p class="desc"><strong>Q3.</strong> 다음은 <strong>전문 상담가에게 상담을 받는 것</strong>에 대한 당신의 생각이나 기대를 묻는 질문들입니다.<br>각 문항을 잘 읽고 자신의 의견에 가장 부합하는 번호에 표시해주세요.</p>
       <div class="grid" style="margin-top:8px">
         <!-- 4점 척도 고정 간격 -->
-<table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="4" style="width:calc((100% - var(--qcol))/4)">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>문항</th>
-      <th>1<br><span class="small">그렇지 않다</span></th>
-      <th>2</th>
-      <th>3</th>
-      <th>4<br><span class="small">그렇다</span></th>
-    </tr>
-  </thead>
-  <tbody id="r2s1AttBody"></tbody>
-</table>
+        <table class="compact wide-likert">
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="4" style="width:calc((100% - var(--qcol))/4)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 그렇지 않다</span></th>
+              <th>2<br><span class="small">그렇지 않다</span></th>
+              <th>3<br><span class="small">그렇다</span></th>
+              <th>4<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="r2s1AttBody"></tbody>
+        </table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -393,23 +372,23 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q1.</strong> 다음 문항들은 <strong>AI 상담을 받는 것</strong>에 대한 귀하의 의견을 묻는 것입니다.<br> 잘 읽고 귀하의 생각이나 느낌에 가장 일치하는 번호에 답해 주시기 바랍니다.</p>
       <div class="grid">
         <!-- 5점 척도 -->
-       <table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="5" style="width:calc((100% - var(--qcol))/5)">
-  </colgroup>
-<thead>
-  <tr>
-    <th>문항</th>
-    <th>1<br><span class="small">전혀 아니다</span></th>
-    <th>2</th>
-    <th>3<br><span class="small">보통이다</span></th>
-    <th>4</th>
-    <th>5<br><span class="small">매우 그렇다</span></th>
-  </tr>
-</thead>
-  <tbody id="r2s2Q1Body"></tbody>
-</table>
+        <table class="compact wide-likert">
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="5" style="width:calc((100% - var(--qcol))/5)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2<br><span class="small">아니다</span></th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4<br><span class="small">그렇다</span></th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="r2s2Q1Body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -417,23 +396,23 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q2.</strong> AI 상담을 하게 된다면, 아래 각 문항들은 <strong>얼마나 장점</strong>이라고 생각하나요?</p>
       <div class="grid">
         <!-- 5점 척도 -->
-      <table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="5" style="width:calc((100% - var(--qcol))/5)">
-  </colgroup>
-<thead>
-  <tr>
-    <th>문항</th>
-    <th>1<br><span class="small">전혀 장점이 아니다</span></th>
-    <th>2</th>
-    <th>3<br><span class="small">보통이다</span></th>
-    <th>4</th>
-    <th>5<br><span class="small">매우 장점이다</span></th>
-  </tr>
-</thead>
-  <tbody id="r2s2Q2Body"></tbody>
-</table>
+        <table class="compact wide-likert">
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="5" style="width:calc((100% - var(--qcol))/5)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 장점이 아니다</span></th>
+              <th>2<br><span class="small">장점이 아니다</span></th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4<br><span class="small">장점이다</span></th>
+              <th>5<br><span class="small">매우 장점이다</span></th>
+            </tr>
+          </thead>
+          <tbody id="r2s2Q2Body"></tbody>
+        </table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -446,26 +425,26 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
   <!-- ==================== 섹션 7 ==================== -->
   <section id="sec7" hidden>
     <div class="card">
-      <p class="desc"><strong>Q3.</strong>  다음은 <strong>AI 상담에 대한 당신의 생각이나 기대</strong>를 묻는 질문들입니다.<br>각 문항을 잘 읽고 자신의 의견에 가장 부합하는 번호에 표시해주세요</p>
+      <p class="desc"><strong>Q3.</strong>  다음은 <strong>전문 상담가에 대한 당신의 생각이나 기대</strong>를 묻는 질문들입니다.<br>각 문항을 잘 읽고 자신의 의견에 가장 부합하는 번호에 표시해주세요</p>
       <div class="grid">
         <!-- 5점 척도 -->
-       <table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="5" style="width:calc((100% - var(--qcol))/5)">
-  </colgroup>
- <thead>
-  <tr>
-    <th>문항</th>
-    <th>1<br><span class="small">전혀 아니다</span></th>
-    <th>2</th>
-    <th>3<br><span class="small">보통이다</span></th>
-    <th>4</th>
-    <th>5<br><span class="small">매우 그렇다</span></th>
-  </tr>
-</thead>
-  <tbody id="r2s2Q3Body"></tbody>
-</table>
+        <table class="compact wide-likert">
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="5" style="width:calc((100% - var(--qcol))/5)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2<br><span class="small">아니다</span></th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4<br><span class="small">그렇다</span></th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="r2s2Q3Body"></tbody>
+        </table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -506,23 +485,23 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
       <p class="desc"><strong>Q3.</strong> 앞으로 만일 귀하나 귀하의 지인에게 심리적인 어려움이 생기면 ~ </p>
       <div class="grid">
         <!-- 5점 척도 -->
-     <table class="compact wide-likert">
-  <colgroup>
-    <col style="width:var(--qcol)">
-    <col span="5" style="width:calc((100% - var(--qcol))/5)">
-  </colgroup>
-<thead>
-  <tr>
-    <th>문항</th>
-    <th>1<br><span class="small">전혀 아니다</span></th>
-    <th>2</th>
-    <th>3</th>
-    <th>4</th>
-    <th>5<br><span class="small">매우 그렇다</span></th>
-  </tr>
-</thead>
-  <tbody id="r2s4Q1Body"></tbody>
-</table>
+        <table class="compact wide-likert">
+          <colgroup>
+            <col style="width:var(--qcol)">
+            <col span="5" style="width:calc((100% - var(--qcol))/5)">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1<br><span class="small">전혀 아니다</span></th>
+              <th>2<br><span class="small">아니다</span></th>
+              <th>3<br><span class="small">보통이다</span></th>
+              <th>4<br><span class="small">그렇다</span></th>
+              <th>5<br><span class="small">매우 그렇다</span></th>
+            </tr>
+          </thead>
+          <tbody id="r2s4Q1Body"></tbody>
+        </table>
       </div>
       <div class="btnbar">
         <button class="btn" data-prev>이전</button>
@@ -558,8 +537,8 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxtBU7CtqXQG2uo9N5u
 const COPY = {
   instructions: [
     "안녕하십니까? 귀중한 시간을 내어 설문에 참여해 주셔서 감사합니다.<br>저는 대구대학교 일반대학원 심리학과 최주형입니다.",
-    "본 설문은 광고 영상을 시청한 후 이에 대한 경험과 인식을 평가하고, 새로운 상담 서비스에 대한 귀하의 의견을 알아보고자 하는 것입니다.",
-    "설문 과정에서는 <strong>약 20초 분량의 소리가 포함된 광고 영상을 한 편 시청</strong>하신 후<br>이어지는 <strong>총 14개의 질문</strong>에 응답해 주시게 됩니다. 응답에는 평균적으로 약 <strong>10~15분</strong> 정도가 소요될 것으로 예상됩니다.",
+    "본 설문은 광고를 시청한 후 귀하의 느낌을 파악하고, AI 상담 서비스에 대한 의견을 알아보고자 하는 것입니다.",
+    "설문 과정에서는 <strong>약 20초 분량의 소리가 포함된 한 편의 광고를 시청</strong>하신 후, 이어지는 질문에 응답해 주시게 됩니다. <br>전체 응답에는 <strong>약 10분</strong>정도가 소요될 것으로 예상됩니다.",
     "제시되는 질문에는 옳고 그름이 없으므로, 평소 느끼고 생각하시는 대로 솔직하게 응답해 주시기 바랍니다.<br>자신에게 꼭 맞는 응답이 없을 경우에는 가장 가깝다고 생각되는 항목을 선택해 주시면 됩니다.",
     "응답하신 내용은 익명으로 처리되며 연구 목적 외에는 사용되지 않습니다.<br>모든 질문에 빠짐없이 응답해 주셔야 설문이 정상적으로 제출되며, 귀하의 성실한 참여가 연구에 큰 도움이 됩니다.",
     "귀하의 소중한 응답은 학술 연구 발전에 중요한 기여가 됩니다.<br>참여와 협조에 다시 한 번 깊이 감사드립니다."
@@ -568,7 +547,7 @@ const COPY = {
     <div style="font-weight:800;margin-bottom:6px">대구대학교 일반대학원 심리학과</div>
     <ul style="margin:0;padding-left:18px">
       <li>지도교수 박은아 (<a href="mailto:eunap@daegu.ac.kr">eunap@daegu.ac.kr</a>)</li>
-      <li>석사과정 수료 최주형 (<a href="mailto:thridworldjoy@naver.com">thridworldjoy@naver.com</a>)</li>
+      <li>석사과정 수료 최주형 (<a href="mailto:thirdworldjoy@naver.com">thirdworldjoy@naver.com</a>)</li>
     </ul>
   `,
   brandHTML: `
@@ -576,40 +555,44 @@ const COPY = {
     <strong>“Fresh Sunlight in Every Glass”</strong>라는 메시지처럼, 한 잔의 주스 속에 건강하고 활기찬 태양의 에너지를 담아 전달합니다.
   `,
   stimuli: [
-    {file:"A_H.mp4",code:"A_H",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작</strong>된 콘텐츠입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
-    {file:"A_L.mp4",code:"A_L",label:"⚠️ 본 영상은 <strong>생성형 AI에 의해 전적으로 자동 제작된 콘텐츠</strong>입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong>시청해 주시기 바랍니다."},
-    {file:"B_H.mp4",code:"B_H",label:"⚠️ 해당 영상은 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
-    {file:"B_L.mp4",code:"B_L",label:"⚠️ 해당 영상은 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
-    {file:"C_H.mp4",code:"C_H",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
-    {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 영상은 <strong>전적으로 광고 전문가에 의해 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong>시청해 주시기 바랍니다."}
+    {file:"A_H.mp4",code:"A_H",label:"⚠️ 해당 광고는 <strong>생성형 AI에 의해 100% 자동 제작</strong>된 콘텐츠입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"A_L.mp4",code:"A_L",label:"⚠️ 해당 광고는 <strong>생성형 AI에 의해 100% 자동 제작</strong>된 콘텐츠입니다.<br>또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"B_H.mp4",code:"B_H",label:"⚠️ 해당 광고는 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"B_L.mp4",code:"B_L",label:"⚠️ 해당 광고는 <strong>광고 전문가가 생성형 AI를 활용하여 제작</strong>한 콘텐츠입니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"C_H.mp4",code:"C_H",label:"⚠️ 해당 광고는 <strong>광고 전문가가 100% 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."},
+    {file:"C_L.mp4",code:"C_L",label:"⚠️ 해당 광고는 <strong>광고 전문가가 100% 제작</strong>되었으며, 생성형 AI는 활용되지 않았습니다.<br> 또한 영상에는 음성이 포함되어 있으므로, <strong>반드시 소리와 함께</strong> 시청해 주시기 바랍니다."}
   ],
-  /* 역채점 표기 제거됨 */
+  /* ===== 섹션3 리커트 문항 ===== */
   likertItems:[
+    // QUAL_MC (3)
     "이 광고는 전반적으로 잘 만들어졌다.",
     "이 광고는 표현 방식이 일관된다.",
     "이 광고는 시각적 완성도가 높다.",
+    // AUTH (4)
     "이 광고는 제품의 특성을 왜곡하지 않고 보여준다.",
     "이 광고는 소비자를 속이려는 의도가 없어 보인다.",
     "이 광고는 신뢰할 수 있다.",
     "이 광고의 표현은 자연스럽다.",
-    "이 광고는 인간의 개입이 반영되어 있다.",
+    // ORIG (3)
     "이 광고는 기존의 광고들과는 다른 독특한 접근을 보여준다.",
     "이 광고는 참신한 시각적 표현을 담고 있다.",
     "이 광고는 예측하기 어려운 요소를 포함하고 있다.",
-    "이 광고는 브랜드와 관련성이 있다.",
-    "이 광고는 브랜드와 잘 어울린다.",
-    "이 광고는 진부하다.",
+    // ATT (3)
     "이 광고는 마음에 든다.",
     "이 광고는 긍정적인 인상을 준다.",
     "이 광고는 매력적이다.",
+    // PI (3)
     "이 광고에 나온 제품을 구매하고 싶다.",
     "이 광고는 나의 구매 욕구를 자극한다.",
-    "나는 이 제품을 다른 사람에게 추천하고 싶다."
+    "나는 이 제품을 다른 사람에게 추천하고 싶다.",
+    // ORIG_MC (2)
+    "나는 이 광고가 독창적이라고 느꼈다.",
+    "나는 이 광고가 새롭다고 느꼈다."
   ],
   aiLitItems:[
     "나는 AI가 학습한 데이터를 활용해 글이나 이미지를 만들어낸다는 것을 알고 있다.",
     "나는 AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 비교해보고 스스로 판단할 수 있다.",
-    "나는 AI가 만든 결과물이 사실과 다른 정보를 포함하는지 검토할 수 있다.",
+    "나는 AI가 만든 결과물이 사실과 다른 정보를 포함하는지 파악할 수 있다.",
     "나는 AI 결과를 활용하기 전에 그 근거와 출처를 검토할 수 있다.",
     "나는 필요할 때 AI를 적절히 활용해 과제를 해결하거나 아이디어를 생성할 수 있다."
   ],
@@ -694,9 +677,9 @@ function postJSON(url, data, {timeoutMs=10000, retries=2}={}) {
         });
         clearTimeout(t);
         const text = await res.text();
-        let json; try{ json = JSON.parse(text); } catch{ json = { ok:true }; }
+        let json = null; try{ json = JSON.parse(text); } catch(e){}
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        return { ok:true, json };
+        return { ok:true, json, text };
       }catch(err){
         clearTimeout(t);
         if(attempt===retries) return { ok:false, error:String(err) };
@@ -713,7 +696,7 @@ const App = {
   state: {
     steps: ["sec1","sec2","sec3","sec4","sec5","sec6","sec7","sec8"],
     cur: 0,
-    counters: { QUAL:0, AUTH:0, ORIG:0, ATT:0, PI:0 },
+    counters: { QUAL_MC:0, AUTH:0, ORIG:0, ORIG_MC:0, ATT:0, PI:0 },
     watched95: false,
     midSaved: false,
     submitted: false,
@@ -732,12 +715,12 @@ const App = {
     this.render.intent3();
     this.navigation.updateStepUI();
 
-    /* ===== 셀 클릭 = 라디오 체크 ===== */
+    // 셀 클릭 = 라디오 체크
     document.addEventListener('click', (e)=>{
       const td = e.target.closest('td');
       if(!td) return;
       const table = td.closest('table.wide-likert');
-      if(!table || td.cellIndex === 0) return; // 첫 열 제외
+      if(!table || td.cellIndex === 0) return;
       const radioInCell = td.querySelector('input[type="radio"]');
       if(radioInCell){
         radioInCell.checked = true;
@@ -750,6 +733,17 @@ const App = {
       if(peer){
         peer.checked = true;
         peer.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+    });
+
+    // 기타 체크 시 텍스트 활성/비활성
+    document.addEventListener('change', (e)=>{
+      if(e.target && e.target.id === 'svcOther'){
+        const txt = document.getElementById('svcOtherText');
+        const checked = e.target.checked;
+        txt.disabled = !checked;
+        txt.value = checked ? txt.value : "";
+        if(!checked) txt.classList.remove('warn');
       }
     });
   },
@@ -765,12 +759,26 @@ const App = {
   render:{
     tables(){
       const items = COPY.likertItems.slice();
-      const groups = ["QUAL","QUAL","QUAL","AUTH","AUTH","AUTH","AUTH","AUTH","ORIG","ORIG","ORIG","ORIG","ORIG","ORIG","ATT","ATT","ATT","PI","PI","PI"];
-      if(groups.length !== items.length) console.warn("groups/items 길이 불일치", groups.length, items.length);
+
+      // === 그룹 매핑(문항 수와 길이 동일해야 함) ===
+      const GROUPS = [
+        "QUAL_MC","QUAL_MC","QUAL_MC",   // 1–3  : 품질(조작점검)
+        "AUTH","AUTH","AUTH","AUTH",     // 4–7  : 진정성
+        "ORIG","ORIG","ORIG",            // 8–10 : 독창성(원척도)
+        "ATT","ATT","ATT",               // 11–13: 광고태도
+        "PI","PI","PI",                  // 14–16: 구매의도
+        "ORIG_MC","ORIG_MC"              // 17–18: 독창성 조작점검
+      ];
+      if (GROUPS.length !== items.length) {
+        console.warn("GROUPS/items 길이 불일치", GROUPS.length, items.length);
+      }
+
       const ct = App.state.counters;
       $("#likertBody").innerHTML = items.map((t,i)=>{
-        const g = groups[i]; ct[g] += 1; const name = g + ct[g];
-        return `<tr data-name="${name}"><td>${t}</td>${Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")}</tr>`;
+        const g = GROUPS[i]; ct[g] = (ct[g]||0) + 1; const name = g + ct[g];
+        return `<tr data-name="${name}"><td>${t}</td>${
+          Array.from({length:5},(_,k)=>`<td><input type="radio" name="${name}" value="${k+1}"></td>`).join("")
+        }</tr>`;
       }).join("");
 
       $("#aiLitBody").innerHTML = COPY.aiLitItems.map((t,i)=>
@@ -801,96 +809,165 @@ const App = {
     }
   },
 
-  slider:{
-    addRow({name, titleHTML, leftLabel, rightLabel, mountTbody, initial=4}){
-      const tr = document.createElement("tr");
-      const td = document.createElement("td"); td.colSpan=1;
+slider:{
+  // 내부 스케일: 인덱스 0..6 -> 값 [-3,-2,-1,0,1,2,3]
+  SCALE:  [-3,-2,-1,0,1,2,3],
+  // 화면 눈금: 음수기호 없이 3 2 1 0 1 2 3
+  TICKS:  [3, 2, 1, 0, 1, 2, 3],
+  // 캡션(핸들 위): 절대값 1/2/3만 라벨, 0(중립)은 표시 안 함
+  CAPTION: { 3:"매우 적합", 2:"적합", 1:"약간 적합", 0:"← 보통 →" },
 
-      const row = document.createElement("div");
-      row.className = "sd-row";
-      const titleId = `${name}-title`;
-      row.innerHTML = `
-        <div class="sd-title" id="${titleId}">${titleHTML||""}</div>
-        <div class="sd-legend">
-          <div class="left">${leftLabel}</div>
-          <div class="right">${rightLabel}</div>
-        </div>
-
-        <div class="sd-track" role="slider" aria-valuemin="1" aria-valuemax="7" aria-valuenow="${initial}" aria-label="${name}" aria-labelledby="${titleId}" tabindex="0">
-          <div class="sd-fill" style="width:${(initial-1)/6*100}%"></div>
-          <div class="sd-handle" style="left:${(initial-1)/6*100}%"><span class="sd-handle-val">${initial}</span></div>
-        </div>
-        <div class="sd-ticks">${Array.from({length:7},(_,i)=>`<span>${i+1}</span>`).join('')}</div>
-        <input type="hidden" name="${name}" value="${initial}">
-      `;
-
-      td.appendChild(row); tr.appendChild(td); mountTbody.appendChild(tr);
-
-      const track  = row.querySelector(".sd-track");
-      const handle = row.querySelector(".sd-handle");
-      const fill   = row.querySelector(".sd-fill");
-      const hidden = row.querySelector(`input[name='${name}']`);
-      const handleVal = row.querySelector(".sd-handle-val");
-
-      const setPosByValue = (v) => {
-        const pct = ((v-1)/6*100);
-        handle.style.left = pct+"%";
-        fill.style.width  = pct+"%";
-        handleVal.textContent = v;
-        track.setAttribute("aria-valuenow", String(v));
-      };
-
-      const snapPx = (px) => {
-        const r = track.getBoundingClientRect();
-        const x = Math.min(Math.max(px - r.left, 0), r.width);
-        const nearest = Math.round((x/r.width)*6)+1; // 1~7
-        hidden.value = String(nearest);
-        setPosByValue(nearest);
-      };
-
-      track.addEventListener("pointerdown", (e) => {
-        track.setPointerCapture(e.pointerId);
-        snapPx(e.clientX);
-        const move = ev => snapPx(ev.clientX);
-        const up   = () => {
-          track.releasePointerCapture(e.pointerId);
-          track.removeEventListener("pointermove", move);
-          track.removeEventListener("pointerup", up);
-        };
-        track.addEventListener("pointermove", move);
-        track.addEventListener("pointerup", up);
-      });
-
-      track.addEventListener("keydown", (e) => {
-        const cur = +hidden.value || 4;
-        if(e.key==="ArrowLeft"||e.key==="ArrowDown"){
-          e.preventDefault(); const v = Math.max(1, cur-1); hidden.value=String(v); setPosByValue(v);
-        }
-        if(e.key==="ArrowRight"||e.key==="ArrowUp"){
-          e.preventDefault(); const v = Math.min(7, cur+1); hidden.value=String(v); setPosByValue(v);
-        }
-      });
-
-      setPosByValue(+hidden.value || initial);
-    },
-
-    initRows(){
-      const body1 = $("#r2s3Q1Body"); body1.innerHTML="";
-      COPY.r2s3Q1Items.forEach((full, i) => {
-        let cat = full, ex = ""; const m = full.match(/^(.*?)\s*\((.*)\)\s*$/);
-        if (m) { cat = m[1].trim(); ex = m[2].trim(); }
-        const titleHTML = ex ? `<div class="cat">${cat}</div><div class="ex" style="color:#6b7280;font-size:.9rem;margin-top:2px">(${ex})</div>` : `<div class="cat">${cat}</div>`;
-        App.slider.addRow({ name:`R2S3_Q1_${i+1}`, titleHTML, leftLabel:"AI 상담사", rightLabel:"인간(전문) 상담사", mountTbody: body1, initial:4 });
-      });
-
-      const body2 = $("#r2s3Q2Body"); body2.innerHTML="";
-      COPY.r2s3Q2Items.forEach((txt, i) => {
-        const [left, right] = txt.split("~").map(s=>s.trim());
-        const titleHTML = `AI 상담사는 ${left} ↔ ${right}`;
-        App.slider.addRow({ name:`R2S3_Q2_${i+1}`, titleHTML, leftLabel:left, rightLabel:right, mountTbody: body2, initial:4 });
-      });
-    }
+  valueToIndex(v){
+    const i = this.SCALE.indexOf(Number(v));
+    return (i>=0? i : 3); // 기본 0(중립) 인덱스=3
   },
+  indexToValue(i){
+    return this.SCALE[Math.min(6, Math.max(0, i))];
+  },
+  indexToPercent(i){
+    return (i/6)*100;
+  },
+  captionForValue(v){
+    const abs = Math.abs(Number(v));
+    return this.CAPTION[abs] || ""; // 0이면 빈 문자열 → 캡션 숨김
+  },
+
+  addRow({name, titleHTML, leftLabel, rightLabel, mountTbody, initial=0, showCaption=true}){
+    // initial: -3..3 (기본 0)
+    const tr = document.createElement("tr");
+    const td = document.createElement("td"); td.colSpan=1;
+
+    const row = document.createElement("div");
+    row.className = "sd-row";
+    const titleId = `${name}-title`;
+
+    const initIdx = this.valueToIndex(initial);
+    const initPct = this.indexToPercent(initIdx);
+    const initCaption = this.captionForValue(initial);
+
+    row.innerHTML = `
+      <div class="sd-title" id="${titleId}">${titleHTML||""}</div>
+      <div class="sd-legend">
+        <div class="left">${leftLabel}</div>
+        <div class="right">${rightLabel}</div>
+      </div>
+
+      <div class="sd-track"
+           role="slider"
+           aria-valuemin="-3" aria-valuemax="3" aria-valuenow="${initial}"
+           aria-label="${name}" aria-labelledby="${titleId}"
+           tabindex="0">
+        <div class="sd-fill" style="width:${initPct}%"></div>
+        <div class="sd-handle" style="left:${initPct}%">
+          <span class="sd-caption" ${(showCaption && initCaption) ? "" : "style='display:none'"}>${showCaption ? initCaption : ""}</span>
+        </div>
+      </div>
+      <div class="sd-ticks">
+        ${this.TICKS.map(v=>`<span>${v}</span>`).join('')}
+      </div>
+      <input type="hidden" name="${name}" value="${initial}">
+    `;
+
+    td.appendChild(row); tr.appendChild(td); mountTbody.appendChild(tr);
+
+    const track    = row.querySelector(".sd-track");
+    const handle   = row.querySelector(".sd-handle");
+    const fill     = row.querySelector(".sd-fill");
+    const hidden   = row.querySelector(`input[name='${name}']`);
+    const caption  = row.querySelector(".sd-caption");
+    const setByIndex = (idx)=>{
+      const i = Math.min(6, Math.max(0, idx));
+      const val = this.indexToValue(i);
+      const pct = this.indexToPercent(i);
+      handle.style.left = pct + "%";
+      fill.style.width  = pct + "%";
+      hidden.value = String(val);
+      track.setAttribute("aria-valuenow", String(val));
+      const cap = this.captionForValue(val);
+if (showCaption && cap){
+caption.textContent = cap;
+ caption.style.display = "";
+
+} else {
+caption.style.display = "none";
+ }
+};   
+
+    const snapToPx = (px)=>{
+      const r = track.getBoundingClientRect();
+      const x = Math.min(Math.max(px - r.left, 0), r.width);
+      const ratio = x / r.width;
+      const idx = Math.round(ratio * 6); // 0..6
+      setByIndex(idx);
+    };
+
+    // 포인터 조작
+    track.addEventListener("pointerdown", (e) => {
+      track.setPointerCapture(e.pointerId);
+      snapToPx(e.clientX);
+      const move = ev => snapToPx(ev.clientX);
+      const up   = () => {
+        track.releasePointerCapture(e.pointerId);
+        track.removeEventListener("pointermove", move);
+        track.removeEventListener("pointerup", up);
+      };
+      track.addEventListener("pointermove", move);
+      track.addEventListener("pointerup", up);
+    });
+
+    // 키보드 조작 (좌/우 한 칸씩)
+    track.addEventListener("keydown", (e) => {
+      const curVal = Number(hidden.value || 0);
+      const curIdx = this.valueToIndex(curVal);
+      if(e.key === "ArrowLeft" || e.key === "ArrowDown"){
+        e.preventDefault();
+        setByIndex(curIdx - 1);
+      }
+      if(e.key === "ArrowRight" || e.key === "ArrowUp"){
+        e.preventDefault();
+        setByIndex(curIdx + 1);
+      }
+    });
+
+    // 초기 위치
+    setByIndex(initIdx);
+  },
+
+  initRows(){
+    const body1 = $("#r2s3Q1Body"); body1.innerHTML="";
+    COPY.r2s3Q1Items.forEach((full, i) => {
+      let cat = full, ex = ""; const m = full.match(/^(.*?)\s*\((.*)\)\s*$/);
+      if (m) { cat = m[1].trim(); ex = m[2].trim(); }
+      const titleHTML = ex
+        ? `<div class="cat">${cat}</div><div class="ex" style="color:#6b7280;font-size:.9rem;margin-top:2px">(${ex})</div>`
+        : `<div class="cat">${cat}</div>`;
+      this.addRow({
+        name:`R2S3_Q1_${i+1}`,
+        titleHTML,
+        leftLabel:"AI 상담사",
+        rightLabel:"인간(전문) 상담사",
+        mountTbody: body1,
+        initial: 0 // 중앙(중립)에서 시작, 캡션은 표시 안 됨
+      });
+    });
+
+    const body2 = $("#r2s3Q2Body"); body2.innerHTML="";
+    COPY.r2s3Q2Items.forEach((txt, i) => {
+      const [left, right] = txt.split("~").map(s=>s.trim());
+      const titleHTML = `AI 상담사는 ${left} ↔ ${right}`;
+      this.addRow({
+        name:`R2S3_Q2_${i+1}`,
+        titleHTML,
+        leftLabel:left,
+        rightLabel:right,
+        mountTbody: body2,
+       initial: 0,
+       showCaption: false
+      });
+    });
+  }
+},
+
 
   stimulus:{
     pickAndMount(){
@@ -908,7 +985,6 @@ const App = {
         const v=e.target;if(!v.duration) return; if(v.currentTime/v.duration>=.95) unlock();
       });
       $("#adVideo").addEventListener("ended",unlock);
-      $("#adVideo").addEventListener("loadedmetadata",()=>{ /* optional */ });
     }
   },
 
@@ -935,9 +1011,9 @@ const App = {
       });
 
       $("#submitBtn")?.addEventListener("click", async e=>{
-        e.preventDefault(); if(App.state.submitted) return;
-        const ok = App.validation.allRequired(); if(!ok) return;
-        await App.submit(false);
+       e.preventDefault(); if(App.state.submitted) return;
+       const ok = App.validation.allRequired(); if(!ok) return;
+       await App.submit(false);
       });
 
       $("#forceSubmit")?.addEventListener("click", async e=>{
@@ -1023,8 +1099,8 @@ const App = {
         fs1 && fs1.classList.add("warn"); ok=false;
       }
 
-      ["QUAL","AUTH","ORIG","ATT","PI"].forEach(g=>{
-        const count = App.state.counters[g];
+      ["QUAL_MC","AUTH","ORIG","ORIG_MC","ATT","PI"].forEach(g=>{
+        const count = App.state.counters[g]||0;
         for(let i=1;i<=count;i++){
           const n = `${g}${i}`;
           if(!valRadio(n)){ const tr = $(`tr[data-name='${n}']`); tr && tr.classList.add("warn"); ok=false; }
@@ -1039,7 +1115,6 @@ const App = {
       return ok;
     },
 
-    /* === 섹션4~7 추가 검증 === */
     section4(){
       this.clear($("#sec4"));
       const missing = [];
@@ -1059,11 +1134,24 @@ const App = {
         const fs = [...document.querySelectorAll("#sec4 fieldset")]
           .find(fs=>fs.querySelector("input[name='AIUSE']"));
         fs && fs.classList.add("warn"); missing.push(fs);
-      }else if(aiuse!=="1"){
-        const hasSvc = !!document.querySelector("input[name='AIsvc']:checked");
-        if(!hasSvc){
-          const svc = document.querySelector("#svcBlock");
+      }else if(aiuse !== "1"){
+        const svc = document.querySelector("#svcBlock");
+        const checkedSvcs = $$("input[name='AIsvc']:checked");
+        if(checkedSvcs.length === 0){
           if(svc && !svc.hidden){ svc.classList.add("warn"); missing.push(svc); }
+        }else{
+          const otherChecked = $("#svcOther")?.checked;
+          const otherText = $("#svcOtherText");
+          if(otherChecked){
+            const txt = (otherText?.value||"").trim();
+            if(!txt){
+              otherText?.classList.add("warn");
+              missing.push(otherText || svc);
+            }else{
+              otherText?.classList.remove("warn");
+            }
+          }
+          svc?.classList.remove("warn");
         }
       }
 
@@ -1157,15 +1245,29 @@ const App = {
 
     toggleSvc(){
       const v = $("input[name='AIUSE']:checked");
-      const use1 = !!(v && v.value==="1");
-      $("#svcBlock").hidden = !v || use1 ? true : false;
-      if(use1){
+      const hide = !v || v.value === "1";
+      const block = $("#svcBlock");
+      block.hidden = hide;
+
+      const other = $("#svcOther");
+      const otherText = $("#svcOtherText");
+
+      if(hide){
         $$("input[name='AIsvc']:checked").forEach(c=>c.checked=false);
-        $("#svcBlock").classList.remove("warn");
+        block.classList.remove("warn");
+        if(other){ other.checked = false; }
+        if(otherText){
+          otherText.value = "";
+          otherText.disabled = true;
+          otherText.classList.remove("warn");
+        }
+      }else{
+        if(otherText){
+          otherText.disabled = !($("#svcOther")?.checked);
+        }
       }
     },
 
-    /* 최종 제출 전 전체 재점검 */
     allRequired(){
       const valRadio = (n)=>{ const e = $(`input[name='${n}']:checked`); return e?e.value:""; };
       const valChecks = (n)=>$$(`input[name='${n}']:checked`).map(x=>x.value);
@@ -1188,8 +1290,8 @@ const App = {
 
       // 섹션3
       if(!valRadio("manip1")){ const fs1=$$("fieldset").find(fs=>fs.querySelector("input[name='manip1']")); fs1&&fs1.classList.add("warn"); missing.push({el:fs1}); }
-      ["QUAL","AUTH","ORIG","ATT","PI"].forEach(g=>{
-        const count=App.state.counters[g];
+      ["QUAL_MC","AUTH","ORIG","ORIG_MC","ATT","PI"].forEach(g=>{
+        const count=App.state.counters[g]||0;
         for(let i=1;i<=count;i++){
           const n=`${g}${i}`; if(!valRadio(n)){ const tr=$(`tr[data-name='${n}']`); tr&&tr.classList.add("warn"); missing.push({el:tr}); }
         }
@@ -1202,9 +1304,25 @@ const App = {
       }else{
         const aiuse=valRadio("AIUSE");
         if(aiuse!=="1"){
+          const svc=$("#svcBlock");
           const svcChosen=valChecks("AIsvc");
-          if(svcChosen.length===0){ const svc=$("#svcBlock"); if(svc && !svc.hidden) svc.classList.add("warn"); missing.push({el:svc||$("#sec4")}); }
-          else { $("#svcBlock")?.classList.remove("warn"); }
+          if(svcChosen.length===0){
+            if(svc && !svc.hidden) svc.classList.add("warn");
+            missing.push({el:svc||$("#sec4")});
+          }else{
+            const otherChecked = $("#svcOther")?.checked;
+            const otherText = $("#svcOtherText");
+            if(otherChecked){
+              const txt = (otherText?.value||"").trim();
+              if(!txt){
+                otherText?.classList.add("warn");
+                missing.push({el:otherText || svc});
+              }else{
+                otherText?.classList.remove("warn");
+              }
+            }
+            $("#svcBlock")?.classList.remove("warn");
+          }
         }else { $("#svcBlock")?.classList.remove("warn"); }
       }
 
@@ -1245,18 +1363,22 @@ const App = {
 
     const { counters, SESSION_ID, chosen, watched95 } = App.state;
 
-    const QUAL = Object.fromEntries(Array.from({length:counters.QUAL},(_,i)=>[`QUAL${i+1}`, valRadio(`QUAL${i+1}`)]));
-    const AUTH = Object.fromEntries(Array.from({length:counters.AUTH},(_,i)=>[`AUTH${i+1}`, valRadio(`AUTH${i+1}`)]));
-    const ORIG = Object.fromEntries(Array.from({length:counters.ORIG},(_,i)=>[`ORIG${i+1}`, valRadio(`ORIG${i+1}`)]));
-    const ATT  = Object.fromEntries(Array.from({length:counters.ATT}, (_,i)=>[`ATT${i+1}`,  valRadio(`ATT${i+1}`)]));
-    const PI   = Object.fromEntries(Array.from({length:counters.PI},  (_,i)=>[`PI${i+1}`,   valRadio(`PI${i+1}`)]));
-    const AILIT = Object.fromEntries(COPY.aiLitItems.map((_, i) => [`AILIT${i+1}`, valRadio(`AILIT${i+1}`)]));
+    const QUAL_MC = Object.fromEntries(Array.from({length:counters.QUAL_MC||0},(_,i)=>[`QUAL_MC${i+1}`, valRadio(`QUAL_MC${i+1}`)]));
+    const AUTH    = Object.fromEntries(Array.from({length:counters.AUTH||0},   (_,i)=>[`AUTH${i+1}`,    valRadio(`AUTH${i+1}`)]));
+    const ORIG    = Object.fromEntries(Array.from({length:counters.ORIG||0},   (_,i)=>[`ORIG${i+1}`,    valRadio(`ORIG${i+1}`)]));
+    const ORIG_MC = Object.fromEntries(Array.from({length:counters.ORIG_MC||0},(_,i)=>[`ORIG_MC${i+1}`, valRadio(`ORIG_MC${i+1}`)]));
+    const ATT     = Object.fromEntries(Array.from({length:counters.ATT||0},    (_,i)=>[`ATT${i+1}`,     valRadio(`ATT${i+1}`)]));
+    const PI      = Object.fromEntries(Array.from({length:counters.PI||0},     (_,i)=>[`PI${i+1}`,      valRadio(`PI${i+1}`)]));
 
-    /* 역채점: ORIG6 값 반전 (1<->5, 2<->4, 3 유지) */
-    if(ORIG.ORIG6){
-      const v = parseInt(ORIG.ORIG6, 10);
-      if(v>=1 && v<=5) ORIG.ORIG6 = String(6 - v);
-    }
+    // === 섹션3: 전송 키 순서 보장 ===
+    const section3Ordered = {};
+    section3Ordered.manipulation_seen = valRadio("manip1");
+    section3Ordered.QUAL_MC = QUAL_MC;
+    section3Ordered.ORIG_MC = ORIG_MC;
+    section3Ordered.AUTH    = AUTH;
+    section3Ordered.ORIG    = ORIG;
+    section3Ordered.ATT     = ATT;
+    section3Ordered.PI      = PI;
 
     const R2 = {
       S1: {
@@ -1283,8 +1405,13 @@ const App = {
         video_watched_95: watched95
       },
       section1:{ student_id: $("#sid").value.trim(), gender: valRadio("gender"), age: $("#age").value },
-      section3:{ manipulation_seen: valRadio("manip1"), QUAL, AUTH, ORIG, ATT, PI },
-      section4:{ AILIT, AIUSE: valRadio("AIUSE"), AIsvc: valChecks("AIsvc") },
+      section3: section3Ordered,
+      section4:{
+        AILIT: Object.fromEntries(COPY.aiLitItems.map((_, i) => [`AILIT${i+1}`, valRadio(`AILIT${i+1}`)])),
+        AIUSE: valRadio("AIUSE"),
+        AIsvc: valChecks("AIsvc"),
+        AIsvc_other_text: ($("#svcOther")?.checked ? ($("#svcOtherText")?.value||"").trim() : "")
+      },
       research2: R2
     };
   },
@@ -1300,7 +1427,12 @@ const App = {
         meta: payload.meta,
         section1: payload.section1,
         section3: payload.section3,
-        section4: { AILIT: payload.section4.AILIT, AIUSE: payload.section4.AIUSE, AIsvc: payload.section4.AIsvc }
+        section4: {
+          AILIT: payload.section4.AILIT,
+          AIUSE: payload.section4.AIUSE,
+          AIsvc: payload.section4.AIsvc,
+          AIsvc_other_text: payload.section4.AIsvc_other_text
+        }
       };
       const res = await postJSON(BACKEND_URL, r1Only);
       if(res.ok){ hint.textContent = "연구 1 응답이 안전하게 저장되었습니다."; App.state.midSaved = true; }

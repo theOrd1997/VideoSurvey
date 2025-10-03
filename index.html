@@ -454,65 +454,70 @@ input[type="radio"]{ transform:scale(1.2); accent-color:var(--brand) }
     </div>
   </section>
 
-  <!-- ==================== 섹션 8 (의미미분 슬라이더) ==================== -->
-  <section id="sec8" hidden>
- <p class="desc">
-  <strong>Q1.</strong> 아래의 내용들은 상담에서 다루어지는 주요 문제들입니다.<br> 
-  <strong>각각의 문제는 AI 상담이 적합한지 혹은 인간 상담가(전문 상담사)가 적합</strong>하다고 생각하는지 그 정도를 표시해주세요. 
-  <br><span><small>(3:매우 적합 ~ 1:약간 적합)</small></span>
-</p>
-      <div class="grid">
-        <table class="compact wide-likert">
-          <thead>
-            <tr><th>항목</th></tr>
-          </thead>
-          <tbody id="r2s3Q1Body"></tbody>
-        </table>
-      </div>
+ <!-- ==================== 섹션 8 (의미미분 슬라이더) ==================== -->
+<section id="sec8" hidden>
+  <!-- Q1 카드 -->
+  <div class="card">
+    <p class="desc">
+      <strong>Q1.</strong> 아래의 내용들은 상담에서 다루어지는 주요 문제들입니다.<br>
+      <strong>각각의 문제는 AI 상담이 적합한지 혹은 인간 상담가(전문 상담사)가 적합</strong>하다고 생각하는지 그 정도를 표시해주세요.
+      <br><span><small class="muted">(3:매우 적합 ~ 1:약간 적합)</small></span>
+    </p>
+    <div class="grid">
+      <table class="compact wide-likert">
+        <thead>
+          <tr><th>항목</th></tr>
+        </thead>
+        <tbody id="r2s3Q1Body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q2 카드 -->
+  <div class="card">
+    <p class="desc"><strong>Q2.</strong> 내가 생각할 때 <strong>AI 상담사는 ~</strong></p>
+    <div class="grid">
+      <table class="compact wide-likert">
+        <thead>
+          <tr><th>항목</th></tr>
+        </thead>
+        <tbody id="r2s3Q2Body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Q3 카드 -->
+  <div class="card">
+    <p class="desc"><strong>Q3.</strong> 앞으로 만일 귀하나 귀하의 지인에게 심리적인 어려움이 생기면 ~ </p>
+    <div class="grid">
+      <table class="compact wide-likert">
+        <colgroup>
+          <col style="width:var(--qcol)">
+          <col span="5" style="width:calc((100% - var(--qcol))/5)">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>문항</th>
+            <th>1<br><span class="small">전혀 아니다</span></th>
+            <th>2<br><span class="small">아니다</span></th>
+            <th>3<br><span class="small">보통이다</span></th>
+            <th>4<br><span class="small">그렇다</span></th>
+            <th>5<br><span class="small">매우 그렇다</span></th>
+          </tr>
+        </thead>
+        <tbody id="r2s4Q1Body"></tbody>
+      </table>
     </div>
 
-    <div class="card">
-      <p class="desc"><strong>Q2.</strong> 내가 생각할 때 <strong>AI 상담사는 ~</strong> </p>
-      <div class="grid">
-        <table class="compact wide-likert">
-          <thead>
-            <tr><th>항목</th></tr>
-          </thead>
-          <tbody id="r2s3Q2Body"></tbody>
-        </table>
-      </div>
+    <div class="btnbar">
+      <button class="btn" data-prev>이전</button>
+      <button class="btn primary" id="submitBtn">설문 제출</button>
+      <button class="btn danger" id="forceSubmit">강제 제출</button>
     </div>
+    <div class="submitStatus" aria-live="polite"></div>
+  </div>
+</section>
 
-    <div class="card">
-      <p class="desc"><strong>Q3.</strong> 앞으로 만일 귀하나 귀하의 지인에게 심리적인 어려움이 생기면 ~ </p>
-      <div class="grid">
-        <!-- 5점 척도 -->
-        <table class="compact wide-likert">
-          <colgroup>
-            <col style="width:var(--qcol)">
-            <col span="5" style="width:calc((100% - var(--qcol))/5)">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>문항</th>
-              <th>1<br><span class="small">전혀 아니다</span></th>
-              <th>2<br><span class="small">아니다</span></th>
-              <th>3<br><span class="small">보통이다</span></th>
-              <th>4<br><span class="small">그렇다</span></th>
-              <th>5<br><span class="small">매우 그렇다</span></th>
-            </tr>
-          </thead>
-          <tbody id="r2s4Q1Body"></tbody>
-        </table>
-      </div>
-      <div class="btnbar">
-        <button class="btn" data-prev>이전</button>
-        <button class="btn primary" id="submitBtn">설문 제출</button>
-        <button class="btn danger" id="forceSubmit">강제 제출</button>
-      </div>
-      <div class="submitStatus" aria-live="polite"></div>
-    </div>
-  </section>
 
   <!-- ==================== 완료 ==================== -->
   <section id="done" class="card" hidden>

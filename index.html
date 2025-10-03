@@ -1483,7 +1483,7 @@ const App = {
     this.state.dirty = false;
 
     $("#submitBtn").disabled = true;
-    App.ui.submitStatus(force ? "강제 제출 중…" : "제출 중입니다…", false);
+    App.ui.submitStatus(force ? "강제 제출 중…" : "제출 중입니다. 제출 완료가 될 때까지 잠시만 기다려주세요.", false);
 
     const payload = App.payload();
 
